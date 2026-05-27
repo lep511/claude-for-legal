@@ -130,18 +130,24 @@ For Managed Agent deployment — `agent.yaml`, leaf-worker subagents, steering-e
 ## Repository Layout
 
 ```
-commercial-legal/         # in-house commercial — vendor/NDA/SaaS review, renewals, escalations
-corporate-legal/          # M&A diligence, closing checklists, board consents, entity compliance
-employment-legal/         # hire/term review, worker classification, leave, investigations
-privacy-legal/            # DPA, DSAR, PIA, privacy triage, policy monitor
-product-legal/            # launch review, marketing claims, "is this a problem?" triage
-regulatory-legal/         # reg feed watcher, policy diff, gap tracker, NPRM comments
-ai-governance-legal/      # AI use-case triage, AIAs, vendor AI review, AI reg gap-check
-ip-legal/                 # trademark clearance, FTO, C&D, DMCA, OSS, IP clauses, portfolio
-litigation-legal/         # portfolio, matters, holds, demands, depo prep, claim charts
-legal-clinic/             # clinic setup, student ramp, intake, deadlines, memos, handoffs
-law-student/              # Socratic drilling, outlining, IRAC, bar prep, flashcards
-legal-builder-hub/        # community skill discovery and install with a trust gate
+agents/                   # 12 first-party legal plugins
+  commercial-legal/       # in-house commercial — vendor/NDA/SaaS review, renewals, escalations
+  corporate-legal/        # M&A diligence, closing checklists, board consents, entity compliance
+  employment-legal/       # hire/term review, worker classification, leave, investigations
+  privacy-legal/          # DPA, DSAR, PIA, privacy triage, policy monitor
+  product-legal/          # launch review, marketing claims, "is this a problem?" triage
+  regulatory-legal/       # reg feed watcher, policy diff, gap tracker, NPRM comments
+  ai-governance-legal/    # AI use-case triage, AIAs, vendor AI review, AI reg gap-check
+  ip-legal/               # trademark clearance, FTO, C&D, DMCA, OSS, IP clauses, portfolio
+  litigation-legal/       # portfolio, matters, holds, demands, depo prep, claim charts
+  legal-clinic/           # clinic setup, student ramp, intake, deadlines, memos, handoffs
+  law-student/            # Socratic drilling, outlining, IRAC, bar prep, flashcards
+  legal-builder-hub/      # community skill discovery and install with a trust gate
+legal_agents/             # Python backend — agent SDK package (12 agents + orchestrator)
+sdk_tools/                # MCP tool servers (routing, calculator)
+frontend/                 # Next.js 16 chat UI at /legal
+main.py                   # CLI entry point
+api_server.py             # FastAPI backend (port 8000)
 external_plugins/         # partner-built plugins maintained by their vendors
   cocounsel-legal/        # Thomson Reuters — Westlaw Deep Research via the CoCounsel Legal MCP
 managed-agent-cookbooks/  # Claude Managed Agent cookbooks — one dir per scheduled agent
@@ -220,18 +226,37 @@ Each template under [`managed-agent-cookbooks/`](./managed-agent-cookbooks) refe
 
 > **Research Preview:** subagent delegation (`callable_agents`) is a preview capability and supports a single delegation level. See per-agent READMEs for security tier and handoff guidance.
 
+### Web Interface (Python Backend + Next.js Frontend)
+
+The same legal agents run as an interactive chat application:
+
+```bash
+# Backend (Python 3.13+)
+uv run uvicorn api_server:app --host 0.0.0.0 --port 8000 --reload
+
+# Frontend (in a separate terminal)
+cd frontend && npm install && npm run dev
+```
+
+Open http://localhost:3000 — the orchestrator routes your requests to the right legal agent. Supports file uploads (contracts, filings, policies), chart visualization, and downloadable output files (Word, Excel).
+
+The Python agents in `legal_agents/` draw their domain knowledge from the same plugin skills in `agents/*/skills/`. Same legal content, different deployment surface.
+
 ## How It Fits Together
 
 | | What it is | Where it lives |
 |---|---|---|
-| **Plugins** | Self-contained practice-area bundles — skills, agents, hooks, and a template practice profile. Install the ones you need. | `<plugin>/` |
-| **Skills** | Domain expertise, conventions, and step-by-step methods Claude draws on automatically when relevant — and slash actions you trigger explicitly: `/commercial-legal:review`, `/privacy-legal:dsar-response`, `/litigation-legal:claim-chart`. | `<plugin>/skills/<skill>/SKILL.md` |
-| **Agents** | Scheduled or event-driven workflows (renewal watcher, docket watcher, reg-change monitor). Runs in the background, posts to a channel or writes a file. | `<plugin>/agents/` |
+| **Plugins** | Self-contained practice-area bundles — skills, agents, hooks, and a template practice profile. Install the ones you need. | `agents/<plugin>/` |
+| **Skills** | Domain expertise, conventions, and step-by-step methods Claude draws on automatically when relevant — and slash actions you trigger explicitly: `/commercial-legal:review`, `/privacy-legal:dsar-response`, `/litigation-legal:claim-chart`. | `agents/<plugin>/skills/<skill>/SKILL.md` |
+| **Agents (plugin)** | Scheduled or event-driven workflows (renewal watcher, docket watcher, reg-change monitor). Runs in the background, posts to a channel or writes a file. | `agents/<plugin>/agents/` |
+| **Agents (backend)** | Python SDK agents using the same skills and domain knowledge. Served via FastAPI with SSE streaming to the chat frontend. | `legal_agents/<agent>/agent.py` |
 | **Practice profile** | Plain-English `CLAUDE.md` describing your playbook, escalation rules, and house style. Every skill reads from it. | `~/.claude/plugins/config/claude-for-legal/<plugin>/CLAUDE.md` |
 | **Connectors** | [MCP servers](https://modelcontextprotocol.io/) that wire Claude to your data — CLM, DMS, e-discovery, research platforms, productivity. | `.mcp.json` (per plugin) |
 | **Managed-agent cookbooks** | `agent.yaml` + depth-1 subagents + steering examples for headless deployment. | `managed-agent-cookbooks/<slug>/` |
+| **Frontend** | Next.js 16 chat interface with SSE streaming, chart rendering, and file downloads. | `frontend/` |
 
-Everything is markdown and JSON. No build step.
+The plugins are markdown and JSON (no build step). The backend is Python 3.13+
+with `claude-agent-sdk`. The frontend is TypeScript/React.
 
 ## Vertical Plugins
 
@@ -241,33 +266,33 @@ Grouped by where the work sits. Each plugin's cold-start interview is what tailo
 
 | Plugin | What it adds |
 |---|---|
-| **[commercial-legal](./commercial-legal)** | Playbook-aware review of vendor agreements, NDAs, and SaaS subscriptions. Amendment tracing. Renewal register with cancel-by alerts. Escalation routing. Stakeholder summaries. |
-| **[corporate-legal](./corporate-legal)** | M&A diligence with tabular review and citation-per-cell. Disclosure schedules, closing checklists, written consents, board minutes. Entity compliance tracker. Post-close integration. |
-| **[privacy-legal](./privacy-legal)** | Privacy triage (PIA vs DPIA vs proceed), PIA generation, DPA review as controller or processor, DSAR response. Policy monitor watches drift between policy and practice. |
-| **[product-legal](./product-legal)** | Launch review against house risk calibration. Marketing claims check. "Is this a problem?" triage for Slack questions. Feature risk assessment. |
-| **[employment-legal](./employment-legal)** | Hire and termination review with jurisdiction-specific flags. Worker classification. Leave tracker (FMLA/CFRA/PFL/ADA). Internal investigations. Policy drafting with state supplements. |
-| **[ai-governance-legal](./ai-governance-legal)** | AI use-case triage against your registry. Impact assessments across regimes in scope. Vendor AI review. Reg-to-policy gap analysis. |
-| **[regulatory-legal](./regulatory-legal)** | Regulatory feed watcher, policy diff, gaps tracker, NPRM comment-period tracker. The Monday-morning digest your team actually reads. |
-| **[ip-legal](./ip-legal)** | Trademark clearance, FTO triage, C&D drafting and triage, DMCA takedown and counter-notice, OSS compliance, IP clause review, portfolio tracking. |
+| **[commercial-legal](./agents/commercial-legal)** | Playbook-aware review of vendor agreements, NDAs, and SaaS subscriptions. Amendment tracing. Renewal register with cancel-by alerts. Escalation routing. Stakeholder summaries. |
+| **[corporate-legal](./agents/corporate-legal)** | M&A diligence with tabular review and citation-per-cell. Disclosure schedules, closing checklists, written consents, board minutes. Entity compliance tracker. Post-close integration. |
+| **[privacy-legal](./agents/privacy-legal)** | Privacy triage (PIA vs DPIA vs proceed), PIA generation, DPA review as controller or processor, DSAR response. Policy monitor watches drift between policy and practice. |
+| **[product-legal](./agents/product-legal)** | Launch review against house risk calibration. Marketing claims check. "Is this a problem?" triage for Slack questions. Feature risk assessment. |
+| **[employment-legal](./agents/employment-legal)** | Hire and termination review with jurisdiction-specific flags. Worker classification. Leave tracker (FMLA/CFRA/PFL/ADA). Internal investigations. Policy drafting with state supplements. |
+| **[ai-governance-legal](./agents/ai-governance-legal)** | AI use-case triage against your registry. Impact assessments across regimes in scope. Vendor AI review. Reg-to-policy gap analysis. |
+| **[regulatory-legal](./agents/regulatory-legal)** | Regulatory feed watcher, policy diff, gaps tracker, NPRM comment-period tracker. The Monday-morning digest your team actually reads. |
+| **[ip-legal](./agents/ip-legal)** | Trademark clearance, FTO triage, C&D drafting and triage, DMCA takedown and counter-notice, OSS compliance, IP clause review, portfolio tracking. |
 
 ### Litigation
 
 | Plugin | What it adds |
 |---|---|
-| **[litigation-legal](./litigation-legal)** | Works two surfaces. **In-house/portfolio:** matter intake, portfolio status, legal holds, outside counsel status, demands. **Firm/solo:** chronology building, claim charts (patent and civil), deposition prep, privilege log review, brief drafting. |
+| **[litigation-legal](./agents/litigation-legal)** | Works two surfaces. **In-house/portfolio:** matter intake, portfolio status, legal holds, outside counsel status, demands. **Firm/solo:** chronology building, claim charts (patent and civil), deposition prep, privilege log review, brief drafting. |
 
 ### Learning & practice
 
 | Plugin | What it adds |
 |---|---|
-| **[law-student](./law-student)** | Socratic drilling, case briefing, outline building, IRAC grading, cold-call prep, flashcards, bar prep, exam forecasting, study planning. **Learning mode, not answer mode** — it never writes the answer for you. |
-| **[legal-clinic](./legal-clinic)** | Professor setup and student semester ramp. Per-practice-area supervisor guide with pedagogy posture (assist / guide / teach). Structured intake with cross-area issue spotting. Deadline tracking with malpractice-aware caution. Memo scaffolds, client letters (routine + plain-language), semester handoffs. Built within ABA Formal Op. 512. |
+| **[law-student](./agents/law-student)** | Socratic drilling, case briefing, outline building, IRAC grading, cold-call prep, flashcards, bar prep, exam forecasting, study planning. **Learning mode, not answer mode** — it never writes the answer for you. |
+| **[legal-clinic](./agents/legal-clinic)** | Professor setup and student semester ramp. Per-practice-area supervisor guide with pedagogy posture (assist / guide / teach). Structured intake with cross-area issue spotting. Deadline tracking with malpractice-aware caution. Memo scaffolds, client letters (routine + plain-language), semester handoffs. Built within ABA Formal Op. 512. |
 
 ### Ecosystem
 
 | Plugin | What it adds |
 |---|---|
-| **[legal-builder-hub](./legal-builder-hub)** | Community skill discovery and install with a real trust layer — watched registries, a QA framework (`/legal-builder-hub:skills-qa`), SHA-pinned updates, and a mandatory trust check before anything lands in your environment. |
+| **[legal-builder-hub](./agents/legal-builder-hub)** | Community skill discovery and install with a real trust layer — watched registries, a QA framework (`/legal-builder-hub:skills-qa`), SHA-pinned updates, and a mandatory trust check before anything lands in your environment. |
 
 ### External / partner-built
 
