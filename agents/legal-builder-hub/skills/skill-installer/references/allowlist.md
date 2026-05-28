@@ -3,7 +3,7 @@
 The installer supports an allowlist at:
 
 ```
-~/.claude/plugins/config/claude-for-legal/legal-builder-hub/allowlist.yaml
+claude-for-legal/agents/legal-builder-hub/allowlist.yaml
 ```
 
 This file lets an administrator constrain what the installer is allowed to

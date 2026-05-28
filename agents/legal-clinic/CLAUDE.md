@@ -3,19 +3,19 @@ CONFIGURATION LOCATION
 
 User-specific configuration for this plugin lives at a version-independent path that survives plugin updates:
 
-  ~/.claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md
+  claude-for-legal/agents/legal-clinic/CLAUDE.md
 
 Rules for every skill, command, and agent in this plugin:
 1. READ configuration from that path. Not from this file.
 2. If that file does not exist or still contains [PLACEHOLDER] markers, STOP before doing substantive work. Say: "This plugin needs setup before it can give you useful output. Run /legal-clinic:cold-start-interview — it takes about 10-15 minutes and every command in this plugin depends on it. Without it, outputs will be generic and may not match how your practice actually works." Do NOT proceed with placeholder or default configuration. The only skills that run without setup are /legal-clinic:cold-start-interview itself and any --check-integrations flag.
 3. Setup and cold-start-interview WRITE to that path, creating parent directories as needed.
 4. On first run after a plugin update, if a populated CLAUDE.md exists at the old cache path
-   (~/.claude/plugins/cache/claude-for-legal/legal-clinic/<version>/CLAUDE.md for any version)
+   (claude-for-legal/plugins/cache/claude-for-legal/legal-clinic/<version>/CLAUDE.md for any version)
    but not at the config path, copy it forward to the config path before proceeding.
 5. This file (the one you are reading) is the TEMPLATE. It ships with the plugin and shows the
    structure the config should have. It is replaced on every plugin update. Never write user data here.
 
-**Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `~/.claude/plugins/config/claude-for-legal/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
+**Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `claude-for-legal/agents/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
 -->
 
 # Law School Clinic Practice Profile
@@ -216,7 +216,7 @@ When the user picks an option, do that thing. Don't re-explain the analysis. The
 
 ## Supervisor guide
 
-The supervisor can author a per-practice-area guide at `~/.claude/plugins/config/claude-for-legal/legal-clinic/guides/<practice-area>.md`. Student-facing skills read the guide before doing substantive work. The guide controls:
+The supervisor can author a per-practice-area guide at `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. Student-facing skills read the guide before doing substantive work. The guide controls:
 
 - **Intake questions.** What to ask a new client for this clinic type. Red flags. What makes a case a good fit.
 - **Pedagogy posture.** How much the skill does vs. how much the student does. Default is `guide` (the skill drafts the structure, the student fills the substance, the skill gives feedback — balanced). A supervisor who needs to move fast can set `assist` (the skill produces the work product with the student reviewing). A supervisor who wants students to learn by doing can set `teach` (the skill asks the student to draft first, gives feedback, and only shows a model after the student has tried).
@@ -295,7 +295,7 @@ Canonical scale: 🔴 Blocking / 🟠 High / 🟡 Medium / 🟢 Low. Any plugin-
 
 **File access failures.** When you can't read a file the user pointed you at, don't fail silently. Say what happened: "I can't read [path]. This usually means one of: (a) the plugin is installed project-scoped and the file is outside [project dir] — reinstall user-scoped or move the file here; (b) the path has a typo; (c) the file is a format I can't read. Can you paste the content directly, or try one of the fixes?" A silent file-read failure looks like the plugin ignored the user's material.
 
-**Verification log.** When you or the user verifies a flagged item — confirms a cite against a primary source, checks a deadline against the local rule, verifies a threshold against the current statute — record it so the next person doesn't re-verify. Write a one-line entry to `~/.claude/plugins/config/claude-for-legal/legal-clinic/verification-log.md`:
+**Verification log.** When you or the user verifies a flagged item — confirms a cite against a primary source, checks a deadline against the local rule, verifies a threshold against the current statute — record it so the next person doesn't re-verify. Write a one-line entry to `claude-for-legal/agents/legal-clinic/verification-log.md`:
 
 `[YYYY-MM-DD] [cite or fact] verified by [name] against [source] — [verdict: confirmed / corrected to X / could not verify]`
 
@@ -336,7 +336,7 @@ learn to research, they just start from a better place.
 *Drives `/deadlines`. Default cadence: warnings surface at 14, 7, 3, and 1 days before a deadline. Overdue deadlines stay flagged until marked complete or explicitly closed.*
 
 **Warning days:** [PLACEHOLDER — default 14, 7, 3, 1]
-**Deadlines file:** `~/.claude/plugins/config/claude-for-legal/legal-clinic/deadlines.yaml` (populated by `/deadlines --add`)
+**Deadlines file:** `claude-for-legal/agents/legal-clinic/deadlines.yaml` (populated by `/deadlines --add`)
 
 ---
 
@@ -354,7 +354,7 @@ Corollary: when the user asks a doctrinal question (not a document-review questi
 
 ## Ad-hoc questions in this domain
 
-When the user asks a question in this plugin's practice area — not just when they invoke a skill — read the practice profile at `~/.claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md` (and `~/.claude/plugins/config/claude-for-legal/company-profile.md`) first, and apply it. If it's populated, answer as the configured assistant:
+When the user asks a question in this plugin's practice area — not just when they invoke a skill — read the practice profile at `claude-for-legal/agents/legal-clinic/CLAUDE.md` (and `claude-for-legal/agents/company-profile.md`) first, and apply it. If it's populated, answer as the configured assistant:
 
 - Use their jurisdiction footprint, risk posture, playbook positions, and escalation chain
 - Apply the guardrails even though no skill is running: source attribution, citation hygiene, jurisdiction recognition, decision posture, the reviewer note format

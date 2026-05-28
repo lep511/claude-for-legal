@@ -71,7 +71,7 @@ The legal research connectors in this plugin aren't just data sources — they'r
 
 ## Storage
 
-Your practice profile is stored at `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` and survives plugin updates. Everything else is in your working directory:
+Your practice profile is stored at `claude-for-legal/agents/law-student/CLAUDE.md` and survives plugin updates. Everything else is in your working directory:
 
 ```
 law-student/
@@ -95,11 +95,11 @@ law-student/
 
 ## How it learns
 
-Your study profile at `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. You can re-run setup, edit the file directly, or tell a skill to record a new position.
+Your study profile at `claude-for-legal/agents/law-student/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. You can re-run setup, edit the file directly, or tell a skill to record a new position.
 
 ## Notes
 
 - Drill-me vs. explain-to-me is set at cold-start; switch per session.
 - Case briefs and outlines use YOUR format. If you have existing outlines, point cold-start at them.
-- Bar prep targets your weak subjects from ~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md. It will keep coming back to them.
+- Bar prep targets your weak subjects from claude-for-legal/agents/law-student/CLAUDE.md. It will keep coming back to them.
 - Every content-generating skill flags when it's uncertain. Trust the flags more than the absence of flags — an unflagged rule is something I'm confident on; check your source anyway before an exam.

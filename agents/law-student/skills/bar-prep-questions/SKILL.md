@@ -10,8 +10,8 @@ argument-hint: "[subject, or --mbe / --essay / --session <n>]"
 
 # /bar-prep-questions
 
-1. Load `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` → bar jurisdiction, exam format (NextGen / traditional UBE / state-specific), weak subjects, prep course.
-2. Also load `~/.claude/plugins/config/claude-for-legal/law-student/study-plan.yaml` if it exists — it tells you what subject is scheduled for today and what subtopics are still weak.
+1. Load `claude-for-legal/agents/law-student/CLAUDE.md` → bar jurisdiction, exam format (NextGen / traditional UBE / state-specific), weak subjects, prep course.
+2. Also load `claude-for-legal/agents/law-student/study-plan.yaml` if it exists — it tells you what subject is scheduled for today and what subtopics are still weak.
 3. Apply the framework below.
 4. **Exam-type gate (do not skip).** If exam format or jurisdiction isn't in the practice profile, ask before generating anything. The NextGen Bar Exam and the traditional UBE test materially different subjects — studying the wrong list is the one mistake that isn't recoverable. Point the student at the NCBE's jurisdiction page (<https://www.ncbex.org/>) to confirm their exam format and subject scope.
 5. **Jurisdiction-rule gate.** If the student's jurisdiction has a state-specific component (CA, LA, NY Law Exam, FL state essay, VA, etc.) AND the subject is one where majority-vs-state rules diverge (Evidence, PR, Civ Pro, Criminal), ask whether this session is UBE/majority-rule, state-specific, or mixed. Do not silently default.
@@ -40,7 +40,7 @@ The bar exam tests a defined body of subjects. This skill drills you on them —
 
 Do not assume the subject list. Before generating any questions:
 
-1. Load `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` and read the bar jurisdiction and bar date.
+1. Load `claude-for-legal/agents/law-student/CLAUDE.md` and read the bar jurisdiction and bar date.
 2. If the practice profile does not specify which exam format the student is sitting for (NextGen / traditional UBE / state-specific), **ask**:
 
    > Which bar exam are you sitting for?
@@ -137,13 +137,13 @@ Every MBE question answer explanation carries the same rule: if the "why C is co
 
 ## Load context
 
-`~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` → bar jurisdiction, exam format (NextGen / traditional UBE / state-specific), weak subjects, prep course. If exam format isn't specified, run the "Exam type" gate above before continuing. If jurisdiction is specified, apply the `## Jurisdiction handling` rules — label questions by which rule body governs, and flag divergences explicitly.
+`claude-for-legal/agents/law-student/CLAUDE.md` → bar jurisdiction, exam format (NextGen / traditional UBE / state-specific), weak subjects, prep course. If exam format isn't specified, run the "Exam type" gate above before continuing. If jurisdiction is specified, apply the `## Jurisdiction handling` rules — label questions by which rule body governs, and flag divergences explicitly.
 
-Also load `~/.claude/plugins/config/claude-for-legal/law-student/study-plan.yaml` if it exists (written by the `study-plan` skill). If the plan has a session scheduled for today or specifies weak subjects to weight, honor it.
+Also load `claude-for-legal/agents/law-student/study-plan.yaml` if it exists (written by the `study-plan` skill). If the plan has a session scheduled for today or specifies weak subjects to weight, honor it.
 
 ## Session mode
 
-`--session <n>` runs a focused N-question session on a specific subject, tracks performance, and writes session results back to `~/.claude/plugins/config/claude-for-legal/law-student/study-plan.yaml` under `session_history` so the study plan adapts.
+`--session <n>` runs a focused N-question session on a specific subject, tracks performance, and writes session results back to `claude-for-legal/agents/law-student/study-plan.yaml` under `session_history` so the study plan adapts.
 
 Trigger phrasing the student might use: "let's do 5 questions on Contracts", "run me 10 Evidence questions", "/law-student:session Evidence 10".
 
@@ -180,7 +180,7 @@ session_history:
     jurisdiction_mode: mixed  # or ube / state-specific
 ```
 
-If no `study-plan.yaml` exists, write session history to `~/.claude/plugins/config/claude-for-legal/law-student/session-history.yaml` instead so future sessions can still weight appropriately.
+If no `study-plan.yaml` exists, write session history to `claude-for-legal/agents/law-student/session-history.yaml` instead so future sessions can still weight appropriately.
 
 ## MBE mode
 
@@ -191,7 +191,7 @@ If no `study-plan.yaml` exists, write session history to `~/.claude/plugins/conf
 Classic MBE format (traditional UBE): fact pattern + call + four answer choices, one correct.
 NextGen format: refer the student to released NextGen sample questions on the NCBE site for the current authoritative format and mimic that structure.
 
-Subject distribution: weight toward weak subjects **within the subjects actually tested on the student's exam**. If `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` says weak on Evidence and Civ Pro, 60% of questions come from those.
+Subject distribution: weight toward weak subjects **within the subjects actually tested on the student's exam**. If `claude-for-legal/agents/law-student/CLAUDE.md` says weak on Evidence and Civ Pro, 60% of questions come from those.
 
 Difficulty: bar-level. Not law school issue-spotter difficulty (which is higher). Bar questions are about knowing the black-letter rule and applying it cleanly.
 

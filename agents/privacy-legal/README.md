@@ -17,7 +17,7 @@ In-house privacy counsel workflows: DPA review, DSAR response drafting, PIA gene
 
 The plugin interviews you to learn: are you a controller or processor, which regulations actually apply, what you will and won't agree to in a DPA. Then it reads three seed documents — your privacy policy, your DPA template, one PIA you're happy with — and learns your real positions and house style.
 
-Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` and survives plugin updates.
+Your configuration is stored at `claude-for-legal/agents/privacy-legal/CLAUDE.md` and survives plugin updates.
 
 ```
 /privacy-legal:cold-start-interview
@@ -94,7 +94,7 @@ Intake questions → PIA in your house format → policy diff → conditions lis
 
 ## How it learns
 
-Your practice profile at `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. The `policy-monitor` skill watches for drift between your policy and your practice and proposes updates. You can re-run setup, edit the file directly, or tell a skill to record a new position.
+Your practice profile at `claude-for-legal/agents/privacy-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. The `policy-monitor` skill watches for drift between your policy and your practice and proposes updates. You can re-run setup, edit the file directly, or tell a skill to record a new position.
 
 ## File structure
 

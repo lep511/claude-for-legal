@@ -37,13 +37,13 @@ It offers sensible defaults at each step (e.g., a 3×3 severity-likelihood grid)
 /litigation-legal:cold-start-interview
 ```
 
-Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` and survives plugin updates.
+Your configuration is stored at `claude-for-legal/agents/litigation-legal/CLAUDE.md` and survives plugin updates.
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/litigation-legal:cold-start-interview` | Cold-start → writes house `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` |
+| `/litigation-legal:cold-start-interview` | Cold-start → writes house `claude-for-legal/agents/litigation-legal/CLAUDE.md` |
 | `/litigation-legal:matter-intake` | Uniform intake → writes `matters/[slug]/` + appends to `_log.yaml` |
 | `/litigation-legal:portfolio-status` | Portfolio rollup — risk distribution, upcoming deadlines, stale matters |
 | `/litigation-legal:matter-briefing [slug]` | Deep briefing on one matter — read-ready before a GC or outside counsel call |
@@ -134,12 +134,12 @@ Designed to be useful with nothing connected. If/when you want to pull from Rela
 
 ## How it learns
 
-Your practice profile at `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. You can re-run setup, edit the file directly, or tell a skill to record a new position.
+Your practice profile at `claude-for-legal/agents/litigation-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. You can re-run setup, edit the file directly, or tell a skill to record a new position.
 
 ## Notes
 
-- Every skill reads from `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` first. If your risk appetite changes or you bring on new outside counsel, update it — don't paper over it in individual matters.
-- `## Company profile` is the first section of `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` by convention. If you run other `-legal` plugins, you can copy it across rather than re-entering the same context.
+- Every skill reads from `claude-for-legal/agents/litigation-legal/CLAUDE.md` first. If your risk appetite changes or you bring on new outside counsel, update it — don't paper over it in individual matters.
+- `## Company profile` is the first section of `claude-for-legal/agents/litigation-legal/CLAUDE.md` by convention. If you run other `-legal` plugins, you can copy it across rather than re-entering the same context.
 - `_log.yaml` is the source of truth for portfolio state. Keep it clean.
 - Matter history is append-only. If something was wrong, note the correction as a new entry — don't edit the past.
 - Closed matters stay in `_log.yaml` (searchable history). `/portfolio-status` filters them out of active rollups by default.

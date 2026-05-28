@@ -11,7 +11,7 @@ argument-hint: "[describe the data processing activity or feature]"
 
 # /use-case-triage
 
-1. Read `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md`. Confirm privacy practice is configured — if not, stop and direct to setup.
+1. Read `claude-for-legal/agents/privacy-legal/CLAUDE.md`. Confirm privacy practice is configured — if not, stop and direct to setup.
 2. Run the workflow below. Clarify the activity if vague.
 3. House trigger check → mandatory DPIA check (if GDPR in footprint) → privacy policy conflict check.
 4. Output: classification (PROCEED / PIA REQUIRED / DPIA MANDATORY / STOP), reasoning, conditions table if required, cross-plugin handoffs.
@@ -27,7 +27,7 @@ argument-hint: "[describe the data processing activity or feature]"
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/privacy-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `~/.claude/plugins/config/claude-for-legal/privacy-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/privacy-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/privacy-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -59,7 +59,7 @@ This triage assumes the jurisdictional scope specified in your configuration. Pr
 
 ## Read the config first
 
-Before triaging, always read `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md`. The PIA trigger criteria, regulatory
+Before triaging, always read `claude-for-legal/agents/privacy-legal/CLAUDE.md`. The PIA trigger criteria, regulatory
 footprint, and privacy policy commitments there are authoritative. Generic privacy
 law reasoning is not a substitute for what this company has actually committed to.
 
@@ -99,7 +99,7 @@ If the description is vague, ask before classifying. Get specific on:
 
 ### Step 2: Check house triggers
 
-Read `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → `## PIA house style` → Trigger criteria. Apply them.
+Read `claude-for-legal/agents/privacy-legal/CLAUDE.md` → `## PIA house style` → Trigger criteria. Apply them.
 
 If the house trigger is met → at minimum **PIA REQUIRED**.
 
@@ -123,7 +123,7 @@ activities need a PIA regardless of internal policy.
 >
 > If yes to any: the federal overlay usually supplies the controlling substantive restriction, not just an exemption from a state consumer privacy law. Research and cite the specific provision before continuing. An activity that is "exempt" from CCPA under § 1798.145(e) because it is GLBA-covered is still subject to the GLBA restrictions (e.g., § 6802(a)-(c) on NPI sharing) — the CCPA exemption does not make the activity lawful; it just moves the governing framework to GLBA.
 
-For each regime in `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → `## Regulatory footprint`, **research the currently operative mandatory privacy/data-protection assessment triggers**. Cite controlling statute, regulation, or regulator guidance with pinpoint references. Note effective dates — national and state regulators publish and update trigger lists regularly; do not rely on a static checklist. Flag uncertainty for attorney verification rather than guess.
+For each regime in `claude-for-legal/agents/privacy-legal/CLAUDE.md` → `## Regulatory footprint`, **research the currently operative mandatory privacy/data-protection assessment triggers**. Cite controlling statute, regulation, or regulator guidance with pinpoint references. Note effective dates — national and state regulators publish and update trigger lists regularly; do not rely on a static checklist. Flag uncertainty for attorney verification rather than guess.
 
 If **any** applicable regime's mandatory trigger is met → **DPIA MANDATORY** (or the equivalent regime-specific mandate), regardless of house trigger.
 
@@ -142,7 +142,7 @@ One or more strong indicators with no researched mandatory trigger → escalate 
 
 ### Step 4: Privacy policy conflict check
 
-Read `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → `## Privacy policy commitments`. Check the proposed activity
+Read `claude-for-legal/agents/privacy-legal/CLAUDE.md` → `## Privacy policy commitments`. Check the proposed activity
 against every stated commitment.
 
 **Common conflicts to catch:**

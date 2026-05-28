@@ -3,19 +3,19 @@ CONFIGURATION LOCATION
 
 User-specific configuration for this plugin lives at a version-independent path that survives plugin updates:
 
-  ~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md
+  claude-for-legal/agents/corporate-legal/CLAUDE.md
 
 Rules for every skill, command, and agent in this plugin:
 1. READ configuration from that path. Not from this file.
 2. If that file does not exist or still contains [PLACEHOLDER] markers, STOP before doing substantive work. Say: "This plugin needs setup before it can give you useful output. Run /corporate-legal:cold-start-interview — it takes about 10-15 minutes and every command in this plugin depends on it. Without it, outputs will be generic and may not match how your practice actually works." Do NOT proceed with placeholder or default configuration. The only skills that run without setup are /corporate-legal:cold-start-interview itself and any --check-integrations flag.
 3. Setup and cold-start-interview WRITE to that path, creating parent directories as needed.
 4. On first run after a plugin update, if a populated CLAUDE.md exists at the old cache path
-   (~/.claude/plugins/cache/claude-for-legal/corporate-legal/<version>/CLAUDE.md for any version)
+   (claude-for-legal/plugins/cache/claude-for-legal/corporate-legal/<version>/CLAUDE.md for any version)
    but not at the config path, copy it forward to the config path before proceeding.
 5. This file (the one you are reading) is the TEMPLATE. It ships with the plugin and shows the
    structure the config should have. It is replaced on every plugin update. Never write user data here.
 
-**Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `~/.claude/plugins/config/claude-for-legal/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
+**Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `claude-for-legal/agents/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
 -->
 
 # Corporate Practice Profile
@@ -60,7 +60,7 @@ The deliverable should read like a partner wrote it. The meta-commentary goes in
 
 | Integration | Status | Fallback if unavailable |
 |---|---|---|
-| VDR (Intralinks, Datasite, Box) | [✓ / ✗] | Diligence pulls from local folder; user drops docs in `~/.claude/plugins/config/claude-for-legal/corporate-legal/deals/[code]/vdr-mirror/` |
+| VDR (Intralinks, Datasite, Box) | [✓ / ✗] | Diligence pulls from local folder; user drops docs in `claude-for-legal/agents/corporate-legal/deals/[code]/vdr-mirror/` |
 | Board portal (Diligent, BoardEffect) | [✓ / ✗] | Minutes/consents work from local templates; no portal posting |
 | Document storage (Google Drive, SharePoint, Box) | [✓ / ✗] | Read local paths; no cross-system search |
 | Slack | [✓ / ✗] | Briefs emitted as files only; no in-channel summaries |
@@ -201,7 +201,7 @@ Canonical scale: 🔴 Blocking / 🟠 High / 🟡 Medium / 🟢 Low. Any plugin-
 
 **File access failures.** When you can't read a file the user pointed you at, don't fail silently. Say what happened: "I can't read [path]. This usually means one of: (a) the plugin is installed project-scoped and the file is outside [project dir] — reinstall user-scoped or move the file here; (b) the path has a typo; (c) the file is a format I can't read. Can you paste the content directly, or try one of the fixes?" A silent file-read failure looks like the plugin ignored the user's material.
 
-**Verification log.** When you or the user verifies a flagged item — confirms a cite against a primary source, checks a deadline against the local rule, verifies a threshold against the current statute — record it so the next person doesn't re-verify. Write a one-line entry to `~/.claude/plugins/config/claude-for-legal/corporate-legal/verification-log.md`:
+**Verification log.** When you or the user verifies a flagged item — confirms a cite against a primary source, checks a deadline against the local rule, verifies a threshold against the current statute — record it so the next person doesn't re-verify. Write a one-line entry to `claude-for-legal/agents/corporate-legal/verification-log.md`:
 
 `[YYYY-MM-DD] [cite or fact] verified by [name] against [source] — [verdict: confirmed / corrected to X / could not verify]`
 
@@ -224,7 +224,7 @@ Corollary: when the user asks a doctrinal question (not a document-review questi
 
 ## Ad-hoc questions in this domain
 
-When the user asks a question in this plugin's practice area — not just when they invoke a skill — read the practice profile at `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md` (and `~/.claude/plugins/config/claude-for-legal/company-profile.md`) first, and apply it. If it's populated, answer as the configured assistant:
+When the user asks a question in this plugin's practice area — not just when they invoke a skill — read the practice profile at `claude-for-legal/agents/corporate-legal/CLAUDE.md` (and `claude-for-legal/agents/company-profile.md`) first, and apply it. If it's populated, answer as the configured assistant:
 
 - Use their jurisdiction footprint, risk posture, playbook positions, and escalation chain
 - Apply the guardrails even though no skill is running: source attribution, citation hygiene, jurisdiction recognition, decision posture, the reviewer note format
@@ -299,7 +299,7 @@ When a user asks to "run all the workflows," "review every document," "process e
 
 For corporate-legal in private practice, a "matter" is typically a deal (M&A transaction, financing round, board matter) or a discrete workstream (entity reorganization, integration project).
 
-When matter workspaces are enabled, skills work in the active matter's context. Skills read this practice-level CLAUDE.md for practice profile-level rules (house style, materiality thresholds, module choices) and the matter's `matter.md` for matter-specific facts and overrides. Outputs are written to the matter folder at `~/.claude/plugins/config/claude-for-legal/corporate-legal/matters/<matter-slug>/`.
+When matter workspaces are enabled, skills work in the active matter's context. Skills read this practice-level CLAUDE.md for practice profile-level rules (house style, materiality thresholds, module choices) and the matter's `matter.md` for matter-specific facts and overrides. Outputs are written to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`.
 
 When cross-matter context is off (default), a skill working in matter A never reads matter B's files. Learnings that should carry across matters are written to this practice-level CLAUDE.md, not to a matter folder.
 
@@ -460,7 +460,7 @@ When a skill doesn't know which matter is active and workspaces are enabled, it 
 **Intercompany agreements in place:** [PLACEHOLDER — yes / no / partial]
 **Subsidiary governance cadence:** [PLACEHOLDER — how often sub boards meet, if at all]
 
-**Compliance tracker:** `~/.claude/plugins/config/claude-for-legal/corporate-legal/entities/compliance-tracker.yaml`
+**Compliance tracker:** `claude-for-legal/agents/corporate-legal/entities/compliance-tracker.yaml`
 **Last compliance report:** [PLACEHOLDER — date or null]
 **Last health audit:** [PLACEHOLDER — date or null]
 

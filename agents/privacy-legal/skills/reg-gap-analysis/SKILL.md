@@ -10,7 +10,7 @@ argument-hint: "[regulation name, or paste reg text/summary]"
 
 # /reg-gap-analysis
 
-1. Load `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → privacy policy commitments, regulatory footprint, DSAR systems.
+1. Load `claude-for-legal/agents/privacy-legal/CLAUDE.md` → privacy policy commitments, regulatory footprint, DSAR systems.
 2. Run the workflow below.
 3. Scope: does the regulation apply? (jurisdiction, thresholds, sector)
 4. Extract requirements → diff against current state → gap list.
@@ -34,11 +34,11 @@ argument-hint: "[regulation name, or paste reg text/summary]"
 
 A state passes a new privacy law. The ICO issues new guidance. The CPPA finalizes regulations. Something moves — and now you need to know what, if anything, you have to change.
 
-This skill diffs the new requirement against what you currently do (per `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → Privacy policy commitments + the practices documented in PIAs) and produces a gap list with a remediation plan.
+This skill diffs the new requirement against what you currently do (per `claude-for-legal/agents/privacy-legal/CLAUDE.md` → Privacy policy commitments + the practices documented in PIAs) and produces a gap list with a remediation plan.
 
 ## Load current state
 
-Read `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md`:
+Read `claude-for-legal/agents/privacy-legal/CLAUDE.md`:
 - `## Privacy policy commitments` — what you've publicly promised
 - `## Regulatory footprint` — what already applies
 - `## DSAR process` → systems list — what you actually do operationally
@@ -103,7 +103,7 @@ Not every gap is equal. Sort by:
 
 ### Step 5: Remediation plan
 
-Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` `## Outputs` (it differs by user role — see `## Who's using this`).
+Prepend the work-product header from `claude-for-legal/agents/privacy-legal/CLAUDE.md` `## Outputs` (it differs by user role — see `## Who's using this`).
 
 > **Research-connector pre-flight.** Before emitting the remediation plan, check whether a legal research connector is reachable for this session — Westlaw, an EUR-Lex / regulator-site connector, or any firm-configured research MCP. Collect this into the reviewer note per CLAUDE.md `## Outputs`: if no connector returns results in Step 2 or the Common regulation categories research step (or none is configured at run time), record it in the **Sources:** line of the reviewer note — e.g., `not connected — cites from training knowledge; the highest-fabrication items in privacy gap analyses are new state-law effective dates, enforcement-begins dates, and article/section pinpoints — spot-check those first`. Per-citation `[model knowledge — verify]` tags remain inline. Do not emit a standalone banner above the output.
 

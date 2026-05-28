@@ -15,7 +15,7 @@ Surfaces what's renewing and when you have to cancel by.
 
 ## Instructions
 
-1. **Read `~/.claude/plugins/config/claude-for-legal/commercial-legal/renewal-register.yaml`** (the config directory — survives plugin updates).
+1. **Read `claude-for-legal/agents/commercial-legal/renewal-register.yaml`** (the config directory — survives plugin updates).
 
 2. **Default mode:** Mode 2 — what's coming up in the next 90 days, grouped by urgency using half-open intervals so each deadline lands in exactly one band: 🔴 0–13 days, 🟠 14–44 days, 🟡 45–89 days. Days 14, 45, and 90 are boundaries — each belongs to exactly one band, not two.
 
@@ -51,7 +51,7 @@ This skill maintains the renewal register and surfaces what's coming.
 
 ## The register
 
-Lives at `~/.claude/plugins/config/claude-for-legal/commercial-legal/renewal-register.yaml` (the config directory — survives plugin updates). Each entry:
+Lives at `claude-for-legal/agents/commercial-legal/renewal-register.yaml` (the config directory — survives plugin updates). Each entry:
 
 ```yaml
 - counterparty: "Acme SaaS Inc."
@@ -178,7 +178,7 @@ cancellation was recorded:
 
 Tracking a renewal date is research. *Acting* on it — sending a notice of non-renewal, letting an auto-renewal fire, or countersigning a renewal form — is a consequential legal step.
 
-**Before proceeding to accept or decline a renewal (including sending a non-renewal notice or letting an auto-renewal run past the cancel-by date):** Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`. If the Role is Non-lawyer:
+**Before proceeding to accept or decline a renewal (including sending a non-renewal notice or letting an auto-renewal run past the cancel-by date):** Read `## Who's using this` in `claude-for-legal/agents/commercial-legal/CLAUDE.md`. If the Role is Non-lawyer:
 
 > This step has legal consequences (you're either committing to another term or terminating the relationship). Have you reviewed this with an attorney? If yes, proceed. If no, here's a brief to bring to them:
 >
@@ -190,7 +190,7 @@ Do not proceed past this gate without an explicit yes.
 
 ## Integration: renewal-watcher agent
 
-The renewal-watcher agent in this plugin runs this skill on a schedule (weekly by default) and posts the "coming up" report to the channel named in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` → `## House style` → where work product goes. Mode 2 is the agent's primary output.
+The renewal-watcher agent in this plugin runs this skill on a schedule (weekly by default) and posts the "coming up" report to the channel named in `claude-for-legal/agents/commercial-legal/CLAUDE.md` → `## House style` → where work product goes. Mode 2 is the agent's primary output.
 
 ## What this skill does not do
 

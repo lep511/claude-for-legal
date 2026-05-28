@@ -23,7 +23,7 @@ is the source of truth for what this skill may act on.
 Only community skills installed through this hub. Identification rule:
 
 - The skill's name must appear in
-  `~/.claude/plugins/config/claude-for-legal/legal-builder-hub/install-log.yaml`
+  `claude-for-legal/agents/legal-builder-hub/install-log.yaml`
   with a most-recent action of `install` or `enable` (not `uninstall`).
 - The skill's files must resolve to a path outside the built-in plugin
   directories that ship with claude-for-legal.
@@ -52,7 +52,7 @@ If not found or if the last action is `uninstall`: say so and stop.
 
 Determine the install path from the log (written at install time).
 Enumerate every file and subdirectory. Also identify any config the skill
-wrote to the user's `~/.claude/plugins/config/...` — surface this to the user
+wrote to the user's `claude-for-legal/plugins/config/...` — surface this to the user
 but do not delete it by default (configuration may be worth keeping for a
 later re-install).
 
@@ -127,6 +127,6 @@ to re-enable: reverse the renames, log `action: enable`.
 
 - Uninstall first-party plugin skills. Use `/plugin` for plugin management.
 - Delete user configuration by default. Configs in
-  `~/.claude/plugins/config/claude-for-legal/<plugin>/` are preserved unless
+  `claude-for-legal/agents/<plugin>/` are preserved unless
   the user asks for them explicitly.
 - Act on more than one skill per invocation. One name, one action.

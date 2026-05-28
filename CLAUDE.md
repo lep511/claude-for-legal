@@ -116,7 +116,7 @@ are fine.
 ### Plugin CLAUDE.md is a template, not project context
 
 Each `<plugin>/CLAUDE.md` is a practice-profile template that the
-`cold-start-interview` skill copies to `~/.claude/plugins/config/claude-for-legal/<plugin>/CLAUDE.md`
+`cold-start-interview` skill copies to `claude-for-legal/agents/<plugin>/CLAUDE.md`
 on the user's machine. It is *not* loaded as project context when the plugin is
 installed — `claude plugin validate` warns about this and the warning is
 expected. Don't "fix" it by moving the content into a skill.

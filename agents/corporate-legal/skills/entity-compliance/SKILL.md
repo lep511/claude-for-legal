@@ -12,7 +12,7 @@ argument-hint: "[--init | --report [--days N] | --update [--from-report] | --swe
 
 # /entity-compliance
 
-1. Load `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md` → `## Entity Management` (entity table, jurisdictions, registered agent).
+1. Load `claude-for-legal/agents/corporate-legal/CLAUDE.md` → `## Entity Management` (entity table, jurisdictions, registered agent).
 2. Route to the correct mode below based on flag:
    - No flag or `--init`: Mode 1 — initialize tracker from entity table
    - `--report`: Mode 2 — surface upcoming deadlines and overdue items
@@ -20,7 +20,7 @@ argument-hint: "[--init | --report [--days N] | --update [--from-report] | --swe
    - `--sweep`: Mode 3c — walk through unknown/overdue items one by one
    - `--audit`: Mode 4 — full health audit
    - `--export`: Mode 5 — produce CSV or table export
-3. Read/write `~/.claude/plugins/config/claude-for-legal/corporate-legal/entities/compliance-tracker.yaml`.
+3. Read/write `claude-for-legal/agents/corporate-legal/entities/compliance-tracker.yaml`.
 4. After any update: show summary of changes and next action.
 
 ---
@@ -47,7 +47,7 @@ to share it.
 
 ## Jurisdiction assumption
 
-> This tracker computes deadlines against the state or country of formation / qualification recorded per entity. Filing rules, due-date mechanics, and fee structures vary materially by jurisdiction. If an entity's actual footprint differs from what's in `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md` (undisclosed foreign qualification, dissolved entities, jurisdictional re-domestication, international filings managed by a local agent), the output may not apply as written — confirm with the registered agent or local counsel for that jurisdiction.
+> This tracker computes deadlines against the state or country of formation / qualification recorded per entity. Filing rules, due-date mechanics, and fee structures vary materially by jurisdiction. If an entity's actual footprint differs from what's in `claude-for-legal/agents/corporate-legal/CLAUDE.md` (undisclosed foreign qualification, dissolved entities, jurisdictional re-domestication, international filings managed by a local agent), the output may not apply as written — confirm with the registered agent or local counsel for that jurisdiction.
 
 ## Entity-type disambiguation (especially Delaware)
 
@@ -67,7 +67,7 @@ to share it.
 
 ## Tracker file
 
-Lives at `~/.claude/plugins/config/claude-for-legal/corporate-legal/entities/compliance-tracker.yaml`. Structure:
+Lives at `claude-for-legal/agents/corporate-legal/entities/compliance-tracker.yaml`. Structure:
 
 ```yaml
 # Entity Compliance Tracker
@@ -124,7 +124,7 @@ Run when no tracker exists, or with `--rebuild` to regenerate from scratch.
 
 ### Step 1: Load entity table
 
-Read `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md` → `## Entity Management` → Entity table. If the entity table
+Read `claude-for-legal/agents/corporate-legal/CLAUDE.md` → `## Entity Management` → Entity table. If the entity table
 is populated (from org chart upload at cold-start), use it directly. If not,
 ask the user to either run the cold-start module or provide the entity list.
 
@@ -191,7 +191,7 @@ If formation_date is null: set status to `unknown` and flag for confirmation.
 
 ### Step 3: Write the tracker
 
-Generate `~/.claude/plugins/config/claude-for-legal/corporate-legal/entities/compliance-tracker.yaml` with all entities and their
+Generate `claude-for-legal/agents/corporate-legal/entities/compliance-tracker.yaml` with all entities and their
 calculated filing requirements. Set initial status:
 - `current` if last_filed is within the current filing period
 - `due_soon` if due within 90 days and no last_filed for current period
@@ -265,7 +265,7 @@ Updates one or more entities in the tracker. Three sub-modes:
 
 ### Consequential-action gate (file SOI / annual report)
 
-**Before directing or confirming a filing:** Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md`. If the Role is **Non-lawyer**:
+**Before directing or confirming a filing:** Read `## Who's using this` in `claude-for-legal/agents/corporate-legal/CLAUDE.md`. If the Role is **Non-lawyer**:
 
 > Filing a Statement of Information, annual report, or franchise tax return with a Secretary of State has legal consequences — it's a formal representation from the entity, it carries fees, and missed or incorrect filings can cause loss of good standing or franchise-tax defaults. Have you reviewed this with an attorney (or a qualified registered agent) before filing? If yes, proceed to record the filing. If no, here's a brief to bring to them:
 >
@@ -365,13 +365,13 @@ Broader review beyond just filing status. Surfaces:
   refreshing, especially if M&A or financing is anticipated.
 
 **Foreign qualification gaps:**
-- Based on `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md` entity table: are there states in the company's
+- Based on `claude-for-legal/agents/corporate-legal/CLAUDE.md` entity table: are there states in the company's
   operational footprint (offices, employees) where entities are not foreign
   qualified? This requires the attorney to confirm operational presence —
   Claude can flag the question but cannot determine presence independently.
 
 **Intercompany agreement gaps:**
-- From `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md`: if intercompany agreements are marked as partial or no,
+- From `claude-for-legal/agents/corporate-legal/CLAUDE.md`: if intercompany agreements are marked as partial or no,
   flag which entity relationships likely need agreements (parent-subsidiary
   services, IP licenses, loans).
 
@@ -396,8 +396,8 @@ GOOD STANDING
 
 POTENTIAL GAPS
   Foreign qualification: [flag question — confirm operational presence in:]
-    [list of states from `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md` footprint not in tracker as qualified]
-  Intercompany agreements: [status from `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md`]
+    [list of states from `claude-for-legal/agents/corporate-legal/CLAUDE.md` footprint not in tracker as qualified]
+  Intercompany agreements: [status from `claude-for-legal/agents/corporate-legal/CLAUDE.md`]
 
 RECOMMENDED ACTIONS
   1. [Highest priority action]

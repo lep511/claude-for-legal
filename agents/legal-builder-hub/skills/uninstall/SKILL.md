@@ -16,7 +16,7 @@ the named skill.
 Safety rules:
 
 1. **Only uninstall community skills installed through this hub.** Check
-   `~/.claude/plugins/config/claude-for-legal/legal-builder-hub/install-log.yaml`
+   `claude-for-legal/agents/legal-builder-hub/install-log.yaml`
    and the CLAUDE.md installed starter pack table. If the skill is not recorded
    there, refuse and tell the user.
 2. **Never uninstall a first-party plugin's skill.** The 12 core plugins that
