@@ -37,7 +37,7 @@ from claude_agent_sdk import (
 )
 from claude_agent_sdk.types import TextBlock, ToolUseBlock
 
-from legal_agents import (
+from agents import (
     ai_governance_legal,
     commercial_legal,
     corporate_legal,
@@ -51,8 +51,8 @@ from legal_agents import (
     product_legal,
     regulatory_legal,
 )
-from legal_agents.orchestrator.agent import create_options as create_orchestrator_options
-from legal_agents.common import MAX_HANDOFF_DEPTH
+from agents._orchestrator.agent import create_options as create_orchestrator_options
+from agents._common import MAX_HANDOFF_DEPTH
 from sdk_tools.routing import get_last_route, get_pending_handoff, clear_last_route, clear_pending_handoff
 from session_manager import Session
 

@@ -10,8 +10,13 @@ agents as an interactive multi-agent chat application.
 
 ```
 .claude-plugin/marketplace.json   # the marketplace manifest — one entry per plugin
-agents/                           # 12 first-party plugins (commercial-legal, privacy-legal, ...)
-  <plugin>/
+agents/                           # UNIFIED: plugins + backend in one directory
+  __init__.py                     # dynamic loader (exposes agents as agents.<underscore_name>)
+  _common.py                      # shared factories, reader runner, skill indexer
+  _orchestrator/                  # backend-only orchestrator (no plugin)
+    __init__.py
+    agent.py                      # routes user requests to specialized agents
+  <plugin>/                       # 12 kebab-case plugin directories
     .claude-plugin/plugin.json    # plugin manifest (name, version, description, author)
     .mcp.json                     # MCP servers the plugin connects to
     CLAUDE.md                     # practice-profile TEMPLATE (see "Plugin CLAUDE.md" below)
@@ -19,12 +24,8 @@ agents/                           # 12 first-party plugins (commercial-legal, pr
     skills/<name>/SKILL.md        # one skill per directory
     agents/<name>.md              # subagent definitions
     hooks/hooks.json              # hook config (most plugins ship an empty stub)
+    agent.py                      # backend agent logic (system prompt, create_options)
     .gitignore
-legal_agents/                     # Python agent SDK package (backend)
-  __init__.py                     # exports all 12 agent modules
-  common.py                       # factory functions, reader runner, skill indexer
-  orchestrator/agent.py           # routes user requests to specialized agents
-  <agent_name>/agent.py           # one module per legal agent (12 total)
 sdk_tools/                        # MCP tool servers (routing, calculator)
 mcp_servers/                      # per-agent MCP server configs (extensible)
 main.py                           # CLI entry point for the multi-agent platform
@@ -62,8 +63,9 @@ python3 scripts/lint-tool-scope.py
 # 3. JSON/YAML sanity
 python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('**/*.json', recursive=True)]"
 
-# 4. Python syntax check (legal_agents + sdk_tools)
-python3 -c "import ast,os; [ast.parse(open(os.path.join(r,f)).read()) for r,_,fs in os.walk('legal_agents') for f in fs if f.endswith('.py')]"
+# 4. Python syntax check (agents/ + sdk_tools)
+python3 -c "import ast; [ast.parse(open(f).read()) for f in __import__('glob').glob('agents/**/*.py', recursive=True)]"
+python3 -c "import ast; [ast.parse(open(f).read()) for f in __import__('glob').glob('sdk_tools/**/*.py', recursive=True)]"
 
 # 5. Frontend build
 cd frontend && npm run build
@@ -145,24 +147,27 @@ rules that `scripts/lint-tool-scope.py` enforces:
 2. The README's security table and the `agent.yaml` comments must match what
    the YAML actually grants. Don't claim a tool a subagent doesn't have.
 
-## Python Backend (`legal_agents/`)
+## Python Backend (`agents/`)
 
 The Python backend uses `claude-agent-sdk` to run 12 legal agents behind a
-FastAPI server. Key architecture:
+FastAPI server. All code lives unified under `agents/`:
 
-- **Orchestrator** (`legal_agents/orchestrator/agent.py`) — classifies user
-  intent and routes to the right agent via `route_to_agent` tool.
+- **`agents/__init__.py`** — dynamic loader that uses `importlib` to expose
+  kebab-case directories as underscore-named Python modules
+  (`commercial_legal` → `commercial-legal/agent.py`).
+- **`agents/_common.py`** — shared factories: `create_agent_options()`,
+  `create_orchestrator_options()`, `run_reader()`, `skill_paths()`,
+  `headless_append()`. Also builds `_SKILL_INDEX` by scanning
+  `agents/<plugin>/skills/`.
+- **`agents/_orchestrator/agent.py`** — classifies user intent and routes to
+  the right agent via `route_to_agent` tool.
 - **Pattern A agents** (simple) — single agent with shell access, no untrusted
-  document processing: `product_legal`, `ai_governance_legal`, `law_student`,
-  `legal_clinic`, `legal_builder_hub`.
+  document processing: `product-legal`, `ai-governance-legal`, `law-student`,
+  `legal-clinic`, `legal-builder-hub`.
 - **Pattern B agents** (with reader) — adds an isolated reader subprocess that
   processes untrusted documents with schema validation and no shell access:
-  `commercial_legal`, `litigation_legal`, `corporate_legal`, `employment_legal`,
-  `privacy_legal`, `regulatory_legal`, `ip_legal`.
-- **common.py** — shared factories: `create_agent_options()`,
-  `create_orchestrator_options()`, `run_reader()`, `skill_paths()`,
-  `headless_append()`. Also builds the `_SKILL_INDEX` by scanning
-  `agents/<plugin>/skills/`.
+  `commercial-legal`, `litigation-legal`, `corporate-legal`, `employment-legal`,
+  `privacy-legal`, `regulatory-legal`, `ip-legal`.
 - **sdk_tools/** — MCP tool servers for routing (route_to_agent,
   request_handoff) and calculator.
 
@@ -176,10 +181,11 @@ python main.py  # CLI mode
 
 ### Adding a new agent
 
-1. Create `legal_agents/<name>/__init__.py` and `agent.py`.
-2. Define `create_options(session_id) -> ClaudeAgentOptions`.
-3. Add it to `legal_agents/__init__.py`, `AGENTS` dicts in `main.py` and
-   `api_handlers.py`, and `AGENT_CATALOG` in the orchestrator.
+1. Create `agents/<kebab-name>/agent.py` with a `create_options(session_id)`
+   function. Use `from agents._common import ...` for shared utilities.
+2. Add the mapping to `AGENT_MAP` in `agents/__init__.py`.
+3. Add it to `AGENTS` dicts in `main.py` and `api_handlers.py`, and
+   `AGENT_CATALOG` in the orchestrator.
 
 ## Frontend (`frontend/`)
 

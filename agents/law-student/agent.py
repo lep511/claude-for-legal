@@ -6,12 +6,8 @@ no untrusted document processing needed.
 
 from claude_agent_sdk import ClaudeAgentOptions
 
-from ..common import create_agent_options, skill_paths, headless_append
+from agents._common import create_agent_options, local_skill_paths, headless_append
 
-SKILLS = [
-    "socratic-drill", "case-brief", "outline-builder",
-    "bar-prep", "irac-grader", "study-planner",
-]
 
 
 def create_options(session_id: str) -> ClaudeAgentOptions:
@@ -29,7 +25,7 @@ def create_options(session_id: str) -> ClaudeAgentOptions:
             "4. If producing study materials, write outlines or flashcards to ./sandbox/out/\n\n"
             "IMPORTANT: You are a tutor, not a ghostwriter. Never produce completed "
             "assignments. Guide the student's own reasoning and writing.\n\n"
-            f"{skill_paths(SKILLS)}"
+            f"{local_skill_paths(__file__)}"
             + headless_append(session_id)
         ),
     )

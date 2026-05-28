@@ -130,7 +130,10 @@ For Managed Agent deployment — `agent.yaml`, leaf-worker subagents, steering-e
 ## Repository Layout
 
 ```
-agents/                   # 12 first-party legal plugins
+agents/                   # UNIFIED: 12 plugins + Python backend (one directory per agent)
+  __init__.py             # dynamic loader (importlib — maps underscore names to kebab dirs)
+  _common.py             # shared factories, reader runner, skill indexer
+  _orchestrator/          # backend-only orchestrator (routes to specialized agents)
   commercial-legal/       # in-house commercial — vendor/NDA/SaaS review, renewals, escalations
   corporate-legal/        # M&A diligence, closing checklists, board consents, entity compliance
   employment-legal/       # hire/term review, worker classification, leave, investigations
@@ -143,7 +146,6 @@ agents/                   # 12 first-party legal plugins
   legal-clinic/           # clinic setup, student ramp, intake, deadlines, memos, handoffs
   law-student/            # Socratic drilling, outlining, IRAC, bar prep, flashcards
   legal-builder-hub/      # community skill discovery and install with a trust gate
-legal_agents/             # Python backend — agent SDK package (12 agents + orchestrator)
 sdk_tools/                # MCP tool servers (routing, calculator)
 frontend/                 # Next.js 16 chat UI at /legal
 main.py                   # CLI entry point
@@ -168,6 +170,7 @@ Each plugin directory has the same shape:
   .claude-plugin/plugin.json
   CLAUDE.md               # template practice profile — filled in by /<plugin>:cold-start-interview
   README.md
+  agent.py                # Python backend logic (system prompt, create_options)
   skills/                 # skills — each is a /<plugin>:<skill> slash command
   agents/                 # scheduled agents (if any)
   hooks/                  # pre- and post-tool hooks (if any)
@@ -240,7 +243,7 @@ cd frontend && npm install && npm run dev
 
 Open http://localhost:3000 — the orchestrator routes your requests to the right legal agent. Supports file uploads (contracts, filings, policies), chart visualization, and downloadable output files (Word, Excel).
 
-The Python agents in `legal_agents/` draw their domain knowledge from the same plugin skills in `agents/*/skills/`. Same legal content, different deployment surface.
+Each agent's backend logic (`agent.py`) lives alongside its plugin assets (skills, CLAUDE.md, connectors) in the same directory under `agents/`. Same legal content, multiple deployment surfaces.
 
 ## How It Fits Together
 
@@ -249,14 +252,15 @@ The Python agents in `legal_agents/` draw their domain knowledge from the same p
 | **Plugins** | Self-contained practice-area bundles — skills, agents, hooks, and a template practice profile. Install the ones you need. | `agents/<plugin>/` |
 | **Skills** | Domain expertise, conventions, and step-by-step methods Claude draws on automatically when relevant — and slash actions you trigger explicitly: `/commercial-legal:review`, `/privacy-legal:dsar-response`, `/litigation-legal:claim-chart`. | `agents/<plugin>/skills/<skill>/SKILL.md` |
 | **Agents (plugin)** | Scheduled or event-driven workflows (renewal watcher, docket watcher, reg-change monitor). Runs in the background, posts to a channel or writes a file. | `agents/<plugin>/agents/` |
-| **Agents (backend)** | Python SDK agents using the same skills and domain knowledge. Served via FastAPI with SSE streaming to the chat frontend. | `legal_agents/<agent>/agent.py` |
+| **Agents (backend)** | Python SDK agents using the same skills and domain knowledge. Served via FastAPI with SSE streaming to the chat frontend. | `agents/<plugin>/agent.py` |
 | **Practice profile** | Plain-English `CLAUDE.md` describing your playbook, escalation rules, and house style. Every skill reads from it. | `~/.claude/plugins/config/claude-for-legal/<plugin>/CLAUDE.md` |
 | **Connectors** | [MCP servers](https://modelcontextprotocol.io/) that wire Claude to your data — CLM, DMS, e-discovery, research platforms, productivity. | `.mcp.json` (per plugin) |
 | **Managed-agent cookbooks** | `agent.yaml` + depth-1 subagents + steering examples for headless deployment. | `managed-agent-cookbooks/<slug>/` |
 | **Frontend** | Next.js 16 chat interface with SSE streaming, chart rendering, and file downloads. | `frontend/` |
 
-The plugins are markdown and JSON (no build step). The backend is Python 3.13+
-with `claude-agent-sdk`. The frontend is TypeScript/React.
+The plugins are markdown, JSON, and Python (no build step beyond `pip install`).
+The backend is Python 3.13+ with `claude-agent-sdk`. The frontend is
+TypeScript/React.
 
 ## Vertical Plugins
 

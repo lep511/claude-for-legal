@@ -47,26 +47,29 @@ See the `.mcp.json` in each plugin directory (`agents/<plugin>/.mcp.json`) for t
 
 ## Python backend integration
 
-The Python agents in `legal_agents/` do not directly use these MCP servers yet.
-To wire a connector into the backend:
+The Python agents in `agents/` use these MCP servers via the registry in
+`mcp_servers/registry.py`. To wire a connector into the backend:
 
-1. Add the server config to `mcp_servers/__init__.py` in the `get_mcp_config(slug)` function.
-2. The agent's `create_agent_options()` call in `legal_agents/common.py` automatically picks up anything returned by `get_mcp_config()` and adds it to the agent's `mcp_servers` dict.
-3. The tool names are auto-allowed as `mcp__<server_name>__*` in the agent's `allowed_tools`.
+1. Add the server definition to `MCP_SERVERS` in `mcp_servers/registry.py`
+   with its URL, transport, optional `token_env`, and the `agents` list
+   (which plugins should have access).
+2. The agent's `create_agent_options()` call in `agents/_common.py`
+   automatically picks up anything returned by `get_mcp_config(slug)` and
+   adds it to the agent's `mcp_servers` dict.
+3. The tool names are auto-allowed as `mcp__<server_name>__*` in the agent's
+   `allowed_tools`.
 
 Example:
 
 ```python
-# mcp_servers/__init__.py
-def get_mcp_config(slug: str) -> dict[str, Any]:
-    configs = {}
-    if slug == "commercial-legal":
-        configs["ironclad"] = {
-            "type": "http",
-            "url": "https://mcp.na1.ironcladapp.com/mcp",
-            "headers": {"Authorization": f"Bearer {os.getenv('IRONCLAD_TOKEN', '')}"},
-        }
-    return configs
+# mcp_servers/registry.py — add to MCP_SERVERS dict
+"ironclad": {
+    "description": "Contract lifecycle management — search, workflows, repository",
+    "url": "https://mcp.na1.ironcladapp.com/mcp",
+    "transport": "http",
+    "token_env": "IRONCLAD_TOKEN",
+    "agents": ["commercial-legal"],
+},
 ```
 
 ## Wanted connectors

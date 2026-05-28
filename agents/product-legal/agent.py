@@ -6,12 +6,7 @@ counterparty processing needed.
 
 from claude_agent_sdk import ClaudeAgentOptions
 
-from ..common import create_agent_options, skill_paths, headless_append
-
-SKILLS = [
-    "launch-review", "copy-review", "risk-calibration",
-    "claims-substantiation", "feature-triage",
-]
+from agents._common import create_agent_options, local_skill_paths, headless_append
 
 
 def create_options(session_id: str) -> ClaudeAgentOptions:
@@ -28,7 +23,7 @@ def create_options(session_id: str) -> ClaudeAgentOptions:
             "2. Assess against risk framework and applicable regulations\n"
             "3. Flag claims needing substantiation, features needing terms updates, or launches needing review\n"
             "4. Produce review memo with go/no-go recommendation to ./sandbox/out/\n\n"
-            f"{skill_paths(SKILLS)}"
+            f"{local_skill_paths(__file__)}"
             + headless_append(session_id)
         ),
     )

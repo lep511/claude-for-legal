@@ -26,7 +26,7 @@ THINKING_BUDGET = int(os.getenv("THINKING_BUDGET", "10000"))
 MAX_TURNS = int(os.getenv("MAX_TURNS", "50"))
 MAX_HANDOFF_DEPTH = int(os.getenv("MAX_HANDOFF_DEPTH", "3"))
 
-AGENTS_DIR = os.path.join(os.path.dirname(__file__), "..", "agents")
+AGENTS_DIR = os.path.dirname(__file__)
 
 TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "..", "templates")
 
@@ -214,6 +214,28 @@ def skill_paths(names: list[str]) -> str:
     for name in names:
         if name in _SKILL_INDEX:
             lines.append(f"  - {name}: cat {_SKILL_INDEX[name]}/SKILL.md")
+    if not lines:
+        return ""
+    return "Available skill docs (read with shell when needed):\n" + "\n".join(lines) + "\n\n"
+
+
+def local_skill_paths(agent_file: str, exclude: list[str] | None = None) -> str:
+    """Auto-discover skills from the skills/ directory next to agent_file.
+
+    Usage in any agent.py:
+        from agents._common import local_skill_paths
+        skills_block = local_skill_paths(__file__)
+    """
+    agent_dir = os.path.dirname(os.path.abspath(agent_file))
+    skills_dir = os.path.join(agent_dir, "skills")
+    if not os.path.isdir(skills_dir):
+        return ""
+    excluded = set(exclude or [])
+    lines = []
+    for name in sorted(os.listdir(skills_dir)):
+        spath = os.path.join(skills_dir, name)
+        if os.path.isdir(spath) and name not in excluded:
+            lines.append(f"  - {name}: cat {spath}/SKILL.md")
     if not lines:
         return ""
     return "Available skill docs (read with shell when needed):\n" + "\n".join(lines) + "\n\n"

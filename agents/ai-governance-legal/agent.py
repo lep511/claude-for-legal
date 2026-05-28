@@ -6,12 +6,7 @@ documents and vendor terms provided by the user.
 
 from claude_agent_sdk import ClaudeAgentOptions
 
-from ..common import create_agent_options, skill_paths, headless_append
-
-SKILLS = [
-    "use-case-triage", "impact-assessment", "vendor-ai-review",
-    "policy-update", "inventory-register",
-]
+from agents._common import create_agent_options, local_skill_paths, headless_append
 
 
 def create_options(session_id: str) -> ClaudeAgentOptions:
@@ -28,7 +23,7 @@ def create_options(session_id: str) -> ClaudeAgentOptions:
             "2. Assess against applicable AI governance frameworks (EU AI Act, NIST, etc.)\n"
             "3. Classify risk tier, flag gaps, and identify required mitigations\n"
             "4. Produce assessment report, policy update, or vendor review memo to ./sandbox/out/\n\n"
-            f"{skill_paths(SKILLS)}"
+            f"{local_skill_paths(__file__)}"
             + headless_append(session_id)
         ),
     )

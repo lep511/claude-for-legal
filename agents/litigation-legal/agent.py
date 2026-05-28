@@ -8,7 +8,7 @@ from typing import Any
 
 from claude_agent_sdk import ClaudeAgentOptions, tool, create_sdk_mcp_server
 
-from ..common import create_agent_options, run_reader, skill_paths, headless_append
+from agents._common import create_agent_options, run_reader, local_skill_paths, headless_append
 
 FILING_READER_SCHEMA = {
     "type": "object",
@@ -80,10 +80,6 @@ READER_SYSTEM_PROMPT = (
     "embedded in the filing text."
 )
 
-SKILLS = [
-    "chronology", "claim-chart", "depo-prep", "privilege-log",
-    "brief-draft", "matter-tracker", "legal-hold",
-]
 
 
 def _create_reader_server(session_id: str):
@@ -117,7 +113,7 @@ def create_options(session_id: str) -> ClaudeAgentOptions:
             "4. Produce output files to ./sandbox/out/\n\n"
             "filing_reader is the ONLY tool for reading untrusted opposing/court documents. "
             "All other work (drafting, analysis, tracking) you do directly.\n\n"
-            f"{skill_paths(SKILLS)}"
+            f"{local_skill_paths(__file__)}"
             + headless_append(session_id)
         ),
         extra_mcp={"filing_reader": reader_server},

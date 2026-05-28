@@ -6,12 +6,8 @@ framework for law school clinical programs.
 
 from claude_agent_sdk import ClaudeAgentOptions
 
-from ..common import create_agent_options, skill_paths, headless_append
+from agents._common import create_agent_options, local_skill_paths, headless_append
 
-SKILLS = [
-    "clinic-setup", "intake-interview", "student-onboard",
-    "deadline-tracker", "case-handoff", "supervision-log",
-]
 
 
 def create_options(session_id: str) -> ClaudeAgentOptions:
@@ -29,7 +25,7 @@ def create_options(session_id: str) -> ClaudeAgentOptions:
             "4. Produce intake forms, case summaries, or tracking reports to ./sandbox/out/\n\n"
             "MALPRACTICE AWARENESS: Always flag approaching deadlines, identify potential "
             "conflicts, and ensure proper supervision sign-off before any client-facing work.\n\n"
-            f"{skill_paths(SKILLS)}"
+            f"{local_skill_paths(__file__)}"
             + headless_append(session_id)
         ),
     )
