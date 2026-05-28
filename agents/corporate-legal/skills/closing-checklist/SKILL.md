@@ -19,7 +19,7 @@ argument-hint: "[optional: item ID + status update]"
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/corporate-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -131,7 +131,7 @@ Append to the checklist. De-dupe on (counterparty + action type), not on the fre
 User (or dataroom-watcher agent) provides a status update. Find the item, update status and last-updated.
 
 ```
-/corporate-legal:closing-checklist
+Use the closing-checklist workflow
 CP-002: Acme responded, consent form attached, needs countersignature
 ```
 

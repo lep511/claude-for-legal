@@ -1,21 +1,15 @@
 <!--
-CONFIGURATION LOCATION
+PRACTICE PROFILE TEMPLATE
 
-User-specific configuration for this plugin lives at a version-independent path that survives plugin updates:
+This file is a template for the agent's practice profile. When configured via
+the Settings UI, placeholder values are replaced with user-provided data and
+the rendered profile is stored in sandbox/profiles/rendered/.
 
-  claude-for-legal/agents/legal-builder-hub/CLAUDE.md
-
-Rules for every skill, command, and agent in this plugin:
-1. READ configuration from that path. Not from this file.
-2. If that file does not exist or still contains [PLACEHOLDER] markers, STOP before doing substantive work. Say: "This plugin needs setup before it can give you useful output. Run /legal-builder-hub:cold-start-interview — it takes about 10-15 minutes and every command in this plugin depends on it. Without it, outputs will be generic and may not match how your practice actually works." Do NOT proceed with placeholder or default configuration. The only skills that run without setup are /legal-builder-hub:cold-start-interview itself and any --check-integrations flag.
-3. Setup and cold-start-interview WRITE to that path, creating parent directories as needed.
-4. On first run after a plugin update, if a populated CLAUDE.md exists at the old cache path
-   (claude-for-legal/plugins/cache/claude-for-legal/legal-builder-hub/<version>/CLAUDE.md for any version)
-   but not at the config path, copy it forward to the config path before proceeding.
-5. This file (the one you are reading) is the TEMPLATE. It ships with the plugin and shows the
-   structure the config should have. It is replaced on every plugin update. Never write user data here.
-
-**Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `claude-for-legal/agents/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
+Rules:
+1. If this file still contains [PLACEHOLDER] markers, the agent should inform
+   the user that configuration is needed via the Settings page.
+2. The profile_manager.py backend handles rendering and storage.
+3. Edit this template to change the structure; edit profile values via the UI.
 -->
 
 # Legal Builder Hub Practice Profile
@@ -39,9 +33,9 @@ with more sensitive guardrails may still ask to confirm.*
 
 | Integration | Status | Fallback if unavailable |
 |---|---|---|
-| Slack | [✓ / ✗] | New-skill and update notifications surface on next `/legal-builder-hub:registry-browser` or `/legal-builder-hub:auto-updater` instead of proactively |
+| Slack | [✓ / ✗] | New-skill and update notifications surface on next the registry-browser workflow or the auto-updater workflow instead of proactively |
 
-*Re-check: `/legal-builder-hub:cold-start-interview --check-integrations`*
+*Re-check: the Settings page to check integrations*
 
 ---
 
@@ -86,7 +80,7 @@ When the user picks an option, do that thing. Don't re-explain the analysis. The
 
 ## Decision posture on subjective legal calls
 
-The hub itself doesn't make subjective legal calls, but the skills it installs do. The QA check this plugin runs against a community skill (`/legal-builder-hub:skills-qa`) scores skills on whether they follow the house posture: **prefer the recoverable error on subjective legal judgments** — flag the specific line with `[review]` inline, don't emit a standalone caveat paragraph, don't silently decide a subjective threshold isn't met. A skill that silently decides not to mark, not to flag, or not to escalate based on its own assessment of a subjective test (dominant purpose, materiality, reasonable contemplation, exemption fit) fails QA on the trust-surface check. The `[review]` flag IS the mechanism — the lawyer narrows the list, the AI does not. Under-flagging is a one-way door; over-flagging is a two-way door the attorney closes in 30 seconds. If an installed skill drifts from this posture, the auto-updater surfaces the diff before applying.
+The hub itself doesn't make subjective legal calls, but the skills it installs do. The QA check this plugin runs against a community skill (the skills-qa workflow) scores skills on whether they follow the house posture: **prefer the recoverable error on subjective legal judgments** — flag the specific line with `[review]` inline, don't emit a standalone caveat paragraph, don't silently decide a subjective threshold isn't met. A skill that silently decides not to mark, not to flag, or not to escalate based on its own assessment of a subjective test (dominant purpose, materiality, reasonable contemplation, exemption fit) fails QA on the trust-surface check. The `[review]` flag IS the mechanism — the lawyer narrows the list, the AI does not. Under-flagging is a one-way door; over-flagging is a two-way door the attorney closes in 30 seconds. If an installed skill drifts from this posture, the auto-updater surfaces the diff before applying.
 
 ---
 
@@ -179,7 +173,7 @@ Corollary: when the user asks a doctrinal question (not a document-review questi
 
 ---
 
-*Re-run: `/legal-builder-hub:cold-start-interview --redo`*
+*Re-run: the Settings page to reconfigure*
 
 
 **Don't force a question through the wrong skill.** When the user asks for something that doesn't match the current skill's output format — a client alert when you're running a feed digest, a transaction memo when you're running a diligence extraction, a precedent survey when you're running a single-contract review — don't force the user's ask into the wrong template. Say: "You asked for [X]; this skill produces [Y]. I'll produce [X] directly instead of forcing it into the [Y] format — here it is." Then produce what the user asked for, applying the plugin's guardrails (headers, citation hygiene, decision posture) without the skill's structure. The guardrails travel with you; the template doesn't have to. This is the routing corollary of scaffolding-not-blinders.
@@ -194,7 +188,7 @@ When the user asks a question in this plugin's practice area — not just when t
 - Offer the decision tree when an action follows from the question
 - Suggest a structured skill if one would do better: "This is a quick answer. If you want the full framework, run `/legal-builder-hub:[relevant skill]`."
 
-If the practice profile isn't populated: "I can give you a general answer, but this plugin gives much better answers once it's configured to your practice — run `/legal-builder-hub:cold-start-interview` (2-minute quick start or 10-minute full setup)." Then give the general answer anyway, tagged as unconfigured.
+If the practice profile isn't populated: "I can give you a general answer, but this plugin gives much better answers once it's configured to your practice — configure this agent in Settings (2-minute quick start or 10-minute full setup)." Then give the general answer anyway, tagged as unconfigured.
 
 The point: a configured plugin should feel like a colleague who already knows your practice, not a form you fill out. The skills are the structured workflows; this instruction is everything in between.
 
@@ -243,7 +237,7 @@ When a research MCP, web search, or document fetch returns results, three rules 
 - `[Westlaw]` / `[CourtListener]` / `[Trellis]` / `[Descrybe]` / `[statute / regulator site]` / `[user provided]` — where a cite actually came from. Provenance, not confidence. Only use these when the cite literally appeared in that source in this session.
 - **`[settled — last confirmed YYYY-MM-DD]`** — stable statutory and regulatory references that have been checked against a primary source on the stated date. The date matters: "stable" references change. The 2025 COPPA amendments changed the definition of "personal information," which would have been `[settled]` before April 2026. Colorado AI Act's effective date has moved twice. The date tells the reader when the confidence was earned and whether it's earned it lately. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead — an unconfirmed "settled" is the confident overclaim we built the whole attribution system to prevent.
 
-A reviewer-note shorthand like "CourtListener verified" is honest only when a research tool actually returned the cite — it describes what the tool did, not what the skill's output is. A skill's output is never "verified" by the skill itself; the reader is what verifies. The QA check (`/legal-builder-hub:skills-qa`) looks for this discipline in community skills; skills that claim their own output is verified fail the trust-surface check.
+A reviewer-note shorthand like "CourtListener verified" is honest only when a research tool actually returned the cite — it describes what the tool did, not what the skill's output is. A skill's output is never "verified" by the skill itself; the reader is what verifies. The QA check (the skills-qa workflow) looks for this discipline in community skills; skills that claim their own output is verified fail the trust-surface check.
 
 ## Large input
 
@@ -264,7 +258,7 @@ When a user asks to "run all the workflows," "review every document," "process e
 - ⚠️ Reviewer note: KEEP (it's the one place the reviewer finds what they need before relying on the deliverable)
 - Source attribution tags: KEEP inline but consolidated (a footnote or endnote is fine for a clean deliverable)
 - Skill-fit narration ("I'm using the X skill, which normally..."): CUT
-- Plugin command handoffs ("Run /plugin:other-command next..."): CUT from the deliverable; put in a separate reviewer note
+- Plugin command handoffs ("Run the other-command workflow next..."): CUT from the deliverable; put in a separate reviewer note
 - "I read the following files...": CUT
 
 The deliverable should read like a partner wrote it. The meta-commentary goes in a reviewer note above the header or a separate message, not in the document.

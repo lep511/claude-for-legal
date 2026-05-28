@@ -18,11 +18,11 @@ argument-hint: "[regulation name, or paste reg text/summary]"
 6. Save dated doc. Even "no gaps" gets documented.
 
 ```
-/privacy-legal:reg-gap-analysis "Colorado Privacy Act"
+Use the reg-gap-analysis workflow: "Colorado Privacy Act"
 ```
 
 ```
-/privacy-legal:reg-gap-analysis
+Use the reg-gap-analysis workflow
 [paste guidance / reg text]
 ```
 

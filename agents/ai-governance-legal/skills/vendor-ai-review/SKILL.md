@@ -20,14 +20,14 @@ argument-hint: "[vendor name, or attach the contract]"
 7. Output: bottom line, term-by-term, recommended redlines, if-they-won't-move routing.
 
 ```
-/ai-governance-legal:vendor-ai-review openai-enterprise-agreement.pdf
+Use the vendor-ai-review workflow: openai-enterprise-agreement.pdf
 ```
 
 ---
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ai-governance-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -66,14 +66,14 @@ If `claude-for-legal/agents/ai-governance-legal/CLAUDE.md` contains `[PLACEHOLDE
 > I notice you haven't configured your practice profile yet — that's how I tailor vendor governance positions to your practice.
 >
 > **Two choices:**
-> - Run `/ai-governance-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll review tailored to YOUR positions.
+> - Configure this agent in Settings (2 minutes) to configure your profile, then I'll review tailored to YOUR positions.
 > - Say **"provisional"** and I'll review against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run the vendor AI review normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no playbook (flag all common vendor-AI risks from first principles rather than matching to configured positions). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/ai-governance-legal:cold-start-interview` to get output calibrated to YOUR practice — your vendor governance positions, your jurisdiction, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Configure this agent in Settings to get output calibrated to YOUR practice — your vendor governance positions, your jurisdiction, your risk appetite. 2 minutes."
 
 ---
 
@@ -316,7 +316,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 ## What this skill does not do
 
 - It doesn't review the DPA provisions of the same agreement — run
-  `/privacy-legal:dpa-review`, if the plugin is installed, for that.
+  the dpa-review workflow, if the plugin is installed, for that.
 - It doesn't decide whether to accept terms outside the fallbacks. It routes those
   per the escalation table in `claude-for-legal/agents/ai-governance-legal/CLAUDE.md`.
 - It doesn't evaluate vendor security posture beyond what's in the agreement —

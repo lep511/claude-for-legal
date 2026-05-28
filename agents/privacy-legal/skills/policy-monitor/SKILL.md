@@ -25,11 +25,11 @@ argument-hint: "[describe a proposed new practice — or omit / use --sweep for 
 2. Parse proposed practice. Diff against policy: data categories, purposes, third parties, retention, user rights, disclosure.
 3. Output: covered / missing / conflicting + suggested language for each gap + timing recommendation.
 
-**Schedule:** Set up a recurring reminder in your own scheduler (calendar, task manager, or CI) to run `/privacy-legal:policy-monitor` weekly. Scheduled execution requires a scheduled-tasks integration, which is not bundled with this plugin.
+**Schedule:** Set up a recurring reminder in your own scheduler (calendar, task manager, or CI) to run the policy-monitor workflow weekly. Scheduled execution requires a scheduled-tasks integration, which is not bundled with this plugin.
 
 ```
-/privacy-legal:policy-monitor
-/privacy-legal:policy-monitor "We want to start using behavioral data to personalize onboarding emails"
+Use the policy-monitor workflow
+Use the policy-monitor workflow: "We want to start using behavioral data to personalize onboarding emails"
 ```
 
 ---
@@ -62,7 +62,7 @@ Read `claude-for-legal/agents/privacy-legal/CLAUDE.md`:
 If `## Outputs` contains `[PLACEHOLDER]`:
 > "Outputs aren't configured yet. I can still run a direct-query check — describe
 > what you're planning to do and I'll diff it against your current policy. To enable
-> the crawl sweep, run `/privacy-legal:cold-start-interview` and provide the outputs
+> the crawl sweep, configure this agent in Settings and provide the outputs
 > folder path."
 
 Read the actual privacy policy document from the path in `## Outputs` → **Privacy
@@ -331,7 +331,7 @@ exist, say so and suggest creating it.
 ## Schedule integration
 
 Set up a recurring reminder in your own scheduler (calendar, task manager, or CI)
-to run `/privacy-legal:policy-monitor` weekly. Scheduled execution requires a
+to run the policy-monitor workflow weekly. Scheduled execution requires a
 scheduled-tasks integration, which is not bundled with this plugin.
 
 Whenever the sweep runs, it updates `## Outputs` → **Last policy sweep** in

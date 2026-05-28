@@ -145,7 +145,7 @@ Also load `claude-for-legal/agents/law-student/study-plan.yaml` if it exists (wr
 
 `--session <n>` runs a focused N-question session on a specific subject, tracks performance, and writes session results back to `claude-for-legal/agents/law-student/study-plan.yaml` under `session_history` so the study plan adapts.
 
-Trigger phrasing the student might use: "let's do 5 questions on Contracts", "run me 10 Evidence questions", "/law-student:session Evidence 10".
+Trigger phrasing the student might use: "let's do 5 questions on Contracts", "run me 10 Evidence questions", "run the bar-prep-questions workflow: Evidence 10".
 
 **Session flow:**
 
@@ -162,7 +162,7 @@ Trigger phrasing the student might use: "let's do 5 questions on Contracts", "ru
 **Weak subtopics:** [the 2-3 subtopics where misses clustered]
 **Strong subtopics:** [where the student nailed it]
 
-**Pattern vs. prior sessions:** [if session_history has prior sessions on this subject: "Hearsay exceptions missed in 3 of last 4 sessions — this is stuck. Route to /law-student:socratic-drill." Or: "Improvement from 40% to 70% on Evidence. Still shaky on character evidence."]
+**Pattern vs. prior sessions:** [if session_history has prior sessions on this subject: "Hearsay exceptions missed in 3 of last 4 sessions — this is stuck. Route to the socratic-drill workflow." Or: "Improvement from 40% to 70% on Evidence. Still shaky on character evidence."]
 
 **Study plan update:** Weak subtopics added to priority list. Next scheduled [Subject] session: [date from study-plan.yaml].
 ```

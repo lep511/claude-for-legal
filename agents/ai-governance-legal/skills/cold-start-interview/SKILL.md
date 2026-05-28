@@ -27,8 +27,8 @@ argument-hint: "[--redo | --check-integrations]"
 When probing: only report ✓ if an MCP tool call actually succeeded. Configured-but-untested connectors should be marked ⚪ with a one-line how-to for confirming. Never report ✓ based on `.mcp.json` declarations alone — that misleads users into thinking something is wired up when it isn't.
 
 ```
-/ai-governance-legal:cold-start-interview
-/ai-governance-legal:cold-start-interview --check-integrations
+the Settings page
+the Settings page to check integrations
 ```
 
 ---
@@ -78,13 +78,13 @@ Ask the user to confirm before proceeding: continue with project scope, or pause
 
 Open with the fork-first preamble. Keep it to 3-4 short lines. Ask quick-or-full before anything else.
 
-> **`ai-governance-legal` is for people who run AI governance: use-case triage, impact assessments, vendor AI review, policy monitoring.** Not your area? `/legal-builder-hub:related-skills-surfacer`.
+> **`ai-governance-legal` is for people who run AI governance: use-case triage, impact assessments, vendor AI review, policy monitoring.** Not your area? the related-skills-surfacer workflow.
 >
 > **2 minutes** gets you your role, practice setting, and which AI regulatory regimes apply (EU AI Act, NIST, state AI laws), plus working defaults for use-case triage thresholds, AIA format, and vendor AI positions. **15 minutes** adds your use-case registry and red lines, governance tiers, vendor AI playbook positions, escalation matrix, AIA house-style template extracted from a seed assessment, and the AI policy commitments extracted from your actual policy.
 >
 > Quick or full? (Upgrade any time with `/cold-start-interview --full`.)
 
-**Quick start path:** ask only Part 0 (role, practice setting, integrations) and regulatory scope. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for use-case triage thresholds, AIA format, and vendor AI positions. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run `/ai-governance-legal:cold-start-interview --full` anytime to do the whole interview, or `/ai-governance-legal:cold-start-interview --redo <section>` to re-do one part."
+**Quick start path:** ask only Part 0 (role, practice setting, integrations) and regulatory scope. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for use-case triage thresholds, AIA format, and vendor AI positions. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run the Settings page anytime to do the whole interview, or the Settings page to re-do one part."
 
 **Full setup path:** the existing interview flow below. After the user picks, give the fuller orientation described next, then proceed to Part 0.
 
@@ -113,7 +113,7 @@ Corollary: the interview's inputs are the user's typed answers and documents the
 - **For uploads or shared documents:** "Paste the contents, share a file path, or say 'skip for now.' If you skip, I'll flag the gap in your practice profile so you can fill it later." Then actually wait.
 - **Before writing the practice profile:** review the interview and list any questions that were skipped or answered with placeholders. Say: "Before I write your configuration, here's what's still open: [list]. Want to fill any of these now, or leave them as placeholders?" Then wait for the answer.
 - **Never** write a practice profile with silent gaps. Every placeholder should be a deliberate choice the user made to skip, not a question that scrolled past.
-- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Run `/ai-governance-legal:cold-start-interview` again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/ai-governance-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run /ai-governance-legal:cold-start-interview to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
+- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Configure this agent in Settings again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/ai-governance-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run the Settings page to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
 
 **Verify user-stated legal facts as they come up in setup.** When the user answers an interview question with a specific rule citation, statute number, case name, deadline, threshold, jurisdiction, or registration number — and it's something you can sanity-check — do the check before writing it into the configuration. If what they said conflicts with your understanding or with something they've pasted, surface it: "You said the threshold is X; my understanding is Y — can you confirm which goes in the profile? `[premise flagged — verify]`" A wrong fact written into CLAUDE.md propagates into every future output; catching it here is one of the highest-leverage moments in the product.
 
@@ -197,7 +197,7 @@ Then report findings in this form:
 > - ⚪ [Integration] — configured but not verified. Open your MCP settings to confirm.
 > - ✗ [Integration] — not found. [Feature] will fall back to [manual alternative]. [How to connect.]
 
-You don't need all of these. Core features work with file access alone. If you set something up later, re-run `/ai-governance-legal:cold-start-interview --check-integrations`.
+You don't need all of these. Core features work with file access alone. If you set something up later, re-run the Settings page to check integrations.
 
 Write a `## Who's using this` section and an `## Available integrations` section into the plugin config immediately after the first section. Merge the work-product-header logic into the existing `## Outputs` section per the template.
 
@@ -215,7 +215,7 @@ Write a `## Who's using this` section and an `## Available integrations` section
 > are assessed for each AI system separately — you might be a deployer of
 > one system and a provider of another. Instead of assigning one company-
 > level role, I'll set up a system inventory. We can do 1-3 systems now and
-> add the rest later with `/ai-governance-legal:ai-inventory add`. Or skip
+> add the rest later with the ai-inventory workflow (add). Or skip
 > the inventory for now if you're not in the EU or not ready.
 
 Walk through the role options if the user isn't sure:
@@ -234,7 +234,7 @@ Walk through the role options if the user isn't sure:
 
 **Offer to populate the inventory now.** Prompt: "Want me to walk through
 1-3 of your AI systems now and set up the inventory? Or skip and come back
-with `/ai-governance-legal:ai-inventory add` later?" If they accept, run the
+with the ai-inventory workflow (add) later?" If they accept, run the
 Add flow and the classification walk-through from
 `ai-governance-legal/skills/ai-inventory/SKILL.md` for each system. Save to
 `claude-for-legal/agents/ai-governance-legal/ai-systems.yaml`.
@@ -589,7 +589,7 @@ to customers, employees, or affected parties]
 
 ---
 
-*Re-run: `/ai-governance-legal:cold-start-interview --redo`*
+*Re-run: the Settings page to reconfigure*
 ```
 
 ## After writing
@@ -602,11 +602,11 @@ If yes, show this tailored list (not a generic template — these are the concre
 
 > **Here's what I'm good at in AI governance:**
 >
-> - **Review vendor AI terms** — e.g., "A vendor sent AI provisions in their SaaS agreement — check them against your training-on-data, liability, and model-change positions." Try: `/ai-governance-legal:vendor-ai-review`
-> - **Triage a proposed AI use case** — e.g., "A PM wants to add an AI feature — run it against your registry for approved / conditional / not approved." Try: `/ai-governance-legal:use-case-triage`
-> - **Run an AI impact assessment** — e.g., "A high-risk use case needs a structured AIA with regulatory classification and recommended conditions." Try: `/ai-governance-legal:aia-generation`
-> - **Diff a new AI regulation against your posture** — e.g., "A new AI rule dropped — see what gaps it opens and what remediation it forces." Try: `/ai-governance-legal:reg-gap-analysis`
-> - **Sweep for policy drift** — e.g., "Look across saved AIAs, triage results, and vendor reviews to find where your AI policy no longer matches practice." Try: `/ai-governance-legal:policy-monitor`
+> - **Review vendor AI terms** — e.g., "A vendor sent AI provisions in their SaaS agreement — check them against your training-on-data, liability, and model-change positions." Try: the vendor-ai-review workflow
+> - **Triage a proposed AI use case** — e.g., "A PM wants to add an AI feature — run it against your registry for approved / conditional / not approved." Try: the use-case-triage workflow
+> - **Run an AI impact assessment** — e.g., "A high-risk use case needs a structured AIA with regulatory classification and recommended conditions." Try: the aia-generation workflow
+> - **Diff a new AI regulation against your posture** — e.g., "A new AI rule dropped — see what gaps it opens and what remediation it forces." Try: the reg-gap-analysis workflow
+> - **Sweep for policy drift** — e.g., "Look across saved AIAs, triage results, and vendor reviews to find where your AI policy no longer matches practice." Try: the policy-monitor workflow
 >
 > **My suggestion for your first one:** Triage one real use case from your backlog — it's the fastest way to feel what the registry gives you. Or tell me what's on your plate and I'll pick.
 
@@ -646,8 +646,8 @@ This solves the cold-start problem (the supervisor doesn't know what to do first
    > "Done. Your configuration is at `claude-for-legal/agents/ai-governance-legal/CLAUDE.md` — it's a plain text file you can read and edit directly. Anything you answered can be changed:
    >
    > - Edit the file directly for a quick change
-   > - Run `/ai-governance-legal:cold-start-interview --redo` for a full re-interview
-   > - Run `/ai-governance-legal:cold-start-interview --check-integrations` to re-check what's connected
+   > - Run the Settings page to reconfigure for a full re-interview
+   > - Run the Settings page to check integrations to re-check what's connected
    >
    > The sections most often adjusted after first setup are the use case registry and red lines, vendor AI review red lines, and the regulatory regimes in scope. Your configuration will improve as you use the plugin — when a skill's output feels off, the fix is usually here."
 

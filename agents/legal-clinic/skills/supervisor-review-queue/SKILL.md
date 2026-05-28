@@ -17,15 +17,15 @@ argument-hint: "[--approve ID | --return ID 'note' | --edit ID]"
 4. Actions: approve / edit-then-approve / return with note. All logged.
 
 ```
-/legal-clinic:supervisor-review-queue
+Use the supervisor-review-queue workflow
 ```
 
 ```
-/legal-clinic:supervisor-review-queue --approve Q-003
+Use the supervisor-review-queue workflow: --approve Q-003
 ```
 
 ```
-/legal-clinic:supervisor-review-queue --return Q-004 "Check the service requirement — local rules changed"
+Use the supervisor-review-queue workflow: --return Q-004 "Check the service requirement — local rules changed"
 ```
 
 ---

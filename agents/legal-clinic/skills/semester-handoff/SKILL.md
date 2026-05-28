@@ -185,7 +185,7 @@ Once reviewed, handoff memos live at `claude-for-legal/agents/legal-clinic/hando
 
 ## What this skill does not do
 
-- **Close cases.** Handoff is for cases transitioning to the next cohort. Cases closing at semester end should get a final internal status memo (`/legal-clinic:status internal`) for the file and be marked closed in the handoff document; the status skill supports `client | internal | court` audiences.
+- **Close cases.** Handoff is for cases transitioning to the next cohort. Cases closing at semester end should get a final internal status memo (the status workflow (internal)) for the file and be marked closed in the handoff document; the status skill supports `client | internal | court` audiences.
 - **Assign incoming students.** Professor assigns. Skill records what the assignment is; doesn't pick.
 - **Generate handoffs from scratch without clinic data.** Needs the active case list as input. If the clinic doesn't maintain one, the skill surfaces that gap as a blocker rather than inventing.
 - **Replace a conversation.** The written memo is the record. The outgoing student should also have a conversation with the incoming student where feasible — the memo captures facts; a conversation captures judgment and relationship context the memo can't.

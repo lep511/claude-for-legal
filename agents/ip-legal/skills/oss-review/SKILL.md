@@ -14,7 +14,7 @@ Runs an open source license compliance check against the practice profile in `cl
 
 ## Instructions
 
-1. **Load `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If placeholders present, stop and prompt: "Run `/ip-legal:cold-start-interview` first — I need to learn your practice profile (and OSS policy, if any) before I can review." If the practice profile points at an uploaded OSS policy, read that too — it is the source of truth for accepted / review / banned licenses on this team.
+1. **Load `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If placeholders present, stop and prompt: "Configure this agent in Settings first — I need to learn your practice profile (and OSS policy, if any) before I can review." If the practice profile points at an uploaded OSS policy, read that too — it is the source of truth for accepted / review / banned licenses on this team.
 
 2. **Establish the scope:** a dependency list (package.json, requirements.txt, go.mod, Gemfile, Cargo.toml, pom.xml, SBOM), a single library, or outbound code the team is preparing to open-source. If the user passed a path, infer from the file; otherwise ask.
 
@@ -34,10 +34,10 @@ Runs an open source license compliance check against the practice profile in `cl
 ## Examples
 
 ```
-/ip-legal:oss-review ~/code/my-project/package.json
-/ip-legal:oss-review ~/code/my-project/requirements.txt
-/ip-legal:oss-review redis
-/ip-legal:oss-review ~/code/my-project  # repo root — scan all manifests
+Use the oss-review workflow: ~/code/my-project/package.json
+Use the oss-review workflow: ~/code/my-project/requirements.txt
+Use the oss-review workflow: redis
+Use the oss-review workflow: ~/code/my-project  # repo root — scan all manifests
 ```
 
 ---
@@ -56,7 +56,7 @@ ticketing connector.
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ip-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -68,7 +68,7 @@ Tell the user what licenses are in their dependency tree, what obligations those
 
 ## Precondition: load the practice profile
 
-**Before scanning dependencies, read `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If it is missing or still contains placeholders, stop and run `/ip-legal:cold-start-interview`. The practice profile tells you:
+**Before scanning dependencies, read `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If it is missing or still contains placeholders, stop and configure this agent in Settings. The practice profile tells you:
 
 - Who owns OSS review on this team (often engineering with legal sign-off)
 - Escalation routing for copyleft obligations

@@ -24,11 +24,11 @@ Re-runs the integration availability check (launch tracker, document storage, Sl
 When probing: only report ✓ if an MCP tool call actually succeeded. Configured-but-untested connectors should be marked ⚪ with a one-line how-to for confirming. Never report ✓ based on `.mcp.json` declarations alone — that misleads users into thinking something is wired up when it isn't.
 
 ```
-/product-legal:cold-start-interview
+the Settings page
 ```
 
 ```
-/product-legal:cold-start-interview --check-integrations
+the Settings page to check integrations
 ```
 
 ---
@@ -74,7 +74,7 @@ Ask the user to confirm before proceeding: continue with project scope, or pause
 
 Before asking anything else, show the fork-first preamble — 3-4 short lines, no longer:
 
-> **`product-legal` is for people who review product launches, marketing claims, and feature risk — the legal side of shipping.** Not your area? `/legal-builder-hub:related-skills-surfacer`.
+> **`product-legal` is for people who review product launches, marketing claims, and feature risk — the legal side of shipping.** Not your area? the related-skills-surfacer workflow.
 >
 > **2 minutes** gets you your role, your review framework level (formal gate vs. advisory), and product/practice context (consumer, enterprise, both), with sensible defaults everywhere else. **15 minutes** adds your risk calibration table (what blocks vs. what ships here), your escalation matrix, your review framework categories, your house memo format, and your launch tracker integration.
 >
@@ -99,7 +99,7 @@ Once the user has chosen, orient them before the first interview question:
 
 Do not read the user's home-directory `~/CLAUDE.md`, `~/user.md`, or other personal memory to pre-populate the interview. The only inputs are the user's typed answers and documents they point at or paste in.
 
-**Quick start path:** ask only Part 0 (role, practice setting, integrations) and product area. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for launch review framework, risk calibration, and marketing claims posture. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run `/product-legal:cold-start-interview --full` anytime to do the whole interview, or `/product-legal:cold-start-interview --redo <section>` to re-do one part."
+**Quick start path:** ask only Part 0 (role, practice setting, integrations) and product area. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for launch review framework, risk calibration, and marketing claims posture. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run the Settings page anytime to do the whole interview, or the Settings page to re-do one part."
 
 **Full setup path:** the existing interview flow below.
 
@@ -114,7 +114,7 @@ Do not read the user's home-directory `~/CLAUDE.md`, `~/user.md`, or other perso
 - **For uploads (seed launch review docs, PRDs, links to the tracker):** "Paste the contents, share a file path, or say 'skip for now.' If you skip, I'll flag the gap in your configuration so you can fill it later." Then actually wait.
 - **Before writing the practice profile:** review the interview. List every question that was skipped or answered with a placeholder. Say: "Before I write your configuration, here's what's still open: [list]. Want to fill any of these now, or leave them as placeholders?" Wait for the answer before writing.
 - **Never** write the practice profile with silent gaps. Every placeholder should be a deliberate user choice to skip, not a question that scrolled past unanswered.
-- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Run `/product-legal:cold-start-interview` again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/product-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run /product-legal:cold-start-interview to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
+- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Configure this agent in Settings again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/product-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run the Settings page to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
 
 **Verify user-stated legal facts as they come up in setup.** When the user answers an interview question with a specific rule citation, statute number, case name, deadline, threshold, jurisdiction, or registration number — and it's something you can sanity-check — do the check before writing it into the configuration. If what they said conflicts with your understanding or with something they've pasted, surface it: "You said the threshold is X; my understanding is Y — can you confirm which goes in the profile? `[premise flagged — verify]`" A wrong fact written into CLAUDE.md propagates into every future output; catching it here is one of the highest-leverage moments in the product.
 
@@ -169,7 +169,7 @@ Then report findings in this form:
 > - ⚪ [Integration] — configured but not verified. Open your MCP settings to confirm.
 > - ✗ [Integration] — not found. [Feature] will fall back to [manual alternative]. [How to connect.]
 
-You don't need all of these. Core features work with file access alone. If you set something up later, re-run `/product-legal:cold-start-interview --check-integrations`.
+You don't need all of these. Core features work with file access alone. If you set something up later, re-run the Settings page to check integrations.
 
 #### Record to the plugin config
 
@@ -337,7 +337,7 @@ children-touching features"]
 | Document storage (Drive / SharePoint) | [✓ / ✗] | Review memos saved locally; seed-doc pulls done manually |
 | Slack | [✓ / ✗] | Triage replies delivered inline instead of posted |
 
-*Re-check: `/product-legal:cold-start-interview --check-integrations`*
+*Re-check: the Settings page to check integrations*
 
 ---
 
@@ -431,7 +431,7 @@ from launch-review skill if they don't]
 
 ---
 
-*Re-run: `/product-legal:cold-start-interview --redo`*
+*Re-run: the Settings page to reconfigure*
 ```
 
 ## After writing
@@ -444,9 +444,9 @@ If yes, show this tailored list (not a generic template — these are the concre
 
 > **Here's what I'm good at in product counsel practice:**
 >
-> - **Legal review of a product launch** — e.g., "PRD in, review memo out against your review framework and risk calibration." Try: `/product-legal:launch-review`
-> - **Fast triage on a Slack question** — e.g., "'Hey legal, quick question' gets a same-minute fine / needs a real look / stop." Try: `/product-legal:is-this-a-problem`
-> - **Marketing claims review** — e.g., "Check copy for claims needing substantiation, comparatives, superlatives, and promises the product can't keep." Try: `/product-legal:marketing-claims-review`
+> - **Legal review of a product launch** — e.g., "PRD in, review memo out against your review framework and risk calibration." Try: the launch-review workflow
+> - **Fast triage on a Slack question** — e.g., "'Hey legal, quick question' gets a same-minute fine / needs a real look / stop." Try: the is-this-a-problem workflow
+> - **Marketing claims review** — e.g., "Check copy for claims needing substantiation, comparatives, superlatives, and promises the product can't keep." Try: the marketing-claims-review workflow
 >
 > **My suggestion for your first one:** Run `/is-this-a-problem` on one PM question you already answered — see if the answer matches how you calibrated it. Or tell me what's on your plate and I'll pick.
 
@@ -468,8 +468,8 @@ This solves the cold-start problem (the supervisor doesn't know what to do first
    > "Done. Your configuration is at `claude-for-legal/agents/product-legal/CLAUDE.md` — a plain-text file you can read and edit directly. Anything you answered can be changed:
    >
    > - Edit the file directly for a quick change
-   > - Run `/product-legal:cold-start-interview --redo` for a full re-interview
-   > - Run `/product-legal:cold-start-interview --check-integrations` to re-check what's connected
+   > - Run the Settings page to reconfigure for a full re-interview
+   > - Run the Settings page to check integrations to re-check what's connected
    >
    > The settings people tune most often: the risk calibration tables (what blocks vs. what ships), the review framework categories, and the escalation matrix. Your configuration will improve as you use the plugin — when a review feels off (too cautious, too loose, wrong frame), the fix is usually here."
 

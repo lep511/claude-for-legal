@@ -108,7 +108,7 @@ each item on this week's action list against the registry before acting.
 - Decide whether to renew. That's a business and legal call — the agent
   surfaces the deadline, the surcharge clock, and the owner.
 - Modify the register. It reads and reports; additions come from
-  `/ip-legal:portfolio --add`, updates come from `--update`, sync comes
+  the portfolio workflow (--add), updates come from `--update`, sync comes
   from the IP management system.
 - Ping business owners directly. The channel post tags them; they
   decide what to do.

@@ -18,7 +18,7 @@ argument-hint: "[case-id] [--add (default) | --read | --summary | --patterns]"
    - `--read`: show the most recent N entries.
    - `--summary`: one-paragraph condensed read.
    - `--patterns`: scan for unanswered comms, missed follow-ups, language gaps, tone shifts, contact gaps. Supervision-oriented.
-4. Integration: offer `/legal-clinic:deadlines --add` if the log establishes a deadline; route to `/legal-clinic:semester-handoff` via `--summary` when relevant.
+4. Integration: offer the deadlines workflow (--add) if the log establishes a deadline; route to the semester-handoff workflow via `--summary` when relevant.
 
 ---
 

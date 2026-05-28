@@ -29,7 +29,7 @@ Give the counsel a clean read on one matter in the time it takes to walk to a co
 
 **Conflicts gate — unbypassable.** Before briefing, check `_log.yaml` for the matter slug. If the matter is not in `_log.yaml`, refuse and route:
 
-> "I don't see [matter slug] in the matter log. Run `/litigation-legal:matter-intake` first so the conflicts check runs and the matter workspace is set up. I won't build a briefing on a matter that hasn't been intaken — the conflicts check is the gate."
+> "I don't see [matter slug] in the matter log. Run the matter-intake workflow first so the conflicts check runs and the matter workspace is set up. I won't build a briefing on a matter that hasn't been intaken — the conflicts check is the gate."
 
 ## Input
 
@@ -92,7 +92,7 @@ Slug (required). If ambiguous or missing, ask the user to pick from a list of ac
 
 ## Staleness
 
-If `last_updated > 30 days ago`: flag at the top AND suggest running `/litigation-legal:matter-update [slug]` after the meeting to capture whatever's discussed.
+If `last_updated > 30 days ago`: flag at the top AND suggest running the matter-update workflow ([slug]) after the meeting to capture whatever's discussed.
 
 ## Tone
 

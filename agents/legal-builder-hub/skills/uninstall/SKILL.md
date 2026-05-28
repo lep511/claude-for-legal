@@ -28,7 +28,7 @@ Safety rules:
    and timestamp so the audit trail is intact.
 
 If the user wants to stop a skill from running but keep the files (e.g., for
-later re-enable, or to preserve configuration), suggest `/legal-builder-hub:disable`
+later re-enable, or to preserve configuration), suggest the disable workflow
 instead.
 
 > Detailed uninstall, disable, and re-enable workflows live in the

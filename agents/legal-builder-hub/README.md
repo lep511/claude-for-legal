@@ -1,6 +1,6 @@
 # Legal Builder Hub Plugin
 
-Community legal skills discovery and installation. Browses GitHub registries (lpm-skills, [additional registries — add via /legal-builder-hub:registry-browser], and others), installs and auto-updates, surfaces related community skills inside your other legal plugins. The cold-start interview IS the starter pack recommender — asks your practice type, recommends what to install.
+Community legal skills discovery and installation. Browses GitHub registries (lpm-skills, [additional registries — add via the registry-browser workflow], and others), installs and auto-updates, surfaces related community skills inside your other legal plugins. The cold-start interview IS the starter pack recommender — asks your practice type, recommends what to install.
 
 **Every community skill is surfaced raw before install, scanned for prompt-injection patterns, and evaluated against the Legal Skill Design Framework. The plugin helps you find and evaluate; you decide what to trust.**
 
@@ -13,7 +13,7 @@ Everyone using the other legal plugins. This is the app store.
 Asks your practice type, industry, team size, tooling comfort. Recommends a starter pack of community skills that match. Installs the ones you pick.
 
 ```
-/legal-builder-hub:cold-start-interview
+the Settings page
 ```
 
 Your configuration is stored at `claude-for-legal/agents/legal-builder-hub/CLAUDE.md` and survives plugin updates.
@@ -29,25 +29,25 @@ Installed community skills run with your access to client data, matter files, an
 
 Updates use the same posture: the auto-updater pins to commit SHAs (not mutable tags), shows the full diff including hooks and MCP changes, and requires explicit approval per update. There is no auto-apply mode.
 
-If a skill goes wrong after install: `/legal-builder-hub:disable [skill]` quiets it without removing files; `/legal-builder-hub:uninstall [skill]` removes it entirely. Both are restricted to community skills installed through this hub — they refuse to touch first-party plugin skills.
+If a skill goes wrong after install: the disable workflow ([skill]) quiets it without removing files; the uninstall workflow ([skill]) removes it entirely. Both are restricted to community skills installed through this hub — they refuse to touch first-party plugin skills.
 
 ## Prerequisites
 
 - Slack notifications from the registry-sync agent require a Slack MCP server configured in your environment. Without one, the agent writes its digest to a file.
-- The default registry list in `claude-for-legal/agents/legal-builder-hub/CLAUDE.md` ships empty except for `lpm-skills`. Add registries you trust via `/legal-builder-hub:registry-browser` or by editing `claude-for-legal/agents/legal-builder-hub/CLAUDE.md`.
+- The default registry list in `claude-for-legal/agents/legal-builder-hub/CLAUDE.md` ships empty except for `lpm-skills`. Add registries you trust via the registry-browser workflow or by editing `claude-for-legal/agents/legal-builder-hub/CLAUDE.md`.
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/legal-builder-hub:cold-start-interview` | Practice profile + starter pack recommendation |
-| `/legal-builder-hub:registry-browser [query]` | Search watched registries for skills |
-| `/legal-builder-hub:skill-installer [skill]` | Install a community skill |
-| `/legal-builder-hub:auto-updater` | Check for updates to installed skills |
-| `/legal-builder-hub:related-skills-surfacer` | Suggest skills based on what you've been doing |
-| `/legal-builder-hub:skills-qa [skill]` | Evaluate a skill against the Legal Skill Design Framework before installing |
-| `/legal-builder-hub:disable [skill]` | Disable an installed community skill without removing files |
-| `/legal-builder-hub:uninstall [skill]` | Uninstall a community skill installed through the hub |
+| the Settings page | Practice profile + starter pack recommendation |
+| the registry-browser workflow ([query]) | Search watched registries for skills |
+| the skill-installer workflow ([skill]) | Install a community skill |
+| the auto-updater workflow | Check for updates to installed skills |
+| the related-skills-surfacer workflow | Suggest skills based on what you've been doing |
+| the skills-qa workflow ([skill]) | Evaluate a skill against the Legal Skill Design Framework before installing |
+| the disable workflow ([skill]) | Disable an installed community skill without removing files |
+| the uninstall workflow ([skill]) | Uninstall a community skill installed through the hub |
 
 ## Skills
 
@@ -78,11 +78,11 @@ The default allowlist ships with the community registries we've reviewed pre-con
 - **lpm-skills** — Legal project management (Scott Margetts / LegalOps Consulting) — `github.com/legalopsconsulting/lpm-skills`
 - **Lawvable / awesome-legal-skills** — Curated list of AI agent skills for legal work — `github.com/lawvable/awesome-legal-skills`
 - **Lawvable / agent-skills** — Curated collection of agent skills for legal work — `github.com/lawvable/agent-skills`
-- Add your own via `/legal-builder-hub:registry-browser` or by editing the allowlist
+- Add your own via the registry-browser workflow or by editing the allowlist
 
 ## How it learns
 
-Your practice profile at `claude-for-legal/agents/legal-builder-hub/CLAUDE.md` isn't static — it improves as you use the plugin. The hub re-reads it on every `/legal-builder-hub:registry-browser` and `/legal-builder-hub:related-skills-surfacer`, so adjusting your practice type, industry, or watched registries sharpens future recommendations. Edit the file directly or re-run `/legal-builder-hub:cold-start-interview --redo` when your work shifts.
+Your practice profile at `claude-for-legal/agents/legal-builder-hub/CLAUDE.md` isn't static — it improves as you use the plugin. The hub re-reads it on every the registry-browser workflow and the related-skills-surfacer workflow, so adjusting your practice type, industry, or watched registries sharpens future recommendations. Edit the file directly or re-run the Settings page to reconfigure when your work shifts.
 
 ## Notes
 

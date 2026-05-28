@@ -20,22 +20,22 @@ On first use, the plugin interviews you — ten minutes, conversational — to l
 It writes what it learns to `claude-for-legal/agents/commercial-legal/CLAUDE.md` — a plain-English document about your team that every other skill reads before doing anything. You edit the document, not a config file.
 
 ```
-/commercial-legal:cold-start-interview
+the Settings page
 ```
 
-**Playbook side.** Early in setup, you'll be asked whether to build a **sales-side** playbook (you sell your product/service; you're the vendor; usually your paper), a **purchasing-side** playbook (you buy from vendors; you're the customer; usually their paper), or both. The answer flips nearly every playbook position — liability caps, indemnity direction, termination rights, IP ownership — so it matters up front. If you pick both, setup builds sales-side first; run `/commercial-legal:cold-start-interview --side purchasing` afterward to build the other. Your configuration holds both in parallel, and review skills check which side applies before reading the playbook.
+**Playbook side.** Early in setup, you'll be asked whether to build a **sales-side** playbook (you sell your product/service; you're the vendor; usually your paper), a **purchasing-side** playbook (you buy from vendors; you're the customer; usually their paper), or both. The answer flips nearly every playbook position — liability caps, indemnity direction, termination rights, IP ownership — so it matters up front. If you pick both, setup builds sales-side first; run the Settings page to configure the purchasing-side playbook afterward to build the other. Your configuration holds both in parallel, and review skills check which side applies before reading the playbook.
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/commercial-legal:cold-start-interview` | Run (or re-run) the cold-start interview |
-| `/commercial-legal:review [file]` | Review a vendor agreement, NDA, or SaaS subscription against your playbook |
-| `/commercial-legal:renewal-tracker` | What's renewing in the next 90 days and when the cancel-by deadlines are |
-| `/commercial-legal:escalation-flagger` | Route an issue to the right approver and draft the ask |
-| `/commercial-legal:amendment-history [file(s)]` | Trace how a contract has changed across its base agreement and all amendments |
-| `/commercial-legal:review-proposals` | Step through pending playbook update proposals from the monitor agent |
-| `/commercial-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Run (or re-run) the cold-start interview |
+| the review workflow ([file]) | Review a vendor agreement, NDA, or SaaS subscription against your playbook |
+| the renewal-tracker workflow | What's renewing in the next 90 days and when the cancel-by deadlines are |
+| the escalation-flagger workflow | Route an issue to the right approver and draft the ask |
+| the amendment-history workflow ([file(s)]) | Trace how a contract has changed across its base agreement and all amendments |
+| the review-proposals workflow | Step through pending playbook update proposals from the monitor agent |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 
 ## Skills
 
@@ -82,7 +82,7 @@ With DocuSign connected: track signature status, route envelopes in approver ord
 ### 1. Get interviewed
 
 ```
-/commercial-legal:cold-start-interview
+the Settings page
 ```
 
 Ten minutes. Have 5-10 recent signed agreements ready to share (more is better, 20 gives a clearer pattern).
@@ -92,7 +92,7 @@ Your configuration is stored at `claude-for-legal/agents/commercial-legal/CLAUDE
 ### 2. Review a contract
 
 ```
-/commercial-legal:review vendor-msa.pdf
+Use the review workflow: vendor-msa.pdf
 ```
 
 Output: deviation-by-deviation memo against your playbook, with specific redline language and named approver.
@@ -100,7 +100,7 @@ Output: deviation-by-deviation memo against your playbook, with specific redline
 ### 3. See what's renewing
 
 ```
-/commercial-legal:renewal-tracker
+Use the renewal-tracker workflow
 ```
 
 Output: everything with a cancel-by deadline in the next 90 days, grouped by urgency.

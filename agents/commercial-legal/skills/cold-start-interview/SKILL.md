@@ -50,19 +50,19 @@ Updates the `**Active side:**` marker in `## Playbook` to reflect whichever side
 ## Examples
 
 ```
-/commercial-legal:cold-start-interview
+the Settings page
 ```
 
 ```
-/commercial-legal:cold-start-interview --redo
+the Settings page to reconfigure
 ```
 
 ```
-/commercial-legal:cold-start-interview --check-integrations
+the Settings page to check integrations
 ```
 
 ```
-/commercial-legal:cold-start-interview --side purchasing
+the Settings page to configure playbook
 ```
 
 ---
@@ -83,7 +83,7 @@ Read `claude-for-legal/agents/commercial-legal/CLAUDE.md`:
 
 ## `--side` flag: playbook-side-only re-interview
 
-If invoked as `/commercial-legal:cold-start-interview --side sales` or `--side purchasing`, run only Part 2 (the playbook) calibrated to the specified side, and write the answers to the matching section (`### Sales-side playbook` or `### Purchasing-side playbook`). Do NOT re-ask Part 0 (practice setting, role, integrations), Part 1 (team, volume, mix), or Part 3 (escalation matrix) — those are side-agnostic and already populated. If the other side is already populated, leave it untouched. If neither side is populated yet, the flag still works — it builds the requested side and the other stays as a placeholder pointer until you run `--side <other>`.
+If invoked as the Settings page to configure the sales-side playbook or `--side purchasing`, run only Part 2 (the playbook) calibrated to the specified side, and write the answers to the matching section (`### Sales-side playbook` or `### Purchasing-side playbook`). Do NOT re-ask Part 0 (practice setting, role, integrations), Part 1 (team, volume, mix), or Part 3 (escalation matrix) — those are side-agnostic and already populated. If the other side is already populated, leave it untouched. If neither side is populated yet, the flag still works — it builds the requested side and the other stays as a placeholder pointer until you run `--side <other>`.
 
 Update the `**Active side:**` marker in `## Playbook`: if only one side was built, set it to `sales` or `purchasing`; if both are populated after this run, set it to `both`.
 
@@ -114,11 +114,11 @@ Ask the user to confirm before proceeding: continue with project scope, or pause
 
 Before asking anything else, show the fork-first preamble — 3-4 short lines, no longer:
 
-> **`commercial-legal` is for people who review, negotiate, and manage commercial contracts (vendor agreements, SaaS MSAs, NDAs, renewals).** Not your area? `/legal-builder-hub:related-skills-surfacer`.
+> **`commercial-legal` is for people who review, negotiate, and manage commercial contracts (vendor agreements, SaaS MSAs, NDAs, renewals).** Not your area? the related-skills-surfacer workflow.
 >
 > **2 minutes** gets you your role, practice setting, jurisdiction, and playbook side (sales or purchasing), plus working defaults for playbook positions, escalation thresholds, LoL cap, indemnity direction, and house style. **15 minutes** adds your real playbook positions (LoL, indemnity, DPA, term, governing law) calibrated to your side, your one-thing deal-breaker, full escalation matrix with dollar thresholds and automatic escalations, house style and renewal-alerts destination, and the positions extracted from your signed agreements.
 >
-> Quick or full? (Upgrade any time with `/commercial-legal:cold-start-interview --full`.)
+> Quick or full? (Upgrade any time with the Settings page.)
 
 Wait for the user's pick before showing anything else.
 
@@ -139,7 +139,7 @@ Once the user has chosen, orient them before the first interview question:
 
 Corollary: the interview's inputs are the user's typed answers and documents they explicitly share. Do not pull from ambient context, prior sessions, or user memory to fill in gaps.
 
-**Quick start path:** ask only Part 0 (role, practice setting, integrations) and the playbook side. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for playbook positions, escalation thresholds, and house style. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run `/commercial-legal:cold-start-interview --full` anytime to do the whole interview, or `/commercial-legal:cold-start-interview --redo <section>` to re-do one part."
+**Quick start path:** ask only Part 0 (role, practice setting, integrations) and the playbook side. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for playbook positions, escalation thresholds, and house style. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run the Settings page anytime to do the whole interview, or the Settings page to re-do one part."
 
 **Full setup path:** the existing interview flow below.
 
@@ -153,7 +153,7 @@ Corollary: the interview's inputs are the user's typed answers and documents the
 - **For uploads and seed docs:** "Paste the contents, share a file path, or say 'skip for now.' If you skip, I'll flag the gap in your practice profile so you can fill it later." Then actually wait.
 - **Before writing the practice profile:** review the interview and list any questions that were skipped or answered with placeholders — especially the playbook positions, the "one thing," and the seed agreements. Say: "Before I write your practice profile, here's what's still open: [list]. Want to fill any of these now, or leave them as placeholders?" Then wait.
 - **Never** write a practice profile with silent gaps. Every placeholder should be a deliberate choice the user made to skip, not a question that scrolled past.
-- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Run `/commercial-legal:cold-start-interview` again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/commercial-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run /commercial-legal:cold-start-interview to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
+- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Configure this agent in Settings again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/commercial-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run the Settings page to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
 
 **Verify user-stated legal facts as they come up in setup.** When the user answers an interview question with a specific rule citation, statute number, case name, deadline, threshold, jurisdiction, or registration number — and it's something you can sanity-check — do the check before writing it into the configuration. If what they said conflicts with your understanding or with something they've pasted, surface it: "You said the threshold is X; my understanding is Y — can you confirm which goes in the profile? `[premise flagged — verify]`" A wrong fact written into CLAUDE.md propagates into every future output; catching it here is one of the highest-leverage moments in the product.
 
@@ -208,7 +208,7 @@ Then report findings in this form:
 
 > - ✓ [Integration] — connected (tested)
 > - ⚪ [Integration] — configured but not verified. Open your MCP settings to confirm.
-> - ✗ [Integration] — not found. [Feature] will fall back to [manual alternative]. [How to connect.] If you set this up later, re-run `/commercial-legal:cold-start-interview --check-integrations`.
+> - ✗ [Integration] — not found. [Feature] will fall back to [manual alternative]. [How to connect.] If you set this up later, re-run the Settings page to check integrations.
 >
 > You don't need all of these. Core features work with file access alone.
 
@@ -268,9 +268,9 @@ Ask conversationally, one cluster at a time. Don't interrogate — listen for wh
 
 Handle the response:
 
-- **One side (sales or purchasing):** "Got it. Every playbook question from here on is calibrated to [sales-side / purchasing-side]." Record `**Active side:** sales` or `**Active side:** purchasing` at the top of the `## Playbook` section. Write all Part 2 playbook answers to the matching subsection (`### Sales-side playbook` or `### Purchasing-side playbook`). Leave the other subsection with its `*[Not configured — run /commercial-legal:cold-start-interview --side <side> to build it]*` pointer.
+- **One side (sales or purchasing):** "Got it. Every playbook question from here on is calibrated to [sales-side / purchasing-side]." Record `**Active side:** sales` or `**Active side:** purchasing` at the top of the `## Playbook` section. Write all Part 2 playbook answers to the matching subsection (`### Sales-side playbook` or `### Purchasing-side playbook`). Leave the other subsection with its `*[Not configured — run the Settings page to configure playbook<side> to build it]*` pointer.
 
-- **Both:** "Got it. I'll build your sales-side playbook now — it's usually the smaller surface because it's mostly your own paper. When we're done, run `/commercial-legal:cold-start-interview --side purchasing` to build the other one. Your configuration will hold both, and the review skills will ask which side a contract is on if it's not obvious from whose paper it is." Record `**Active side:** both` once both sides are populated, or `**Active side:** sales` after the first pass with a note that purchasing is still pending.
+- **Both:** "Got it. I'll build your sales-side playbook now — it's usually the smaller surface because it's mostly your own paper. When we're done, run the Settings page to configure the purchasing-side playbook to build the other one. Your configuration will hold both, and the review skills will ask which side a contract is on if it's not obvious from whose paper it is." Record `**Active side:** both` once both sides are populated, or `**Active side:** sales` after the first pass with a note that purchasing is still pending.
 
 Carry the selected side through Part 2. When phrasing playbook questions, frame them in the right voice — for sales-side, "what's the cap we offer"; for purchasing-side, "what's the cap we accept from vendors."
 
@@ -295,7 +295,7 @@ Carry the selected side through Part 2. When phrasing playbook questions, frame 
 
 **Calibrate to the side chosen in Part 1.** Frame every question in the voice of the side being built. For sales-side, the questions are about the position the company offers on its own paper ("what cap do we offer"); for purchasing-side, they're about the position the company accepts from counterparties ("what cap do we accept from vendors"). Never mix.
 
-If the user picked **both**, run Part 2 once for sales-side now. Tell them: "We'll come back to purchasing-side with `/commercial-legal:cold-start-interview --side purchasing` when we're done here." Write sales-side answers to `### Sales-side playbook`.
+If the user picked **both**, run Part 2 once for sales-side now. Tell them: "We'll come back to purchasing-side with the Settings page to configure the purchasing-side playbook when we're done here." Write sales-side answers to `### Sales-side playbook`.
 
 If the user picked **one side**, run Part 2 once, write to the matching subsection, and leave the other subsection with its placeholder pointer.
 
@@ -434,7 +434,7 @@ contract lifecycle management.
 | Document storage (Drive / SharePoint / Box) | [✓ / ✗] | User uploads agreements directly for each review |
 | Slack | [✓ / ✗] | Alerts and stakeholder summaries delivered inline instead of posted |
 
-*Re-check: `/commercial-legal:cold-start-interview --check-integrations`*
+*Re-check: the Settings page to check integrations*
 
 ---
 
@@ -450,7 +450,7 @@ contract lifecycle management.
 
 *Applies when the company is the vendor. Usually our paper.*
 
-*[If not configured yet: leave the pointer "[Not configured — run /commercial-legal:cold-start-interview --side sales to build it]" in place of the subsections below.]*
+*[If not configured yet: leave the pointer "[Not configured — run the Settings page to configure playbook to build it]" in place of the subsections below.]*
 
 #### Limitation of liability
 
@@ -495,7 +495,7 @@ contract lifecycle management.
 
 *Applies when the company is the customer. Usually their paper.*
 
-*[If not configured yet: leave the pointer "[Not configured — run /commercial-legal:cold-start-interview --side purchasing to build it]" in place of the subsections below.]*
+*[If not configured yet: leave the pointer "[Not configured — run the Settings page to configure playbook to build it]" in place of the subsections below.]*
 
 [Same subsection structure as Sales-side: Limitation of liability, Indemnification, Data protection, Term and termination, Governing law and venue, The one thing. Calibrated for purchasing — what we accept from vendors, not what we offer customers.]
 
@@ -568,7 +568,7 @@ lookback_months: 12
 
 ---
 
-*To re-run the interview: `/commercial-legal:cold-start-interview --redo`*
+*To re-run the interview: the Settings page to reconfigure*
 ```
 
 ## After writing the practice profile
@@ -581,12 +581,12 @@ If yes, show this tailored list (not a generic template — these are the concre
 
 > **Here's what I'm good at in commercial contracts:**
 >
-> - **Review a vendor MSA against your playbook** — e.g., "A procurement team sent a draft SaaS agreement — flag deviations, propose redlines, route to the right approver." Try: `/commercial-legal:review`
-> - **Triage an inbound NDA to GREEN / YELLOW / RED** — e.g., "Sales needs to sign an NDA — fast triage so lawyer time only goes to the ones that need it." Try: `/commercial-legal:review`
-> - **Track renewal deadlines** — e.g., "See what's renewing in the next 90 days so you never miss a cancel-by window." Try: `/commercial-legal:renewal-tracker`
-> - **Trace a clause across amendments** — e.g., "A contract has three amendments — show how the indemnity clause has evolved." Try: `/commercial-legal:amendment-history`
-> - **Escalate a deviation** — e.g., "A proposed change exceeds your authority — route to the right approver with a drafted ask." Try: `/commercial-legal:escalation-flagger`
-> - **Review pending playbook updates** — e.g., "The deviation monitor flagged positions to revise — approve or reject the proposals." Try: `/commercial-legal:review-proposals`
+> - **Review a vendor MSA against your playbook** — e.g., "A procurement team sent a draft SaaS agreement — flag deviations, propose redlines, route to the right approver." Try: the review workflow
+> - **Triage an inbound NDA to GREEN / YELLOW / RED** — e.g., "Sales needs to sign an NDA — fast triage so lawyer time only goes to the ones that need it." Try: the review workflow
+> - **Track renewal deadlines** — e.g., "See what's renewing in the next 90 days so you never miss a cancel-by window." Try: the renewal-tracker workflow
+> - **Trace a clause across amendments** — e.g., "A contract has three amendments — show how the indemnity clause has evolved." Try: the amendment-history workflow
+> - **Escalate a deviation** — e.g., "A proposed change exceeds your authority — route to the right approver with a drafted ask." Try: the escalation-flagger workflow
+> - **Review pending playbook updates** — e.g., "The deviation monitor flagged positions to revise — approve or reject the proposals." Try: the review-proposals workflow
 >
 > **My suggestion for your first one:** Triage an inbound NDA you're sitting on — it's a 2-minute feel-out of how the playbook reads. Or tell me what's on your plate and I'll pick.
 
@@ -610,8 +610,8 @@ This solves the cold-start problem (the supervisor doesn't know what to do first
    > "Done. Your practice profile is at `claude-for-legal/agents/commercial-legal/CLAUDE.md` — it's a plain text file you can read and edit directly. Anything you answered can be changed:
    >
    > - Edit the file directly for a quick change (a new fallback, a revised threshold, a name swap)
-   > - Run `/commercial-legal:cold-start-interview --redo` for a full re-interview
-   > - Run `/commercial-legal:cold-start-interview --check-integrations` to re-check what's connected
+   > - Run the Settings page to reconfigure for a full re-interview
+   > - Run the Settings page to check integrations to re-check what's connected
    >
    > The sections most often adjusted after first setup are the escalation thresholds and approval matrix, the playbook positions on LoL / indemnity / DPA, and the 'one thing' deal-breaker."
 
@@ -624,7 +624,7 @@ After writing the practice profile, close with this note:
 > - When a skill's output feels off, that's usually a position to tune. The output will tell you which one.
 > - The `playbook-monitor` agent watches for patterns. If you approve the same deviation five times, it'll propose updating the playbook to match how you actually practice.
 > - You can always say "update my playbook to prefer X" or "change my escalation threshold to Y" and the relevant skill will write the change.
-> - Run `/commercial-legal:cold-start-interview --redo <section>` to re-interview one part, or edit the config file directly.
+> - Run the Settings page to re-interview one part, or edit the config file directly.
 >
 > Ten minutes of setup gets you a working profile. A month of use gets you one that reads like you wrote it yourself.
 

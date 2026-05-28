@@ -18,7 +18,7 @@ argument-hint: "[optional: practice area hint]"
 5. Output formatted case summary with AI-assisted label, verification prompts, supervision routing.
 
 ```
-/legal-clinic:client-intake
+Use the client-intake workflow
 ```
 
 ---
@@ -39,7 +39,7 @@ This skill structures the conversation, produces the write-up, spots issues acro
 
 ## Read the supervisor guide
 
-Check for a practice-area guide at `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. If one exists, use its intake questions, red flags, and good-fit criteria instead of the generic defaults below. If one doesn't exist, use the generic intake and note at the end of the intake summary: "This was a generic intake — your supervisor can tailor the questions for your clinic type with `/legal-clinic:build-guide`."
+Check for a practice-area guide at `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. If one exists, use its intake questions, red flags, and good-fit criteria instead of the generic defaults below. If one doesn't exist, use the generic intake and note at the end of the intake summary: "This was a generic intake — your supervisor can tailor the questions for your clinic type with the build-guide workflow."
 
 When the intake starts before the practice area is routed (Step 1 of the workflow below), re-check for the guide after routing — the guide path depends on which practice area the intake landed in.
 
@@ -127,12 +127,12 @@ Per `claude-for-legal/agents/legal-clinic/CLAUDE.md` supervision style and flag 
 
 ### Step 7: Deadline handoff — required deliverable
 
-If the intake surfaces any timeline deadline (answer due, hearing, statute-of-limitations cutoff, cure period, filing window, notice window, ICE check-in, removal hearing, eviction court date, protective order renewal), **emit a copy-paste-ready `/legal-clinic:deadlines --add ...` block as part of the intake output**. This is a required deliverable, not a suggestion — the intake identifies deadlines, and the student shouldn't have to re-transcribe them into the deadline skill.
+If the intake surfaces any timeline deadline (answer due, hearing, statute-of-limitations cutoff, cure period, filing window, notice window, ICE check-in, removal hearing, eviction court date, protective order renewal), **emit a copy-paste-ready the deadlines workflow (--add ...) block as part of the intake output**. This is a required deliverable, not a suggestion — the intake identifies deadlines, and the student shouldn't have to re-transcribe them into the deadline skill.
 
 Format each deadline as a fenced code block the student can copy, with every field pre-populated from the intake:
 
 ```
-/legal-clinic:deadlines --add
+Use the deadlines workflow: --add
   case=[case slug or client-last-name-keyword]
   type=[response|hearing|statute-of-limitations|discovery|cure-period|filing-window|notice|other]
   description="[one-line description of what is due]"
@@ -200,7 +200,7 @@ Rules:
 
 ## Deadlines to log
 
-[One `/legal-clinic:deadlines --add ...` block per surfaced deadline — Step 7.
+[One the deadlines workflow (--add ...) block per surfaced deadline — Step 7.
 If none, omit this section.]
 
 ## Jurisdictional notes

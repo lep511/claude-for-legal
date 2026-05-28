@@ -21,7 +21,7 @@ and (for patents) treble damages.
 ## Instructions
 
 1. Read `claude-for-legal/agents/ip-legal/CLAUDE.md`. If it
-   contains `[PLACEHOLDER]`, stop and direct to `/ip-legal:cold-start-interview`.
+   contains `[PLACEHOLDER]`, stop and direct to the Settings page.
 2. Follow the workflow below.
 3. Ask which right is at issue — trademark / copyright / patent / trade secret
    / mixed. If mixed, run each separately; do not blend.
@@ -43,23 +43,23 @@ and (for patents) treble damages.
    the work-product header per role.
 8. End with recommended next steps, the non-lawyer gate if the role is
    non-lawyer, and — if the practice posture supports assertion — an offer to
-   draft the C&D via `/ip-legal:cease-desist` or the takedown via
-   `/ip-legal:takedown`. Do not draft automatically.
+   draft the C&D via the cease-desist workflow or the takedown via
+   the takedown workflow. Do not draft automatically.
 
 This skill never concludes. If uncertain, flag — the attorney decides.
 
 ## Examples
 
 ```
-/ip-legal:infringement-triage "competitor launched a tool called APEXSEED in class 9 — we have APEXLEAF registered in class 9; likely confusion?"
+Use the infringement-triage workflow: "competitor launched a tool called APEXSEED in class 9 — we have APEXLEAF registered in class 9; likely confusion?"
 ```
 
 ```
-/ip-legal:infringement-triage "former engineer took notes on our model architecture to a competitor — possible trade secret?"
+Use the infringement-triage workflow: "former engineer took notes on our model architecture to a competitor — possible trade secret?"
 ```
 
 ```
-/ip-legal:infringement-triage
+Use the infringement-triage workflow
 ```
 
 (And the skill will ask which right and for the facts.)
@@ -91,7 +91,7 @@ the attorney narrows. Stay on the two-way door side.
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ip-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 Infringement triages often lead into cease-and-desist drafting or takedown
 routing. Open a matter if one isn't active and the practice is private — the
@@ -121,14 +121,14 @@ If the config has `[PLACEHOLDER]`, surface this bounce:
 > I notice you haven't configured your practice profile yet — that's how I tailor posture, jurisdictions, and approval chain to your practice.
 >
 > **Two choices:**
-> - Run `/ip-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll run this tailored to YOUR practice.
+> - Configure this agent in Settings (2 minutes) to configure your profile, then I'll run this tailored to YOUR practice.
 > - Say **"provisional"** and I'll run this against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run the infringement triage normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no playbook (do the full analysis rather than matching against a position list). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/ip-legal:cold-start-interview` to get output calibrated to YOUR practice — your playbook, your jurisdiction, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Configure this agent in Settings to get output calibrated to YOUR practice — your playbook, your jurisdiction, your risk appetite. 2 minutes."
 
 ---
 
@@ -288,7 +288,7 @@ ownership / registration / safe-harbor threshold notes. Routing per posture.
 
 ## Patent mode
 
-**Route to `/ip-legal:fto-triage` for the detailed framework.** This mode is the
+**Route to the fto-triage workflow for the detailed framework.** This mode is the
 mirror image of the FTO skill — same claim charts, same doctrine-of-equivalents
 flag, same all-elements rule — applied to an accused product instead of one's
 own.
@@ -412,7 +412,7 @@ patent mode uses the same format with "accused product" substituted for
 ### Handoff to the full claim chart
 
 For a detailed element-by-element claim chart suitable for infringement or
-invalidity contentions, run `/litigation-legal:claim-chart`. This triage's
+invalidity contentions, run the claim-chart workflow. This triage's
 claim chart is a first pass to identify the strongest and weakest mappings;
 the litigation claim chart builds the full chart with pin cites, claim
 construction flags, dependent claims, and the verification workflow that
@@ -586,14 +586,14 @@ Append a one-line entry to the matter's `history.md` if a matter is active.
 If the triage output points toward an assertion and the practice profile's
 posture supports it, offer:
 
-> Want me to draft a cease-and-desist on this? Run `/ip-legal:cease-desist`.
+> Want me to draft a cease-and-desist on this? Run the cease-desist workflow.
 > I'll use the flag list from this triage as the factual basis and apply the
 > approval chain from your practice profile — the letter won't go anywhere
 > without the approver signing off.
 
 Or, if the mode is copyright and the accused is hosted content:
 
-> Want me to prepare a DMCA takedown? Run `/ip-legal:takedown`.
+> Want me to prepare a DMCA takedown? Run the takedown workflow.
 
 Do not draft the letter automatically from the triage. The decision to assert
 is the approver's, not the triage's.
@@ -614,7 +614,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 - **Decide fair use as a matter of law.** Fair use is fact-intensive and
   reserved for the attorney and, ultimately, the court.
 - **Draft the C&D, takedown, or complaint.** Those are separate skills
-  (`/ip-legal:cease-desist`, `/ip-legal:takedown`) gated by the approval
+  (the cease-desist workflow, the takedown workflow) gated by the approval
   chain in the practice profile.
 - **Quote outputs to counterparties.** Privileged if the header applies.
 

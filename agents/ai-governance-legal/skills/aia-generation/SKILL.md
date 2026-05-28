@@ -22,14 +22,14 @@ argument-hint: "[describe the use case or system, or pass a triage result]"
 7. Output: assessment doc + conditions list + handoff flags (privacy PIA, vendor review if needed).
 
 ```
-/ai-governance-legal:aia-generation "AI résumé screening for HR"
+Use the aia-generation workflow: "AI résumé screening for HR"
 ```
 
 ---
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ai-governance-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -323,7 +323,7 @@ One of them has to change — not both flagged and left open.]
 **Conditions (if any):**
 - [ ] [specific action before deployment — owner, deadline]
 
-**Privacy review required?** [Yes — run `/privacy-legal:pia-generation`, if the plugin is installed /
+**Privacy review required?** [Yes — run the pia-generation workflow, if the plugin is installed /
 No]
 
 **Sign-off:** [name, date]
@@ -380,8 +380,8 @@ Flag every mismatch. One of them has to change before deployment.
 - **To product / engineering:** Conditions list with owners and deadlines. Not
   "add oversight" — "add a human review step before any automated email is sent,
   owner: [product lead], before launch."
-- **To privacy:** If personal data is involved, flag: "Run `/privacy-legal:pia-generation [system name]` in parallel, if the plugin is installed — the AIA doesn't substitute for a PIA."
-- **To vendor-ai-review:** If a new vendor is involved, flag: "If there's no AI addendum reviewed for [vendor], run `/ai-governance-legal:vendor-ai-review` before production."
+- **To privacy:** If personal data is involved, flag: "Run the pia-generation workflow ([system name]) in parallel, if the plugin is installed — the AIA doesn't substitute for a PIA."
+- **To vendor-ai-review:** If a new vendor is involved, flag: "If there's no AI addendum reviewed for [vendor], run the vendor-ai-review workflow before production."
 - **To reg-gap-analysis:** If new regulatory obligations emerged (EU AI Act high-risk, new sector rule), that skill tracks the gap.
 
 ---

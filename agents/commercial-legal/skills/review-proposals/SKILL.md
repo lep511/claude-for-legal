@@ -30,10 +30,10 @@ Steps through pending playbook update proposals from the monitor agent and appli
 ## Examples
 
 ```
-/commercial-legal:review-proposals
+Use the review-proposals workflow
 ```
 
 ```
-/commercial-legal:review-proposals
+Use the review-proposals workflow
 (runs automatically after playbook-monitor notifies you)
 ```

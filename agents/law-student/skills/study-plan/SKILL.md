@@ -220,7 +220,7 @@ session_history:
     weak_subtopics: [hearsay-exceptions, character-evidence]
 ```
 
-On the next `/law-student:study-plan --update` run (or when any skill detects the plan is stale):
+On the next the study-plan workflow (--update) run (or when any skill detects the plan is stale):
 - Subjects with consistently low scores get promoted in `priority` and `weekly_hours`.
 - Weak subtopics within a subject get flagged for the next scheduled session on that subject.
 - If the student is falling behind (scheduled sessions not appearing in history), adjust: either compress coverage or note the gap and ask.
@@ -235,10 +235,10 @@ On the next `/law-student:study-plan --update` run (or when any skill detects th
 
 ## Integration
 
-- `/law-student:session <subject> <n>` writes results to this plan's `session_history`.
-- `/law-student:bar-prep-questions` reads the plan to know which subject is scheduled for today.
-- `/law-student:flashcards` can `--session <n>` and results land in the plan.
-- `/law-student:socratic-drill` and `/law-student:irac-practice` session completions also append.
+- the session workflow (<subject> <n>) writes results to this plan's `session_history`.
+- the bar-prep-questions workflow reads the plan to know which subject is scheduled for today.
+- the flashcards workflow can `--session <n>` and results land in the plan.
+- the socratic-drill workflow and the irac-practice workflow session completions also append.
 
 ## What this skill does not do
 

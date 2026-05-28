@@ -32,6 +32,11 @@ from api_handlers import (
     AGENTS, SENTINEL, registry, run_agent_turn,
 )
 from session_manager import Session, OUT_DIR
+from profile_manager import (
+    get_schema, get_values, save_values, get_status,
+    get_all_statuses, reset_profile, extract_placeholders,
+)
+from skill_runner import list_skills, build_skill_prompt
 
 
 CORS_ORIGINS = os.getenv("API_CORS_ORIGINS", "http://localhost:35428").split(",")
@@ -257,6 +262,111 @@ async def chat(request: ChatRequest):
                 if item is SENTINEL:
                     break
 
+                yield _sse_format(item["event"], item["data"])
+                last_heartbeat = time.time()
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream", headers={
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "X-Accel-Buffering": "no",
+    })
+
+
+# --- Profile endpoints ---
+
+@app.get("/api/profiles")
+async def list_profiles():
+    return get_all_statuses()
+
+
+@app.get("/api/profiles/{slug}")
+async def get_profile(slug: str):
+    try:
+        schema = get_schema(slug)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    return {
+        "slug": slug,
+        "status": get_status(slug),
+        "schema": schema,
+        "values": get_values(slug),
+    }
+
+
+class ProfileUpdateRequest(BaseModel):
+    values: dict[str, str]
+
+
+@app.put("/api/profiles/{slug}")
+async def update_profile(slug: str, body: ProfileUpdateRequest):
+    try:
+        result = save_values(slug, body.values)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    return result
+
+
+@app.post("/api/profiles/{slug}/reset")
+async def reset_agent_profile(slug: str):
+    try:
+        result = reset_profile(slug)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    return result
+
+
+# --- Skill endpoints ---
+
+@app.get("/api/agents/{slug}/skills")
+async def get_agent_skills(slug: str):
+    skills = list_skills(slug)
+    if skills is None:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    return skills
+
+
+class SkillRequest(BaseModel):
+    session_id: str
+    params: dict[str, str] | None = None
+
+
+@app.post("/api/agents/{slug}/skills/{skill_name}")
+async def run_skill(slug: str, skill_name: str, request: SkillRequest):
+    prompt = build_skill_prompt(slug, skill_name, request.params)
+    if prompt is None:
+        raise HTTPException(status_code=404, detail="Skill not found")
+
+    session_id = request.session_id
+    try:
+        state = await registry.load_existing(session_id)
+    except FileNotFoundError:
+        state = await registry.get_or_create(session_id)
+
+    if state.lock.locked():
+        raise HTTPException(status_code=409, detail="Session is busy")
+
+    async def event_stream():
+        queue: asyncio.Queue = asyncio.Queue()
+        async with state.lock:
+            agent_task = asyncio.create_task(
+                run_agent_turn(state, prompt, queue, True)
+            )
+            last_heartbeat = time.time()
+            while True:
+                try:
+                    item = await asyncio.wait_for(queue.get(), timeout=0.1)
+                except asyncio.TimeoutError:
+                    if time.time() - last_heartbeat > HEARTBEAT_INTERVAL:
+                        yield _sse_format("heartbeat", {})
+                        last_heartbeat = time.time()
+                    if agent_task.done():
+                        exc = agent_task.exception()
+                        if exc:
+                            yield _sse_format("error", {"message": str(exc), "type": type(exc).__name__})
+                        break
+                    continue
+                if item is SENTINEL:
+                    break
                 yield _sse_format(item["event"], item["data"])
                 last_heartbeat = time.time()
 

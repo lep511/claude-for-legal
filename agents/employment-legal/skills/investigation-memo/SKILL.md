@@ -23,11 +23,11 @@ or updates an existing draft when new data has been added.
 ## Examples
 
 ```
-/employment-legal:investigation-memo [matter name]
+Use the investigation-memo workflow: [matter name]
 ```
 
 ```
-/employment-legal:investigation-memo [matter name]
+Use the investigation-memo workflow: [matter name]
 (updates existing memo if one exists)
 ```
 

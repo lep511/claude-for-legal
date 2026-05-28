@@ -17,7 +17,7 @@ In-house corporate counsel workflows across four practice areas: M&A deals, boar
 ## First run
 
 ```
-/corporate-legal:cold-start-interview
+the Settings page
 ```
 
 Walks through module selection, then a short targeted interview for each active area. Writes a modular `claude-for-legal/agents/corporate-legal/CLAUDE.md` with only the relevant sections. Your configuration is stored at that path and survives plugin updates.
@@ -25,22 +25,22 @@ Walks through module selection, then a short targeted interview for each active 
 Per-deal setup (M&A module only):
 
 ```
-/corporate-legal:cold-start-interview --new-deal
+the Settings page --new-deal
 ```
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/corporate-legal:cold-start-interview` | Modular cold-start, or `--new-deal` / `--module [m&a \| board \| public \| entities]` |
-| `/corporate-legal:diligence-issue-extraction [folder]` | Read VDR docs, extract issues in house format |
-| `/corporate-legal:tabular-review` | Tabular review — one row per document, one column per data point, every cell cited to source, Excel output |
-| `/corporate-legal:material-contract-schedule` | Material contracts disclosure schedule from diligence findings |
-| `/corporate-legal:closing-checklist` | Closing checklist — what's blocking, critical path |
-| `/corporate-legal:written-consent` | Unanimous written consent — precedent-matched draft + signatory tracker |
-| `/corporate-legal:entity-compliance` | Entity compliance tracker — init, report, update, audit, export |
-| `/corporate-legal:integration-management` | Post-closing integration workplan, consents tracker, contract assignment, status reports |
-| `/corporate-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Modular cold-start, or `--new-deal` / `--module [m&a \| board \| public \| entities]` |
+| the diligence-issue-extraction workflow ([folder]) | Read VDR docs, extract issues in house format |
+| the tabular-review workflow | Tabular review — one row per document, one column per data point, every cell cited to source, Excel output |
+| the material-contract-schedule workflow | Material contracts disclosure schedule from diligence findings |
+| the closing-checklist workflow | Closing checklist — what's blocking, critical path |
+| the written-consent workflow | Unanimous written consent — precedent-matched draft + signatory tracker |
+| the entity-compliance workflow | Entity compliance tracker — init, report, update, audit, export |
+| the integration-management workflow | Post-closing integration workplan, consents tracker, contract assignment, status reports |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 
 ## Prerequisites
 

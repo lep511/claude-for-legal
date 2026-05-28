@@ -26,19 +26,19 @@ Prospective only — for existing relationships, consult counsel.
 ## Examples
 
 ```
-/employment-legal:worker-classification
+Use the worker-classification workflow
 We want to bring on a data scientist for 6 months, working out of our
 SF office, using our tools, embedded in our analytics team.
 ```
 
 ```
-/employment-legal:worker-classification
+Use the worker-classification workflow
 Is our recruiter contractor arrangement okay? She works exclusively for
 us, sets her own hours, uses her own laptop, project fee per placement.
 ```
 
 ```
-/employment-legal:worker-classification
+Use the worker-classification workflow
 (skill will ask for details)
 ```
 
@@ -46,7 +46,7 @@ us, sets her own hours, uses her own laptop, project fee per placement.
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/employment-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/employment-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/employment-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -353,7 +353,7 @@ why it's cleaner for this fact pattern."]
 [If escalation needed: "Do not proceed until counsel reviews the [specific
 issue]."]
 [If employee confirmed: "Classification confirmed as W-2 employee — run
-`/employment-legal:hiring-review` to review the offer letter, restrictive
+the hiring-review workflow to review the offer letter, restrictive
 covenants, and jurisdiction-specific requirements."]
 [If IC confirmed: "Classification confirmed as independent contractor — no
 offer letter review needed. Ensure the written agreement reflects IC-supporting

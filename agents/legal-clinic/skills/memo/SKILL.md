@@ -18,7 +18,7 @@ argument-hint: "[optional: specific issue to focus]"
 5. Output with prominent "the analysis is yours" label.
 
 ```
-/legal-clinic:memo
+Use the memo workflow
 ```
 
 ---

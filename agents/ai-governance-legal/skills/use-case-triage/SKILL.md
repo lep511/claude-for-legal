@@ -18,14 +18,14 @@ argument-hint: "[describe the use case, or 'batch' to triage a list]"
 5. Propose registry update if use case wasn't already in the registry.
 
 ```
-/ai-governance-legal:use-case-triage "Sales team wants to score leads with AI automatically"
+Use the use-case-triage workflow: "Sales team wants to score leads with AI automatically"
 ```
 
 ---
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ai-governance-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -49,14 +49,14 @@ If `claude-for-legal/agents/ai-governance-legal/CLAUDE.md` contains `[PLACEHOLDE
 > I notice you haven't configured your practice profile yet — that's how I tailor the use case registry, red lines, and governance tiers to your practice.
 >
 > **Two choices:**
-> - Run `/ai-governance-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll triage tailored to YOUR practice.
+> - Configure this agent in Settings (2 minutes) to configure your profile, then I'll triage tailored to YOUR practice.
 > - Say **"provisional"** and I'll triage against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run triage normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no registry (classify by general AI governance principles rather than matching to a registered entry). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/ai-governance-legal:cold-start-interview` to get output calibrated to YOUR practice — your registry, your jurisdiction, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Configure this agent in Settings to get output calibrated to YOUR practice — your registry, your jurisdiction, your risk appetite. 2 minutes."
 
 **Jurisdictional scope.** Triage applies the registry, red lines, and governance tiers configured for the regulatory footprint in `claude-for-legal/agents/ai-governance-legal/CLAUDE.md`. AI rules vary materially by jurisdiction — an APPROVED classification in one footprint may be CONDITIONAL or prohibited in another. If deployment touches a jurisdiction not in the footprint, surface that and re-triage rather than extending by analogy.
 
@@ -216,7 +216,7 @@ tier already determined.
 
 If they say no (or don't respond), the triage result stands as a standalone output.
 The AIA can be run any time with:
-`/ai-governance-legal:aia-generation [use case]`
+the aia-generation workflow ([use case])
 
 ---
 
@@ -237,13 +237,13 @@ for every no.
 customer data, behavioral data — flag it:
 
 > "This use case involves personal data. A PIA is likely required in addition to
-> an AI impact assessment. Use `/privacy-legal:pia-generation [use case]`, if the
+> an AI impact assessment. Use the pia-generation workflow ([use case]), if the
 > plugin is installed, to run that in parallel."
 
 **Product counsel handoff:** If this is a new product feature involving AI:
 
 > "If this use case is part of a product launch, loop in product counsel.
-> Use `/product-legal:launch-review`, if the plugin is installed — it will detect
+> Use the launch-review workflow, if the plugin is installed — it will detect
 > the AI component and route to this plugin."
 
 Only flag handoffs that are actually relevant. Don't append both as boilerplate

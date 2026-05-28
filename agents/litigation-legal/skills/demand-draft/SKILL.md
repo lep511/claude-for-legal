@@ -317,7 +317,7 @@ Do not mark as sent — do not execute the Send mechanics below — without an e
 **Reason:** [demand type / exposure / counterparty type]
 **Your call:** [material → create matter] [immaterial → demand-letters record only]
 
-If material: `/litigation-legal:matter-intake` with `source: demand-letter` pre-populated from this intake.
+If material: the matter-intake workflow with `source: demand-letter` pre-populated from this intake.
 ```
 
 ### Matter auto-creation offer

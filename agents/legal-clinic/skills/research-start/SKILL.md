@@ -18,7 +18,7 @@ argument-hint: "[legal issue]"
 5. Output with prominent "leads not authorities" header. Everything is a starting point the student verifies.
 
 ```
-/legal-clinic:research-start "habitability defense to nonpayment eviction in [State]"
+Use the research-start workflow: "habitability defense to nonpayment eviction in [State]"
 ```
 
 ---

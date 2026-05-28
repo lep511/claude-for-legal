@@ -22,9 +22,9 @@ description: >
 8. Summary: verification workload (counts of not_present / unclear / needs_review per column), flagged columns, where the files are, reminder that every cell is a lead not a finding.
 
 ```
-/corporate-legal:tabular-review
-/corporate-legal:tabular-review --schema .review-schema.yaml --docs ./vdr/02-Contracts/
-/corporate-legal:tabular-review --template ma-diligence
+Use the tabular-review workflow
+Use the tabular-review workflow: --schema .review-schema.yaml --docs ./vdr/02-Contracts/
+Use the tabular-review workflow: --template ma-diligence
 ```
 
 **`--schema <path>`:** Use an existing schema file instead of building one. Useful for re-runs and incremental additions.
@@ -41,7 +41,7 @@ description: >
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/corporate-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 

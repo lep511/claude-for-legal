@@ -53,23 +53,23 @@ Surfaces what's renewing, adds assets, records filings, and audits the register.
 ## Examples
 
 ```
-/ip-legal:portfolio
+Use the portfolio workflow
 ```
 
 ```
-/ip-legal:portfolio --report --days 180
+Use the portfolio workflow: --report --days 180
 ```
 
 ```
-/ip-legal:portfolio --add
+Use the portfolio workflow: --add
 ```
 
 ```
-/ip-legal:portfolio --update
+Use the portfolio workflow: --update
 ```
 
 ```
-/ip-legal:portfolio --audit
+Use the portfolio workflow: --audit
 ```
 
 ---
@@ -284,7 +284,7 @@ Deadlines computed: [N]
 Agent-managed / jurisdiction TBC: [N] — confirm with foreign associates
 Unknown (missing key dates): [N] — fill in before relying on reports
 
-Run /ip-legal:portfolio --report to see what's due.
+Run the portfolio workflow --report to see what's due.
 ```
 
 ---
@@ -292,7 +292,7 @@ Run /ip-legal:portfolio --report to see what's due.
 ## Mode 2: Report
 
 ```
-/ip-legal:portfolio --report [--days 30|60|90|180]
+Use the portfolio workflow: --report [--days 30|60|90|180]
 ```
 
 Default window: 90 days. Refresh computed deadlines for every asset before
@@ -341,7 +341,7 @@ If the report lists more than ~10 assets, or any time the user asks: offer the d
 ## Mode 3: Add
 
 ```
-/ip-legal:portfolio --add
+Use the portfolio workflow: --add
 ```
 
 Interactive add of a single asset. Ask for:
@@ -382,7 +382,7 @@ Store under `custom_rules:` and apply to future assets in that jurisdiction.
 ## Mode 4: Update
 
 ```
-/ip-legal:portfolio --update
+Use the portfolio workflow: --update
 ```
 
 ### Consequential-action gate
@@ -431,7 +431,7 @@ system doesn't.
 ## Mode 5: Audit
 
 ```
-/ip-legal:portfolio --audit
+Use the portfolio workflow: --audit
 ```
 
 Broader health check beyond this month's deadlines:

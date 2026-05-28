@@ -29,7 +29,7 @@ Matters end. The outcome is the single most valuable data point the portfolio ge
 
 **Conflicts gate — unbypassable.** Before closing, check `_log.yaml` for the matter slug. If the matter is not in `_log.yaml`, refuse and route:
 
-> "I don't see [matter slug] in the matter log. Nothing to close — either the slug is wrong or the matter was never intaken through `/litigation-legal:matter-intake`. Check the slug first; if it genuinely was never intaken, there's no row to update and no file structure to close."
+> "I don't see [matter slug] in the matter log. Nothing to close — either the slug is wrong or the matter was never intaken through the matter-intake workflow. Check the slug first; if it genuinely was never intaken, there's no row to update and no file structure to close."
 
 ## Input
 

@@ -12,7 +12,7 @@ description: >
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/product-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/product-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/product-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -118,17 +118,17 @@ Before finalizing, check against `claude-for-legal/agents/product-legal/CLAUDE.m
 ## Handoffs
 
 - **To AI governance:** If the deep-dive was triggered by an AI feature — which
-  it often is — run `/ai-governance-legal:aia-generation [feature]` in parallel or
+  it often is — run the aia-generation workflow ([feature]) in parallel or
   immediately after. The feature risk assessment frames the decision; the AIA
   documents the AI system specifically in the format AI governance needs. They're
   not duplicates: the FRA is a product-legal decision doc; the AIA is the
   governance record.
 - **To privacy:** If the feature involves new data collection or processing,
-  run `/privacy-legal:pia-generation [feature]`. The FRA's risk section
+  run the pia-generation workflow ([feature]). The FRA's risk section
   will likely overlap with the PIA's — flag that overlap so work isn't duplicated,
   but both docs need to exist.
 - **To AI governance vendor review:** If the feature uses a new AI vendor,
-  run `/ai-governance-legal:vendor-ai-review [vendor agreement]` if not already done
+  run the vendor-ai-review workflow ([vendor agreement]) if not already done
   during the launch review.
 
 ## Output format

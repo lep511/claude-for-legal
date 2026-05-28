@@ -20,7 +20,7 @@ does not do one.
 ## Instructions
 
 1. Read `claude-for-legal/agents/ip-legal/CLAUDE.md`. If it
-   contains `[PLACEHOLDER]`, stop and direct to `/ip-legal:cold-start-interview`. If the
+   contains `[PLACEHOLDER]`, stop and direct to the Settings page. If the
    practice profile shows trademark- or copyright-only (no patent practice),
    say so and route the user elsewhere — this is the wrong tool.
 2. Follow the workflow below.
@@ -48,11 +48,11 @@ flag — a registered patent attorney or agent decides.
 ## Examples
 
 ```
-/ip-legal:invention-intake "a new cache-eviction algorithm that uses a learned model rather than LRU; conceived Q1 this year, not yet disclosed, engineering prototype in internal staging"
+Use the invention-intake workflow: "a new cache-eviction algorithm that uses a learned model rather than LRU; conceived Q1 this year, not yet disclosed, engineering prototype in internal staging"
 ```
 
 ```
-/ip-legal:invention-intake
+Use the invention-intake workflow
 ```
 
 (And the skill will ask for the invention, the problem it solves, how it
@@ -90,7 +90,7 @@ back empty. Stay on the two-way door side.
 CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest
 of this paragraph — skills use practice-level context and the matter machinery
 is invisible. If enabled and there is no active matter, ask: "Which matter is
-this for? Run `/ip-legal:matter-workspace switch <slug>` or say `practice-level`." Load
+this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load
 the active matter's `matter.md` for matter-specific context and overrides.
 Write outputs to the matter folder at
 `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`.
@@ -108,7 +108,7 @@ channels.
 
 **Before reading the disclosure, read
 `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If it is
-missing or still contains placeholders, stop and run `/ip-legal:cold-start-interview`. The
+missing or still contains placeholders, stop and configure this agent in Settings. The
 practice profile tells you:
 
 - The company's **patent filing strategy** — offensive (building an assertion

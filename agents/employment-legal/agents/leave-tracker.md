@@ -6,7 +6,7 @@ description: >
   accommodation — and fires decision-point alerts before deadlines are missed.
   Not a status report; tells you what decision is required and when.
   Run weekly (set a Monday-morning reminder to invoke
-  `/employment-legal:leave-tracker`). Automated scheduling requires a
+  the leave-tracker workflow). Automated scheduling requires a
   separate integration — Claude Code agents do not self-schedule.
   Trigger phrases: "leave tracker", "open leaves", "FMLA status", "check
   leaves", "any leave deadlines".
@@ -49,7 +49,7 @@ deadline.
 ## Schedule
 
 This agent does not run on its own. Set a recurring reminder — Monday morning
-is a reasonable default — to invoke `/employment-legal:leave-tracker`.
+is a reasonable default — to invoke the leave-tracker workflow.
 Automated scheduling requires a separate integration (e.g., a cron job or
 calendar reminder) outside the plugin.
 
@@ -76,7 +76,7 @@ status.
 Read `claude-for-legal/agents/employment-legal/leave-register.yaml`. If the file doesn't exist, prompt:
 > "I don't see a leave register. Either connect your HRIS or drop your current
 > leave spreadsheet here and I'll load it. You can also use
-> `/employment-legal:log-leave` to add leaves one at a time."
+> the log-leave workflow to add leaves one at a time."
 Stop until data is provided.
 
 ### Step 3 — Calculate leave status for each open leave

@@ -31,8 +31,8 @@ demand-letters/
 
 ## Workflow
 
-1. `/litigation-legal:demand-intake [title]` → runs adaptive intake, writes `intake.md`
-2. `/litigation-legal:demand-draft [slug]` → runs FRE 408 / privilege / waiver checklist, drafts `.docx`, writes `checklist.md`, offers to create a matter
+1. the demand-intake workflow ([title]) → runs adaptive intake, writes `intake.md`
+2. the demand-draft workflow ([slug]) → runs FRE 408 / privilege / waiver checklist, drafts `.docx`, writes `checklist.md`, offers to create a matter
 
 ## Relationship to matters
 

@@ -20,7 +20,7 @@ flags anything overdue, and surfaces the next priorities.
 
 2. Identify the tracker file: `claude-for-legal/agents/employment-legal/expansion-[slug].yaml`. If it doesn't
    exist, respond: "No expansion tracker found for [country]. Run
-   `/employment-legal:expansion-kickoff [country]` to start one."
+   the expansion-kickoff workflow ([country]) to start one."
 
 3. Read the tracker. Show the current state:
 
@@ -61,11 +61,11 @@ Next priority: [top open item].
 ## Examples
 
 ```
-/employment-legal:expansion-update Germany
+Use the expansion-update workflow: Germany
 ```
 
 ```
-/employment-legal:expansion-update
+Use the expansion-update workflow
 (will ask which country if multiple trackers exist)
 ```
 

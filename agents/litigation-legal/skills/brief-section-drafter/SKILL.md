@@ -83,7 +83,7 @@ A rebuttal that sounds like a re-read of the opening loses ground. The draft sho
 
 **Conflicts gate — unbypassable.** Before drafting, check `claude-for-legal/agents/litigation-legal/matters/_log.yaml` for the matter slug this skill is being invoked on. If the matter is not in `_log.yaml`, refuse and route:
 
-> "I don't see [matter slug] in the matter log. Run `/litigation-legal:matter-intake` first so the conflicts check runs and the matter workspace is set up. I won't draft substantive work product on a matter that hasn't been intaken — the conflicts check is the gate."
+> "I don't see [matter slug] in the matter log. Run the matter-intake workflow first so the conflicts check runs and the matter workspace is set up. I won't draft substantive work product on a matter that hasn't been intaken — the conflicts check is the gate."
 
 Do not proceed on an unintaken matter. Intake is what runs conflicts, sets up `matter.md` / `history.md`, and writes the `_log.yaml` row this skill reads from. Skipping it produces work in an unmanaged location and bypasses the firm's conflicts discipline.
 

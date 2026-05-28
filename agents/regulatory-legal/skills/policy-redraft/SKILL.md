@@ -1,6 +1,6 @@
 ---
 name: policy-redraft
-description: Produce a proposed marked-up policy redraft that closes a gap found by /regulatory-legal:gaps or /regulatory-legal:policy-diff. A first draft for internal review — not for direct application to approved policy documents. Use when the user says "redraft the policy", "draft the policy fix", "mark up the policy", or when gap-surfacer hands off a gap for drafting.
+description: Produce a proposed marked-up policy redraft that closes a gap found by the gaps workflow or the policy-diff workflow. A first draft for internal review — not for direct application to approved policy documents. Use when the user says "redraft the policy", "draft the policy fix", "mark up the policy", or when gap-surfacer hands off a gap for drafting.
 argument-hint: "[GAP-ID or gap description]"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[GAP-ID or gap description]"
 
 1. Load `claude-for-legal/agents/regulatory-legal/CLAUDE.md` → policy library index + practice profile.
 2. Use the workflow below.
-3. Gather inputs: the gap (from `/regulatory-legal:gaps` output or described directly), the current approved policy text, the rule text.
+3. Gather inputs: the gap (from the gaps workflow output or described directly), the current approved policy text, the rule text.
 4. Verify the rule is current (per the policy-diff rule-status check). If you can't verify, emit the `⚠️ RULE STATUS UNVERIFIED` banner.
 5. Produce a marked-up redraft of the affected policy section(s) — smallest-possible edit, `[verify]` tags carried through, inline comments explaining WHY each change was made.
 6. Output a Policy Redraft Memo. Write it to a new file named `[policy-name]-proposed-redraft-[YYYY-MM-DD].md` — never write to the source policy document.
@@ -20,7 +20,7 @@ argument-hint: "[GAP-ID or gap description]"
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/regulatory-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/regulatory-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/regulatory-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -48,7 +48,7 @@ Three inputs are required. If any is missing, ask — don't infer.
 One of:
 - A `GAP-ID` from the gap tracker — load the entry from `claude-for-legal/agents/regulatory-legal/gap-tracker.yaml` (or the matter-level equivalent).
 - A gap described in the user's message — capture the requirement, the regulation, and the affected policy.
-- A diff summary pasted from `/regulatory-legal:policy-diff` output.
+- A diff summary pasted from the policy-diff workflow output.
 
 ### 1b. The current policy text
 
@@ -175,7 +175,7 @@ Write to the matter workspace if one is active; otherwise to the current working
 
 This skill reads the policy library index and owners from `claude-for-legal/agents/regulatory-legal/CLAUDE.md`. When a value it needs is empty or still `[PLACEHOLDER]`:
 
-- **Policy owner missing:** still produce the redraft. Note in the reviewer note: "No policy owner is set for [policy] in `## Policy library`. Assign one with `/regulatory-legal:cold-start-interview --redo` so the approval path is routable."
+- **Policy owner missing:** still produce the redraft. Note in the reviewer note: "No policy owner is set for [policy] in `## Policy library`. Assign one with the Settings page to reconfigure so the approval path is routable."
 - **Policy library empty and the gap doesn't name a specific policy:** stop and ask: "I need the current policy text to redraft. Paste the text of the affected policy, or point me at the file."
 
 Say nothing about config when the values are populated.
@@ -183,7 +183,7 @@ Say nothing about config when the values are populated.
 ## Interactions with other skills
 
 - **Upstream inputs** come from `policy-diff` (per-requirement gap analysis) and `gap-surfacer` (the tracker). Carry their source tags and `[verify]` flags through.
-- **Gap tracker state:** this skill does NOT change the tracker. It doesn't mark the gap closed, doesn't mark it in-progress, doesn't touch `notified`. If you want a paper trail that a redraft exists, the policy owner or the user can update the gap entry with a resolution note when the redraft is applied and approved — see `/regulatory-legal:gaps --close`.
+- **Gap tracker state:** this skill does NOT change the tracker. It doesn't mark the gap closed, doesn't mark it in-progress, doesn't touch `notified`. If you want a paper trail that a redraft exists, the policy owner or the user can update the gap entry with a resolution note when the redraft is applied and approved — see the gaps workflow (--close).
 - **Severity floor:** if the upstream gap is 🔴 or 🟠, the memo's Bottom line carries that severity. Silent demotion is a contradiction a reviewing lawyer cannot see. See CLAUDE.md `## Cross-skill severity floor`.
 
 ## Close with the next-steps decision tree

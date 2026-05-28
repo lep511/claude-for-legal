@@ -8,7 +8,7 @@ description: >
   trust a community skill before installing it, before deploying a first-party
   skill to your team, or whenever the user asks "should I trust this?" or
   "is this skill well-designed?". Runs automatically as part of
-  /legal-builder-hub:skill-installer.
+  the skill-installer workflow.
 argument-hint: "[skill path | SKILL.md path | paste content]"
 ---
 
@@ -28,11 +28,11 @@ argument-hint: "[skill path | SKILL.md path | paste content]"
 
 ## Notes
 
-This QA check runs automatically as part of `/legal-builder-hub:skill-installer`. You can also run it directly on any skill before deciding whether to install, or on a first-party skill before deploying to your team.
+This QA check runs automatically as part of the skill-installer workflow. You can also run it directly on any skill before deciding whether to install, or on a first-party skill before deploying to your team.
 Run it deliberately — before incorporating any community skill you did not build,
 or before deploying a first-party skill to your team.
 
-If the user runs `/legal-builder-hub:skill-installer` and then asks "should I trust
+If the user runs the skill-installer workflow and then asks "should I trust
 this?" or "is this well-designed?", route to this skill rather than answering
 inline.
 
@@ -208,7 +208,7 @@ flag which risks cannot be assessed.
 
 ## Step 2.5: Allowlist cross-check (standalone /skills-qa runs)
 
-When `/legal-builder-hub:skills-qa` is invoked directly by the user (not as part of `/legal-builder-hub:skill-installer`), cross-check the skill's source registry and publisher against `claude-for-legal/agents/legal-builder-hub/allowlist.yaml`. This is passive information for the user — it does not gate the QA run, but it surfaces the install posture so a user running `/legal-builder-hub:skills-qa` on a skill they want to install sees the allowlist status up front.
+When the skills-qa workflow is invoked directly by the user (not as part of the skill-installer workflow), cross-check the skill's source registry and publisher against `claude-for-legal/agents/legal-builder-hub/allowlist.yaml`. This is passive information for the user — it does not gate the QA run, but it surfaces the install posture so a user running the skills-qa workflow on a skill they want to install sees the allowlist status up front.
 
 Behavior:
 

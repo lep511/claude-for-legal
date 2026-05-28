@@ -14,13 +14,13 @@ argument-hint: "[optional: practice area — e.g., 'immigration', 'housing']"
 
 1. Load `claude-for-legal/agents/legal-clinic/CLAUDE.md` → role (must be Supervising attorney), practice areas, jurisdiction.
 2. Use the workflow below.
-3. If the user is not the supervising attorney, stop and redirect (students run `/legal-clinic:ramp`).
+3. If the user is not the supervising attorney, stop and redirect (students run the ramp workflow).
 4. Walk through: practice area → intake questions → pedagogy posture → review gates → cross-plugin checks → local rules.
 5. Write `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. Create the `guides/` directory if needed.
-6. Offer a test run — run `/legal-clinic:draft` under the configured posture so the supervisor sees what a student sees.
+6. Offer a test run — run the draft workflow under the configured posture so the supervisor sees what a student sees.
 
 ```
-/legal-clinic:build-guide
+Use the build-guide workflow
 ```
 
 Multiple guides are fine — one per practice area. Re-run this command to revise. Edit the guide file directly for quick changes.
@@ -35,7 +35,7 @@ The supervisor guide is the dial that turns student-facing skills from "get the 
 
 This skill helps a supervisor author that guide in 5-10 minutes per practice area. The guide is plain markdown at a well-known path — edit it by hand anytime.
 
-**Audience: the supervising attorney.** Not students. Students run `/legal-clinic:ramp` and then the student-facing skills; they don't author guides.
+**Audience: the supervising attorney.** Not students. Students run the ramp workflow and then the student-facing skills; they don't author guides.
 
 ## Work-product header
 
@@ -60,7 +60,7 @@ Walk through the checklist at the start of the interview so the supervisor knows
 
 This is a supervisor skill. Read `claude-for-legal/agents/legal-clinic/CLAUDE.md` → `## Who's using this` → Role. If the role is not "Supervising attorney," say:
 
-> This skill is for supervisors — it configures how the student-facing skills behave. If you're the supervisor, make sure your practice profile role is set to "Supervising attorney" in `/legal-clinic:cold-start-interview`. If you're a student, this isn't the right skill for you — run `/legal-clinic:ramp` to onboard, or ask your supervisor to author a guide for your clinic.
+> This skill is for supervisors — it configures how the student-facing skills behave. If you're the supervisor, make sure your practice profile role is set to "Supervising attorney" in the Settings page. If you're a student, this isn't the right skill for you — run the ramp workflow to onboard, or ask your supervisor to author a guide for your clinic.
 
 Stop if the role is not supervising attorney.
 
@@ -70,7 +70,7 @@ Stop if the role is not supervising attorney.
 
 If the answer is "Other," ask for a short name — that name becomes the filename (lowercase, hyphenated: `immigration-removal-defense.md`, `transactional-nonprofit.md`, etc.).
 
-Check the practice areas listed in `CLAUDE.md` → `## Clinic profile` → Practice areas. If the chosen practice area is not listed there, note it: "I'll write this guide, but your practice profile doesn't list [area] as one of your clinic's practice areas. That's fine — you can add it later with `/legal-clinic:cold-start-interview --redo` — but the student-facing skills won't route intakes to this area until the profile lists it."
+Check the practice areas listed in `CLAUDE.md` → `## Clinic profile` → Practice areas. If the chosen practice area is not listed there, note it: "I'll write this guide, but your practice profile doesn't list [area] as one of your clinic's practice areas. That's fine — you can add it later with the Settings page to reconfigure — but the student-facing skills won't route intakes to this area until the profile lists it."
 
 If a guide already exists at `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`, offer: "A guide for [area] already exists at [path]. Do you want to (a) revise it section-by-section, (b) start fresh and overwrite, or (c) see what's there first?"
 
@@ -145,7 +145,7 @@ Write to `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. Creat
 ```markdown
 # Practice-area guide: [Practice area]
 
-*Authored by the supervising attorney via `/legal-clinic:build-guide`. Student-facing skills read this before producing output. Edit directly anytime.*
+*Authored by the supervising attorney via the build-guide workflow. Student-facing skills read this before producing output. Edit directly anytime.*
 
 **Last updated:** [date]
 **Authored by:** [supervising attorney name from CLAUDE.md]
@@ -220,11 +220,11 @@ Fill every section from the supervisor's answers. Leave a section empty only if 
 
 Then tell the supervisor:
 
-> Your guide is at `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. Every student who uses the clinic plugin for [practice area] will have skills that follow it. Edit the file directly to change anything, or re-run `/legal-clinic:build-guide` to revise a section. You can have multiple guides — one per practice area.
+> Your guide is at `claude-for-legal/agents/legal-clinic/guides/<practice-area>.md`. Every student who uses the clinic plugin for [practice area] will have skills that follow it. Edit the file directly to change anything, or re-run the build-guide workflow to revise a section. You can have multiple guides — one per practice area.
 
 ### Step 9: Offer a test run
 
-> Want to see how the pedagogy posture changes the experience? I'll run `/legal-clinic:draft` with a sample client letter under [posture] — you'll see what the student sees.
+> Want to see how the pedagogy posture changes the experience? I'll run the draft workflow with a sample client letter under [posture] — you'll see what the student sees.
 
 If the supervisor says yes, simulate the drafting skill reading the guide they just wrote and producing output under the configured posture. Walk through one full cycle so the supervisor sees exactly what a student would see.
 
@@ -241,11 +241,11 @@ After writing, show a brief confirmation:
 > - Review gates: [summary of what routes to supervisor vs. student]
 > - Cross-plugin: [N] skills wired in
 >
-> Students will see these changes the next time they run a clinic command for this practice area. Edit `[path]` anytime to change anything, or re-run `/legal-clinic:build-guide` to revise.
+> Students will see these changes the next time they run a clinic command for this practice area. Edit `[path]` anytime to change anything, or re-run the build-guide workflow to revise.
 
 ## What this skill does NOT do
 
-- **Configure the plugin globally.** The guide is per-practice-area. For plugin-wide config (supervision style, jurisdiction, practice areas), that's `/legal-clinic:cold-start-interview`.
+- **Configure the plugin globally.** The guide is per-practice-area. For plugin-wide config (supervision style, jurisdiction, practice areas), that's the Settings page.
 - **Author student work product.** This is supervisor-facing configuration, not a draft for a client.
 - **Override the supervision style from cold-start.** The supervision model (formal queue / configurable flags / lighter-touch) is set at setup. Review gates in the guide refine that model for this practice area; they don't replace it.
 - **Make a student skill skip the AI-assisted header, the confidence flags, or the verification prompts.** Those are shared-guardrail baselines. The guide changes posture, not guardrails.

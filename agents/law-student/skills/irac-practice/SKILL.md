@@ -154,14 +154,14 @@ Append to `claude-for-legal/agents/law-student/irac-sessions/[student]/tracker.m
 After 3+ sessions, surface patterns:
 - "You keep missing counterarguments — three sessions in a row."
 - "You're strong on Issue + Rule but consistently weak on Application."
-- "Your organization is strong; the gap is at rule-accuracy. Drill black-letter rules with /law-student:flashcards."
+- "Your organization is strong; the gap is at rule-accuracy. Drill black-letter rules with the flashcards workflow."
 
 Pattern detection is the long-term value of this skill. One-off feedback helps one essay; pattern feedback changes how you study.
 
 ## Integration with other skills
 
-- **legal-writing:** for non-IRAC writing (memos, briefs, papers), use `/law-student:legal-writing` instead
-- **socratic-drill:** if issue-spotting is the recurring gap, `/law-student:socratic-drill` on issue-spotting for the subject before more essay practice
+- **legal-writing:** for non-IRAC writing (memos, briefs, papers), use the legal-writing workflow instead
+- **socratic-drill:** if issue-spotting is the recurring gap, the socratic-drill workflow on issue-spotting for the subject before more essay practice
 - **flashcards:** if rule accuracy is the gap, flashcards are the right tool
 - **outline-builder:** if the student's rule is genuinely wrong in their outline, fixing the outline fixes many future IRACs
 

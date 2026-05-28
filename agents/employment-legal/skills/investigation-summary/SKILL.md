@@ -24,15 +24,15 @@ summaries are high-level. Outside counsel briefings include full context.
 ## Examples
 
 ```
-/employment-legal:investigation-summary [matter name] hr
+Use the investigation-summary workflow: [matter name] hr
 ```
 
 ```
-/employment-legal:investigation-summary [matter name] leadership
+Use the investigation-summary workflow: [matter name] leadership
 ```
 
 ```
-/employment-legal:investigation-summary [matter name] outside-counsel
+Use the investigation-summary workflow: [matter name] outside-counsel
 ```
 
 > Detailed audience-stripping rules and summary templates live in the

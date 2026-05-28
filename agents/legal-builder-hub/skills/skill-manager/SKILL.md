@@ -4,8 +4,8 @@ description: >
   Reference: detailed uninstall, disable, and re-enable workflows for community
   skills installed via the legal builder hub. Safe by default — refuses to
   touch first-party plugin skills, confirms before removing files, and logs
-  every action. Loaded by the /legal-builder-hub:uninstall and
-  /legal-builder-hub:disable skills.
+  every action. Loaded by the the uninstall workflow and
+  the disable workflow skills.
 user-invocable: false
 ---
 

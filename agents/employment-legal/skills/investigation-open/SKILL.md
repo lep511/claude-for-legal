@@ -22,12 +22,12 @@ checklist, and creates the persistent investigation log.
 ## Examples
 
 ```
-/employment-legal:investigation-open
+Use the investigation-open workflow
 Harassment complaint filed against a manager in the Austin office.
 ```
 
 ```
-/employment-legal:investigation-open
+Use the investigation-open workflow
 (skill will ask for details)
 ```
 

@@ -46,7 +46,7 @@ Given a task description (what the user was just doing), find registry skills th
 ## Output
 
 If strong match:
-> 💡 The community has a skill for this: **[name]** from [registry] — "[description]". `/legal-builder-hub:skill-installer [name]` to try it.
+> 💡 The community has a skill for this: **[name]** from [registry] — "[description]". the skill-installer workflow ([name]) to try it.
 
 If no strong match: silent. No output. Don't announce "I found nothing."
 

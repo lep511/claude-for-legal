@@ -24,7 +24,7 @@ On first use, the plugin interviews you — ten to fifteen minutes, conversation
 It writes what it learns to `claude-for-legal/agents/ip-legal/CLAUDE.md` — a plain-English document about your practice that every other skill reads before doing anything. You edit the document, not a config file.
 
 ```
-/ip-legal:cold-start-interview
+the Settings page
 ```
 
 **Practice area mix.** Early in setup, you'll be asked which IP areas you actually work in — trademark, patent, copyright, trade secret, open source, or all. The plugin skips questions in areas you don't practice. Your configuration can hold multiple areas in parallel, and each skill asks which area applies when it's not obvious from what you paste.
@@ -35,17 +35,17 @@ It writes what it learns to `claude-for-legal/agents/ip-legal/CLAUDE.md` — a p
 
 | Command | Does |
 |---|---|
-| `/ip-legal:cold-start-interview` | Run (or re-run) the cold-start interview |
-| `/ip-legal:cease-desist [context]` | Cease-and-desist — send, or triage an inbound one, with the approval routing your CLAUDE.md requires |
-| `/ip-legal:takedown [context]` | DMCA takedown — send, respond to a received notice, or draft a counter-notice |
-| `/ip-legal:clearance [mark]` | First-pass trademark clearance — knockout + confusion analysis, attorney still signs off |
-| `/ip-legal:fto-triage [product / claim scope]` | Freedom-to-operate triage — surfaces blocking references for attorney review |
-| `/ip-legal:invention-intake [disclosure]` | Invention disclosure first-pass screen — novelty, obviousness, §101, bar dates, detectability, strategic value |
-| `/ip-legal:infringement-triage [context]` | Infringement triage — is this worth pursuing, and how |
-| `/ip-legal:ip-clause-review [file]` | Review IP clauses in an agreement — assignment, license grant, IP indemnity, OSS reps |
-| `/ip-legal:oss-review [repo / file list]` | Open source license compliance check — copyleft obligations, attribution, license compatibility |
-| `/ip-legal:portfolio` | Registration and renewal tracker — what's due, what's filed, what needs action |
-| `/ip-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Run (or re-run) the cold-start interview |
+| the cease-desist workflow ([context]) | Cease-and-desist — send, or triage an inbound one, with the approval routing your CLAUDE.md requires |
+| the takedown workflow ([context]) | DMCA takedown — send, respond to a received notice, or draft a counter-notice |
+| the clearance workflow ([mark]) | First-pass trademark clearance — knockout + confusion analysis, attorney still signs off |
+| the fto-triage workflow ([product / claim scope]) | Freedom-to-operate triage — surfaces blocking references for attorney review |
+| the invention-intake workflow ([disclosure]) | Invention disclosure first-pass screen — novelty, obviousness, §101, bar dates, detectability, strategic value |
+| the infringement-triage workflow ([context]) | Infringement triage — is this worth pursuing, and how |
+| the ip-clause-review workflow ([file]) | Review IP clauses in an agreement — assignment, license grant, IP indemnity, OSS reps |
+| the oss-review workflow ([repo / file list]) | Open source license compliance check — copyleft obligations, attribution, license compatibility |
+| the portfolio workflow | Registration and renewal tracker — what's due, what's filed, what needs action |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 
 ## Skills
 
@@ -98,7 +98,7 @@ With Drive or Slack connected: portfolio exports, C&D templates, and enforcement
 ### 1. Get interviewed
 
 ```
-/ip-legal:cold-start-interview
+the Settings page
 ```
 
 Ten to fifteen minutes. Have your portfolio list, brand guidelines (if any), a C&D template (if any), and your OSS policy (if any) ready to share.
@@ -108,7 +108,7 @@ Your configuration is stored at `claude-for-legal/agents/ip-legal/CLAUDE.md` and
 ### 2. Clear a mark
 
 ```
-/ip-legal:clearance "APEXLEAF"
+Use the clearance workflow: "APEXLEAF"
 ```
 
 Output: knockout-hit list, likelihood-of-confusion factor analysis, flags for attorney review. Not a go/no-go.
@@ -116,7 +116,7 @@ Output: knockout-hit list, likelihood-of-confusion factor analysis, flags for at
 ### 3. See what's due
 
 ```
-/ip-legal:portfolio
+Use the portfolio workflow
 ```
 
 Output: registrations with renewal, affidavit, or maintenance deadlines in the next 90 days, grouped by urgency.
@@ -162,8 +162,8 @@ Your practice profile at `claude-for-legal/agents/ip-legal/CLAUDE.md` isn't stat
 
 ## Notes
 
-- Every skill reads the practice profile first. If it finds placeholders, it stops and tells you to run `/ip-legal:cold-start-interview`. There's no generic fallback — a generic IP posture is worse than no posture.
-- Sending a C&D starts a fight. The `/ip-legal:cease-desist` skill will not send anything itself; it drafts, surfaces the approval matrix entry, and waits for the approver.
-- `/ip-legal:clearance` and `/ip-legal:fto-triage` are **first-pass** triage. The output is a research package for an attorney, not a clearance opinion. The skill says so on every run.
-- `/ip-legal:oss-review` flags license obligations and incompatibilities. It does not bless a commercial-use decision — engineering and legal decide that together.
+- Every skill reads the practice profile first. If it finds placeholders, it stops and tells you to configure this agent in Settings. There's no generic fallback — a generic IP posture is worse than no posture.
+- Sending a C&D starts a fight. The the cease-desist workflow skill will not send anything itself; it drafts, surfaces the approval matrix entry, and waits for the approver.
+- the clearance workflow and the fto-triage workflow are **first-pass** triage. The output is a research package for an attorney, not a clearance opinion. The skill says so on every run.
+- the oss-review workflow flags license obligations and incompatibilities. It does not bless a commercial-use decision — engineering and legal decide that together.
 - Patent claim drafting is intentionally out of scope. This plugin plays well alongside a patent prosecution specialist; it does not replace one.

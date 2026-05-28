@@ -10,15 +10,15 @@ Practitioners work across multiple clients and matters. A matter workspace keeps
 
 ## Subcommands
 
-- `/regulatory-legal:matter-workspace new <slug>` — create a new matter workspace, run a short intake, write `matter.md`
-- `/regulatory-legal:matter-workspace list` — list matters with status and active flag
-- `/regulatory-legal:matter-workspace switch <slug>` — set the active matter
-- `/regulatory-legal:matter-workspace close <slug>` — archive a matter (move to `claude-for-legal/agents/regulatory-legal/matters/_archived/`, never delete)
-- `/regulatory-legal:matter-workspace none` — detach from any active matter, work at practice-level only
+- the matter-workspace workflow (new <slug>) — create a new matter workspace, run a short intake, write `matter.md`
+- the matter-workspace workflow (list) — list matters with status and active flag
+- the matter-workspace workflow (switch <slug>) — set the active matter
+- the matter-workspace workflow (close <slug>) — archive a matter (move to `claude-for-legal/agents/regulatory-legal/matters/_archived/`, never delete)
+- the matter-workspace workflow (none) — detach from any active matter, work at practice-level only
 
 ## Instructions
 
-1. Read `claude-for-legal/agents/regulatory-legal/CLAUDE.md` — confirm the `## Matter workspaces` section is populated. If `Enabled` is `✗`, tell the user: "Matter workspaces are off — you're configured as an in-house practice with one client, so the plugin works from practice-level context automatically. If you actually work across multiple clients, re-run `/regulatory-legal:cold-start-interview --redo` and select a private-practice setting. Otherwise, you don't need `/matter-workspace` at all." Don't error — the disabled state is the expected one for in-house users.
+1. Read `claude-for-legal/agents/regulatory-legal/CLAUDE.md` — confirm the `## Matter workspaces` section is populated. If `Enabled` is `✗`, tell the user: "Matter workspaces are off — you're configured as an in-house practice with one client, so the plugin works from practice-level context automatically. If you actually work across multiple clients, re-run the Settings page to reconfigure and select a private-practice setting. Otherwise, you don't need `/matter-workspace` at all." Don't error — the disabled state is the expected one for in-house users.
 2. Use the file-management logic below.
 3. Dispatch on the first token of `$ARGUMENTS`:
    - `new` → run the intake interview, write `claude-for-legal/agents/regulatory-legal/matters/<slug>/matter.md`, seed `history.md` and `notes.md`.
@@ -38,7 +38,7 @@ Practitioners work across multiple clients and matters. A matter workspace keeps
 
 Multi-client practitioners (private practice — solo, small firm, large firm) work across many matters. Context from one must not leak into another. This skill is the thin file-management layer that makes that true.
 
-**Default state is off.** In-house users never see this — they run at practice-level only. Matter workspaces turn on at cold-start for private-practice users, or by editing `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗`, this skill does not run; it explains the disabled state and suggests `/regulatory-legal:cold-start-interview --redo` for users who actually need matter isolation.
+**Default state is off.** In-house users never see this — they run at practice-level only. Matter workspaces turn on at cold-start for private-practice users, or by editing `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗`, this skill does not run; it explains the disabled state and suggests the Settings page to reconfigure for users who actually need matter isolation.
 
 ## Storage layout
 
@@ -79,7 +79,7 @@ The `Active matter:` line under `## Matter workspaces` in the practice-level CLA
 3. Write `matters/<slug>/matter.md` using the template below.
 4. Seed `matters/<slug>/history.md` with a single "Opened" entry.
 5. Create an empty `matters/<slug>/notes.md`.
-6. Do **not** auto-switch to the new matter. Ask: "Want to switch to `<slug>` now? (`/regulatory-legal:matter-workspace switch <slug>`)"
+6. Do **not** auto-switch to the new matter. Ask: "Want to switch to `<slug>` now? (the matter-workspace workflow (switch <slug>))"
 
 ### `list`
 
@@ -92,7 +92,7 @@ Mark the currently-active matter with `*`. Include `_archived/*` under a separat
 
 ### `switch <slug>`
 
-1. Confirm `matters/<slug>/matter.md` exists. If not, offer `/regulatory-legal:matter-workspace new <slug>`.
+1. Confirm `matters/<slug>/matter.md` exists. If not, offer the matter-workspace workflow (new <slug>).
 2. Edit the `Active matter:` line in the practice-level CLAUDE.md to `Active matter: <slug>`.
 3. Show the user the matter.md summary so they can confirm they're on the right matter.
 

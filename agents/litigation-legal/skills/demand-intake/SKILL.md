@@ -11,7 +11,7 @@ argument-hint: "[title] [--full]"
 3. Run the adaptive intake (core 8 always; strategic block if material or `--full`).
 4. Generate slug from title + counterparty + year-month.
 5. Write `claude-for-legal/agents/litigation-legal/demand-letters/[slug]/intake.md`.
-6. Confirm with user: "Intake saved. Run `/litigation-legal:demand-draft [slug]` when ready."
+6. Confirm with user: "Intake saved. Run the demand-draft workflow ([slug]) when ready."
 
 ---
 
@@ -258,7 +258,7 @@ Show the user the draft intake. Flag anything thin:
 ## Handoff to drafting
 
 End with:
-> Intake saved. When ready: `/litigation-legal:demand-draft [slug]`
+> Intake saved. When ready: the demand-draft workflow ([slug])
 
 ## Close with the next-steps decision tree
 

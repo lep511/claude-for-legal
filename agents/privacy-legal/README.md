@@ -20,21 +20,21 @@ The plugin interviews you to learn: are you a controller or processor, which reg
 Your configuration is stored at `claude-for-legal/agents/privacy-legal/CLAUDE.md` and survives plugin updates.
 
 ```
-/privacy-legal:cold-start-interview
+the Settings page
 ```
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/privacy-legal:cold-start-interview` | Cold-start interview |
-| `/privacy-legal:use-case-triage [activity]` | Does this need a PIA? Quick classification + conditions |
-| `/privacy-legal:dpa-review [file]` | Review a DPA against your playbook (auto-detects direction) |
-| `/privacy-legal:dsar-response` | Walk through a DSAR and draft the response |
-| `/privacy-legal:pia-generation [feature]` | Generate a PIA in your house style |
-| `/privacy-legal:reg-gap-analysis [regulation]` | Diff a new reg against current policy/practice |
-| `/privacy-legal:policy-monitor` | Weekly sweep for policy drift, or direct query for a proposed new practice |
-| `/privacy-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Cold-start interview |
+| the use-case-triage workflow ([activity]) | Does this need a PIA? Quick classification + conditions |
+| the dpa-review workflow ([file]) | Review a DPA against your playbook (auto-detects direction) |
+| the dsar-response workflow | Walk through a DSAR and draft the response |
+| the pia-generation workflow ([feature]) | Generate a PIA in your house style |
+| the reg-gap-analysis workflow ([regulation]) | Diff a new reg against current policy/practice |
+| the policy-monitor workflow | Weekly sweep for policy drift, or direct query for a proposed new practice |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 
 ## Skills
 
@@ -54,7 +54,7 @@ Your configuration is stored at `claude-for-legal/agents/privacy-legal/CLAUDE.md
 ### 1. Setup
 
 ```
-/privacy-legal:cold-start-interview
+the Settings page
 ```
 
 Have ready: your public privacy policy URL, your standard DPA, one reference PIA.
@@ -62,7 +62,7 @@ Have ready: your public privacy policy URL, your standard DPA, one reference PIA
 ### 2. Triage a new feature or processing activity
 
 ```
-/privacy-legal:use-case-triage "Marketing wants to use behavioral data for ad personalization"
+Use the use-case-triage workflow: "Marketing wants to use behavioral data for ad personalization"
 ```
 
 Output: PROCEED / PIA REQUIRED / DPIA MANDATORY / STOP — with conditions table, lawful basis
@@ -71,7 +71,7 @@ question, and offer to kick off the PIA in the same conversation.
 ### 3. Review a customer DPA
 
 ```
-/privacy-legal:dpa-review customer-dpa.pdf
+Use the dpa-review workflow: customer-dpa.pdf
 ```
 
 Output: direction auto-detected, term-by-term vs. playbook, proposed redlines, policy consistency check.
@@ -79,7 +79,7 @@ Output: direction auto-detected, term-by-term vs. playbook, proposed redlines, p
 ### 4. Handle a DSAR
 
 ```
-/privacy-legal:dsar-response
+Use the dsar-response workflow
 ```
 
 Walks you through: classify → verify → locate → exemptions → draft. Uses your systems list from the config CLAUDE.md.
@@ -87,7 +87,7 @@ Walks you through: classify → verify → locate → exemptions → draft. Uses
 ### 5. PIA a new feature
 
 ```
-/privacy-legal:pia-generation "Location sharing feature"
+Use the pia-generation workflow: "Location sharing feature"
 ```
 
 Intake questions → PIA in your house format → policy diff → conditions list.

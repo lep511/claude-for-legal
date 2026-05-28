@@ -121,8 +121,8 @@ At the end:
 
 ## Integration
 
-- **case-brief:** if the student hasn't briefed the case yet, offer to run `/law-student:case-brief` before cold-call prep. A brief is a cold-call prep tool too.
-- **socratic-drill:** if prep surfaces a weak spot in the subject (not just this case), follow with `/law-student:socratic-drill [subject]`.
+- **case-brief:** if the student hasn't briefed the case yet, offer to run the case-brief workflow before cold-call prep. A brief is a cold-call prep tool too.
+- **socratic-drill:** if prep surfaces a weak spot in the subject (not just this case), follow with the socratic-drill workflow ([subject]).
 - **flashcards:** if the case's rule is one the student should memorize, offer to add to the flashcard deck.
 
 ## What this skill does not do

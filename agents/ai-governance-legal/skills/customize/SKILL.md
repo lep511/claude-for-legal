@@ -14,7 +14,7 @@ argument-hint: "[section name, or describe what you want to change]"
 
 ## When this runs
 
-The user typed `/ai-governance-legal:customize`. They want to change something
+The user typed the customize workflow. They want to change something
 in their practice profile — a risk posture, an escalation contact, a playbook
 position, a jurisdiction, an output format — without re-running the whole
 cold-start interview and without hand-editing YAML.
@@ -27,7 +27,7 @@ cold-start interview and without hand-editing YAML.
    level up). If the plugin config does not exist or still contains
    `[PLACEHOLDER]` values, say:
 
-   > You haven't run setup yet. Run `/ai-governance-legal:cold-start-interview`
+   > You haven't run setup yet. Configure this agent in Settings
    > first — customize is for adjusting a profile you already have.
 
 2. **Show the customizable map.** List what's in the profile, grouped, with a
@@ -44,7 +44,7 @@ cold-start interview and without hand-editing YAML.
    - **Use case registry** — approved / conditional / never entries, and
      conditions attached to each
    - **AI system inventory** — per-system role (provider / deployer / etc.) and
-     tier under the EU AI Act. Run `/ai-governance-legal:ai-inventory` for
+     tier under the EU AI Act. Run the ai-inventory workflow for
      the dedicated editor.
    - **Vendor AI governance** — training-on-data, liability, model-change
      notice, and other positions in your vendor AI playbook
@@ -86,7 +86,7 @@ cold-start interview and without hand-editing YAML.
 6. **Close.**
 
    > Done. Your next output will reflect the change. Anything else? You can
-   > run `/ai-governance-legal:customize` anytime.
+   > run the customize workflow anytime.
 
 ## Guardrails
 

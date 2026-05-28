@@ -35,7 +35,7 @@ Before running the pull, compare the watchlist + feed configuration in CLAUDE.md
 
 If there's an obvious gap — e.g., user watches "EU regulators" in the watchlist but has only `edpb.europa.eu` configured in feeds, missing ICO, CNIL, DPC Ireland — surface it once at the top of the digest:
 
-> **Coverage gap noticed:** Your watchlist includes [category], but only [N] feeds are configured. The source catalog lists [X] options in this category (e.g., [top 2-3 names]). Want me to suggest additions? Run `/regulatory-legal:cold-start-interview --redo` to update, or edit `claude-for-legal/agents/regulatory-legal/CLAUDE.md` directly.
+> **Coverage gap noticed:** Your watchlist includes [category], but only [N] feeds are configured. The source catalog lists [X] options in this category (e.g., [top 2-3 names]). Want me to suggest additions? Run the Settings page to reconfigure to update, or edit `claude-for-legal/agents/regulatory-legal/CLAUDE.md` directly.
 
 Don't nag the same gap repeatedly — if the user has explicitly said "skip state AGs for now," respect that. Note state in CLAUDE.md so it sticks.
 
@@ -102,7 +102,7 @@ Each item gets a materiality tier per `claude-for-legal/agents/regulatory-legal/
 |---|---|
 | Final rule | Usually "always material" |
 | Proposed rule / NPRM | Usually "review-worthy" — and always log comment deadline |
-| ANPR (Advance Notice of Proposed Rulemaking) | Review-worthy for **strategy**, not compliance — no imposed requirements yet, but signals direction and carries a real comment deadline. Log the comment deadline. Route to `/regulatory-legal:policy-diff` only as a pre-positioning analysis, not as a gap-closure diff. |
+| ANPR (Advance Notice of Proposed Rulemaking) | Review-worthy for **strategy**, not compliance — no imposed requirements yet, but signals direction and carries a real comment deadline. Log the comment deadline. Route to the policy-diff workflow only as a pre-positioning analysis, not as a gap-closure diff. |
 | RFI (Request for Information) | Same as ANPR — pre-rule, no compliance obligation, but comment deadline is real and direction-signaling is the value. |
 | Enforcement action | Sector match → material; related-practice match → review-worthy; neither → FYI or skip |
 | Guidance | Review-worthy |
@@ -114,7 +114,7 @@ Each item gets a materiality tier per `claude-for-legal/agents/regulatory-legal/
 - **Do not** classify an ANPR / RFI as "always material" — the compliance impact is zero until a rule issues.
 - **Do** classify as review-worthy if any of the issue areas in the notice touch the watchlist's always-material categories (e.g., an ANPR on open banking in a fintech watchlist).
 - **Do** log the comment deadline to `claude-for-legal/agents/regulatory-legal/comment-tracker.yaml` with `item_type: ANPR` or `item_type: RFI` so the downstream tracker can distinguish these from compliance gaps.
-- **Do** include in the digest entry a line that says explicitly: "Pre-rule. Comment deadline [date]. Route to `/regulatory-legal:policy-diff` only as a pre-positioning analysis (no compliance gap yet)." This primes the policy-diff skill to use its compressed pre-positioning branch rather than a full gap-closure diff.
+- **Do** include in the digest entry a line that says explicitly: "Pre-rule. Comment deadline [date]. Route to the policy-diff workflow only as a pre-positioning analysis (no compliance gap yet)." This primes the policy-diff skill to use its compressed pre-positioning branch rather than a full gap-closure diff.
 - **Route to the comment-tracker, not the gap-tracker.** Comment-decision items are not compliance gaps; they belong in the comment tracker, and `gap-surfacer` uses the `comment-decision` `gap_type` (or declines to ingest, if the team routes these separately).
 
 **NPRM comment deadline handling:**
@@ -190,7 +190,7 @@ Format on disk matches the chat format exactly (below). Markdown renders well in
 ---
 
 **Last check updated to:** [timestamp]
-**Comment tracker:** [N] NPRMs with open comment decisions — run /regulatory-legal:comments to review
+**Comment tracker:** [N] NPRMs with open comment decisions — run the comments workflow to review
 
 ---
 
@@ -201,9 +201,9 @@ Format on disk matches the chat format exactly (below). Markdown renders well in
 
 This skill reads the watchlist, materiality threshold, and feed configuration from `claude-for-legal/agents/regulatory-legal/CLAUDE.md`. When a required value is still `[PLACEHOLDER]` or empty, say so in the output — specifically, not generically:
 
-- **Watchlist empty:** stop and say "The watchlist in your configuration is empty. I can't pull feeds without knowing which regulators to watch. Run `/regulatory-legal:cold-start-interview --redo` or edit `claude-for-legal/agents/regulatory-legal/CLAUDE.md` and add at least one regulator."
-- **Materiality threshold empty:** fall back to the default tiers and append: "This output used the default materiality tiers because your configuration doesn't have custom thresholds set. Tune them with `/regulatory-legal:cold-start-interview --redo` or by editing `claude-for-legal/agents/regulatory-legal/CLAUDE.md`."
-- **Feed configuration empty:** run Federal Register API only and append: "This output used only the free Federal Register API because your configuration doesn't list direct RSS or paid feeds. Add feeds with `/regulatory-legal:cold-start-interview --redo` or by editing `claude-for-legal/agents/regulatory-legal/CLAUDE.md`."
+- **Watchlist empty:** stop and say "The watchlist in your configuration is empty. I can't pull feeds without knowing which regulators to watch. Run the Settings page to reconfigure or edit `claude-for-legal/agents/regulatory-legal/CLAUDE.md` and add at least one regulator."
+- **Materiality threshold empty:** fall back to the default tiers and append: "This output used the default materiality tiers because your configuration doesn't have custom thresholds set. Tune them with the Settings page to reconfigure or by editing `claude-for-legal/agents/regulatory-legal/CLAUDE.md`."
+- **Feed configuration empty:** run Federal Register API only and append: "This output used only the free Federal Register API because your configuration doesn't list direct RSS or paid feeds. Add feeds with the Settings page to reconfigure or by editing `claude-for-legal/agents/regulatory-legal/CLAUDE.md`."
 
 Say nothing about config when the relevant values are populated.
 

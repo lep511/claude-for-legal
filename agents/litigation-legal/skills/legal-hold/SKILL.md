@@ -38,7 +38,7 @@ Preservation duties vary materially by forum. Federal common law (via Zubulake /
 
 **Conflicts gate — unbypassable.** Before issuing, refreshing, or releasing a hold, check `_log.yaml` for the matter slug. If the matter is not in `_log.yaml`, refuse and route:
 
-> "I don't see [matter slug] in the matter log. Run `/litigation-legal:matter-intake` first so the conflicts check runs and the matter workspace is set up. I won't issue, refresh, or release a legal hold on a matter that hasn't been intaken — the conflicts check is the gate, and a hold issued against an unmanaged matter has no `_log.yaml` row to track `last_refresh` / `next_refresh` / `released` against."
+> "I don't see [matter slug] in the matter log. Run the matter-intake workflow first so the conflicts check runs and the matter workspace is set up. I won't issue, refresh, or release a legal hold on a matter that hasn't been intaken — the conflicts check is the gate, and a hold issued against an unmanaged matter has no `_log.yaml` row to track `last_refresh` / `next_refresh` / `released` against."
 
 Do not proceed on an unintaken matter. Intake is what runs conflicts and writes the `_log.yaml` row the `--refresh` / `--release` / `--status` flags operate against.
 

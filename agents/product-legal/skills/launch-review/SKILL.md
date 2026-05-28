@@ -18,14 +18,14 @@ argument-hint: "[PRD file | Drive link | tracker ticket ID]"
 6. Hand off: marketing-claims-review if substantial marketing; feature-risk-assessment if a finding needs depth.
 
 ```
-/product-legal:launch-review PROJ-1234
+Use the launch-review workflow: PROJ-1234
 ```
 
 ---
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/product-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/product-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/product-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -75,7 +75,7 @@ recommendations, predictions. Look for this even if the PRD doesn't label it
 "AI" — words like "intelligent", "automated", "personalized", "generated",
 "suggested" are tells.
 
-If AI component detected → flag it, then run `/ai-governance-legal:use-case-triage [feature]`
+If AI component detected → flag it, then run the use-case-triage workflow ([feature])
 alongside the framework walk. Category 8 below handles the detail; this flag
 ensures it's never skipped even if the PRD is vague.
 
@@ -245,8 +245,8 @@ Paste Output 2 (and only Output 2) to the tracker. Link Output 1 only to the peo
 
 - **To marketing-claims-review:** If there's a substantial marketing component, hand off the claims section.
 - **To feature-risk-assessment:** If a finding is complex enough to need its own doc (e.g., novel AI feature, children's product), spawn a deeper assessment.
-- **To privacy:** If the launch touches personal data, run `/privacy-legal:use-case-triage [feature]`. If triage returns PIA REQUIRED or DPIA MANDATORY, run `/privacy-legal:pia-generation [feature]`. Don't just note "PIA needed" — trigger it.
-- **To AI governance:** If an AI component was detected in Step 2, run `/ai-governance-legal:use-case-triage [feature]`. If triage returns CONDITIONAL, run `/ai-governance-legal:aia-generation [feature]`. If a new AI vendor is involved, run `/ai-governance-legal:vendor-ai-review [vendor agreement]`.
+- **To privacy:** If the launch touches personal data, run the use-case-triage workflow ([feature]). If triage returns PIA REQUIRED or DPIA MANDATORY, run the pia-generation workflow ([feature]). Don't just note "PIA needed" — trigger it.
+- **To AI governance:** If an AI component was detected in Step 2, run the use-case-triage workflow ([feature]). If triage returns CONDITIONAL, run the aia-generation workflow ([feature]). If a new AI vendor is involved, run the vendor-ai-review workflow ([vendor agreement]).
 
 ## Close with the next-steps decision tree
 

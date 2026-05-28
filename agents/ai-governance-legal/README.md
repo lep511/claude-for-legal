@@ -24,22 +24,22 @@ assessment looks like here. Then it reads your seed documents and learns your re
 positions and house style.
 
 ```
-/ai-governance-legal:cold-start-interview
+the Settings page
 ```
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/ai-governance-legal:cold-start-interview` | Cold-start interview — writes your practice profile |
-| `/ai-governance-legal:ai-inventory [list \| add \| edit \| classify \| show]` | Manage the EU AI Act per-system inventory — track each system's role and risk tier |
-| `/ai-governance-legal:use-case-triage [use case]` | Classify a use case against your registry (approved / conditional / never) |
-| `/ai-governance-legal:aia-generation [use case]` | Run an AI impact assessment (AIA) in your house style |
-| `/ai-governance-legal:vendor-ai-review [vendor/file]` | Review a vendor AI agreement against your positions |
-| `/ai-governance-legal:reg-gap-analysis [regulation]` | Diff a new regulation or guidance against current policy/practice |
-| `/ai-governance-legal:policy-monitor` | Weekly sweep for AI policy drift, or direct query for a proposed new practice |
-| `/ai-governance-legal:policy-starter` | Draft a firm AI usage policy from published model policies, adapted to your practice profile (draft for attorney review) |
-| `/ai-governance-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Cold-start interview — writes your practice profile |
+| the ai-inventory workflow ([list \| add \| edit \| classify \| show]) | Manage the EU AI Act per-system inventory — track each system's role and risk tier |
+| the use-case-triage workflow ([use case]) | Classify a use case against your registry (approved / conditional / never) |
+| the aia-generation workflow ([use case]) | Run an AI impact assessment (AIA) in your house style |
+| the vendor-ai-review workflow ([vendor/file]) | Review a vendor AI agreement against your positions |
+| the reg-gap-analysis workflow ([regulation]) | Diff a new regulation or guidance against current policy/practice |
+| the policy-monitor workflow | Weekly sweep for AI policy drift, or direct query for a proposed new practice |
+| the policy-starter workflow | Draft a firm AI usage policy from published model policies, adapted to your practice profile (draft for attorney review) |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 
 ## Skills
 
@@ -60,7 +60,7 @@ positions and house style.
 ### 1. Setup
 
 ```
-/ai-governance-legal:cold-start-interview
+the Settings page
 ```
 
 Have ready (if they exist): your AI or acceptable use policy, one prior impact assessment,
@@ -71,7 +71,7 @@ Your configuration is stored at `claude-for-legal/agents/ai-governance-legal/CLA
 ### 2. Triage a new use case
 
 ```
-/ai-governance-legal:use-case-triage "Sales team wants to use AI to score leads automatically"
+Use the use-case-triage workflow: "Sales team wants to use AI to score leads automatically"
 ```
 
 Output: risk tier, registry match or gap, required conditions, impact assessment needed
@@ -80,7 +80,7 @@ or not.
 ### 3. Run an impact assessment
 
 ```
-/ai-governance-legal:aia-generation "AI-powered resume screening for HR"
+Use the aia-generation workflow: "AI-powered resume screening for HR"
 ```
 
 Intake questions → impact assessment in your house format → policy consistency check →
@@ -89,7 +89,7 @@ mitigation conditions.
 ### 4. Review a vendor AI agreement
 
 ```
-/ai-governance-legal:vendor-ai-review openai-terms.pdf
+Use the vendor-ai-review workflow: openai-terms.pdf
 ```
 
 Output: term-by-term vs. your positions, proposed redlines, gaps to escalate.
@@ -99,11 +99,11 @@ Output: term-by-term vs. your positions, proposed redlines, gaps to escalate.
 These three plugins are designed to work together. AI governance is the third leg.
 
 - **Product counsel** detects when a launch has an AI component → hands off to
-  `/ai-governance-legal:use-case-triage` and `/ai-governance-legal:aia-generation`
+  the use-case-triage workflow and the aia-generation workflow
 - **Privacy** detects when an AI use case involves personal data → hands off to
-  `/privacy-legal:pia-generation`, if the plugin is installed
+  the pia-generation workflow, if the plugin is installed
 - **AI governance** detects when an impact assessment raises data protection issues →
-  hands off to `/privacy-legal:pia-generation`, if the plugin is installed
+  hands off to the pia-generation workflow, if the plugin is installed
 
 The handoff is explicit: each plugin flags when the other is needed and states what
 question to answer there.

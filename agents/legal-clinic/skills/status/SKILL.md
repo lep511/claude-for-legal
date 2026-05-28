@@ -19,15 +19,15 @@ argument-hint: "[client | internal | court]"
 4. Supervision routing per audience (client-facing and court-ready usually flag).
 
 ```
-/legal-clinic:status client
+Use the status workflow: client
 ```
 
 ```
-/legal-clinic:status internal
+Use the status workflow: internal
 ```
 
 ```
-/legal-clinic:status court
+Use the status workflow: court
 ```
 
 ---

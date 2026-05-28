@@ -1,6 +1,6 @@
 # Plausibility bands — California (and federal, always loaded)
 
-These are rough plausibility ranges, not computations. If a student-entered due date falls outside the range, the `/legal-clinic:deadlines --add` flow flags it for re-check. The skill does **not** compute — it catches gross arithmetic errors in the student's own work. Every citation here is `[model knowledge — verify]` unless the supervisor has replaced it with a connector-retrieved or user-provided source.
+These are rough plausibility ranges, not computations. If a student-entered due date falls outside the range, the the deadlines workflow (--add) flow flags it for re-check. The skill does **not** compute — it catches gross arithmetic errors in the student's own work. Every citation here is `[model knowledge — verify]` unless the supervisor has replaced it with a connector-retrieved or user-provided source.
 
 ## How to use
 

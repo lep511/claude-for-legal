@@ -1,35 +1,29 @@
 <!--
-CONFIGURATION LOCATION
+PRACTICE PROFILE TEMPLATE
 
-User-specific configuration for this plugin lives at a version-independent path that survives plugin updates:
+This file is a template for the agent's practice profile. When configured via
+the Settings UI, placeholder values are replaced with user-provided data and
+the rendered profile is stored in sandbox/profiles/rendered/.
 
-  claude-for-legal/agents/legal-clinic/CLAUDE.md
-
-Rules for every skill, command, and agent in this plugin:
-1. READ configuration from that path. Not from this file.
-2. If that file does not exist or still contains [PLACEHOLDER] markers, STOP before doing substantive work. Say: "This plugin needs setup before it can give you useful output. Run /legal-clinic:cold-start-interview — it takes about 10-15 minutes and every command in this plugin depends on it. Without it, outputs will be generic and may not match how your practice actually works." Do NOT proceed with placeholder or default configuration. The only skills that run without setup are /legal-clinic:cold-start-interview itself and any --check-integrations flag.
-3. Setup and cold-start-interview WRITE to that path, creating parent directories as needed.
-4. On first run after a plugin update, if a populated CLAUDE.md exists at the old cache path
-   (claude-for-legal/plugins/cache/claude-for-legal/legal-clinic/<version>/CLAUDE.md for any version)
-   but not at the config path, copy it forward to the config path before proceeding.
-5. This file (the one you are reading) is the TEMPLATE. It ships with the plugin and shows the
-   structure the config should have. It is replaced on every plugin update. Never write user data here.
-
-**Shared company profile.** Company-level facts (who you are, what you do, where you operate, your risk posture, key people) live in `claude-for-legal/agents/company-profile.md` — one level above this file, shared by all 12 plugins. Read it before this plugin's practice profile. If it doesn't exist, this plugin's setup will create it.
+Rules:
+1. If this file still contains [PLACEHOLDER] markers, the agent should inform
+   the user that configuration is needed via the Settings page.
+2. The profile_manager.py backend handles rendering and storage.
+3. Edit this template to change the structure; edit profile values via the UI.
 -->
 
 # Law School Clinic Practice Profile
 
 *Written by the professor-facing cold-start interview. Students don't edit this —
-they run `/ramp`. If you see `[PLACEHOLDER]` below, run `/legal-clinic:cold-start-interview`.*
+they run `/ramp`. If you see `[PLACEHOLDER]` below, configure this agent in Settings.*
 
 ---
 
 ## Who's using this
 
-**Role:** [PLACEHOLDER — Supervising attorney (default, required to run setup) | Clinic student (routed to `/legal-clinic:ramp`) | Clinic staff]
+**Role:** [PLACEHOLDER — Supervising attorney (default, required to run setup) | Clinic student (routed to the ramp workflow) | Clinic staff]
 
-Setup must be run by the supervising attorney. Students onboard via `/legal-clinic:ramp`. Clinic clients (including pro se clients served by the clinic) are not plugin users — they are the people the clinic serves, and their materials flow through student and attorney outputs rather than through direct plugin use.
+Setup must be run by the supervising attorney. Students onboard via the ramp workflow. Clinic clients (including pro se clients served by the clinic) are not plugin users — they are the people the clinic serves, and their materials flow through student and attorney outputs rather than through direct plugin use.
 
 **Supervising attorney(s):** [PLACEHOLDER — name(s), bar admission jurisdiction(s), bar number(s)]
 **Student practice rule authority:** [PLACEHOLDER — e.g., "Cal. Rules of Court 9.42" — the rule under which students appear]
@@ -48,7 +42,7 @@ When the role is supervising attorney, clinic student, or clinic staff, every ou
 | Clio (case management) | [✓ / ✗] | Case metadata captured in local intake / status files; no auto-sync |
 | Document storage (Google Drive / SharePoint / Box) | [✓ / ✗] | Student outputs save to local filesystem; review stays in-plugin |
 
-*Re-check: `/legal-clinic:cold-start-interview --check-integrations`*
+*Re-check: the Settings page to check integrations*
 
 ---
 
@@ -182,7 +176,7 @@ If everything is green (research tool connected, full read, no flags, currency c
 - ⚠️ Reviewer note: KEEP (it's the one place the reviewer finds what they need before relying on the deliverable)
 - Source attribution tags: KEEP inline but consolidated (a footnote or endnote is fine for a clean deliverable)
 - Skill-fit narration ("I'm using the X skill, which normally..."): CUT
-- Plugin command handoffs ("Run /plugin:other-command next..."): CUT from the deliverable; put in a separate reviewer note
+- Plugin command handoffs ("Run the other-command workflow next..."): CUT from the deliverable; put in a separate reviewer note
 - "I read the following files...": CUT
 
 The deliverable should read like a partner wrote it. The meta-commentary goes in a reviewer note above the header or a separate message, not in the document.
@@ -340,8 +334,8 @@ learn to research, they just start from a better place.
 
 ---
 
-*Professor re-runs setup: `/legal-clinic:cold-start-interview --redo`*
-*Students onboard each semester: `/legal-clinic:ramp`*
+*Professor re-runs setup: the Settings page to reconfigure*
+*Students onboard each semester: the ramp workflow*
 
 ## Scaffolding, not blinders
 
@@ -362,7 +356,7 @@ When the user asks a question in this plugin's practice area — not just when t
 - Offer the decision tree when an action follows from the question
 - Suggest a structured skill if one would do better: "This is a quick answer. If you want the full framework, run `/legal-clinic:[relevant skill]`."
 
-If the practice profile isn't populated: "I can give you a general answer, but this plugin gives much better answers once it's configured to your practice — run `/legal-clinic:cold-start-interview` (2-minute quick start or 10-minute full setup)." Then give the general answer anyway, tagged as unconfigured.
+If the practice profile isn't populated: "I can give you a general answer, but this plugin gives much better answers once it's configured to your practice — configure this agent in Settings (2-minute quick start or 10-minute full setup)." Then give the general answer anyway, tagged as unconfigured.
 
 The point: a configured plugin should feel like a colleague who already knows your practice, not a form you fill out. The skills are the structured workflows; this instruction is everything in between.
 

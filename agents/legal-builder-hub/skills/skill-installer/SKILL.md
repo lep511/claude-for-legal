@@ -63,7 +63,7 @@ a fresh, explicit "yes" from the user in their own words.
 ### Step 1: Read the allowlist (before fetching anything)
 
 Read `claude-for-legal/agents/legal-builder-hub/allowlist.yaml`.
-If the file does not exist, tell the user before proceeding: "No allowlist found at [path]. Run `/legal-builder-hub:cold-start-interview` to create one — without it, every source is treated as trusted and the installer has no structural gate, only the AI trust review (which a well-crafted injection can manipulate). For now I'll proceed in permissive mode with an empty allowlist, which means I'll flag unknown sources but won't refuse anything." Then proceed in permissive mode with empty lists.
+If the file does not exist, tell the user before proceeding: "No allowlist found at [path]. Configure this agent in Settings to create one — without it, every source is treated as trusted and the installer has no structural gate, only the AI trust review (which a well-crafted injection can manipulate). For now I'll proceed in permissive mode with an empty allowlist, which means I'll flag unknown sources but won't refuse anything." Then proceed in permissive mode with empty lists.
 See `references/allowlist.md` for schema and rationale.
 
 Check the registry URL and publisher from the user's command against
@@ -307,7 +307,7 @@ Then:
   not present the install prompt on MATERIAL CONCERNS/REFUSE. Tell the
   user: "I'd normally route this to your supervising attorney, but the
   practice profile doesn't name one. Before installing, please (a) run
-  `/legal-builder-hub:cold-start-interview --redo` to add an attorney contact, or (b) tell
+  the Settings page to reconfigure to add an attorney contact, or (b) tell
   me who at your firm or company should sign off on installing community
   skills."
 
@@ -440,7 +440,7 @@ documented below):
   audit only.
 
 The install-log line also records license provenance (so
-`/legal-builder-hub:uninstall` and `/legal-builder-hub:disable` have a
+the uninstall workflow and the disable workflow have a
 record of what was installed and from where):
 
 - `license` — the extracted SPDX identifier (e.g., `MIT`), or `none` if no

@@ -34,7 +34,7 @@ The cold-start interview writes the *house* practice profile — persistent acro
 It offers sensible defaults at each step (e.g., a 3×3 severity-likelihood grid) and keeps everything freeform-editable. If you don't have a written framework yet, this is the thing that forces the articulation.
 
 ```
-/litigation-legal:cold-start-interview
+the Settings page
 ```
 
 Your configuration is stored at `claude-for-legal/agents/litigation-legal/CLAUDE.md` and survives plugin updates.
@@ -43,20 +43,20 @@ Your configuration is stored at `claude-for-legal/agents/litigation-legal/CLAUDE
 
 | Command | Does |
 |---|---|
-| `/litigation-legal:cold-start-interview` | Cold-start → writes house `claude-for-legal/agents/litigation-legal/CLAUDE.md` |
-| `/litigation-legal:matter-intake` | Uniform intake → writes `matters/[slug]/` + appends to `_log.yaml` |
-| `/litigation-legal:portfolio-status` | Portfolio rollup — risk distribution, upcoming deadlines, stale matters |
-| `/litigation-legal:matter-briefing [slug]` | Deep briefing on one matter — read-ready before a GC or outside counsel call |
-| `/litigation-legal:matter-update [slug]` | Append a dated event to a matter's history; refresh the log's `last_updated` |
-| `/litigation-legal:matter-close [slug]` | Archive a matter out of the active portfolio (retained, not deleted) |
-| `/litigation-legal:demand-intake [title]` | Pre-drafting context gathering for a demand letter (payment / breach / C&D / employment separation / preservation) |
-| `/litigation-legal:demand-draft [slug]` | Draft the letter from intake — runs FRE 408 / privilege gate, outputs `.docx`, writes post-send checklist |
-| `/litigation-legal:demand-received [path]` | Triage an inbound demand letter — options analysis, portfolio cross-check, hand off to matter/demand-intake |
-| `/litigation-legal:subpoena-triage [path]` | Triage a subpoena — classify, scope/burden/privilege, objections framework, compliance plan |
-| `/litigation-legal:legal-hold [slug] [--issue/--refresh/--release/--status]` | Issue, refresh, release, or report holds — writes `.docx` + updates log |
-| `/litigation-legal:chronology [slug]` | Build or update a chronology from declared doc sources + uploads — tagged by significance per matter theory |
-| `/litigation-legal:oc-status` | Draft weekly OC status-request emails across the portfolio; Gmail drafts if MCP available |
-| `/litigation-legal:claim-chart` | Build or review an element chart — patent claim chart (infringement / invalidity / review) or civil element chart (any cause of action or defense) with gap detection |
+| the Settings page | Cold-start → writes house `claude-for-legal/agents/litigation-legal/CLAUDE.md` |
+| the matter-intake workflow | Uniform intake → writes `matters/[slug]/` + appends to `_log.yaml` |
+| the portfolio-status workflow | Portfolio rollup — risk distribution, upcoming deadlines, stale matters |
+| the matter-briefing workflow ([slug]) | Deep briefing on one matter — read-ready before a GC or outside counsel call |
+| the matter-update workflow ([slug]) | Append a dated event to a matter's history; refresh the log's `last_updated` |
+| the matter-close workflow ([slug]) | Archive a matter out of the active portfolio (retained, not deleted) |
+| the demand-intake workflow ([title]) | Pre-drafting context gathering for a demand letter (payment / breach / C&D / employment separation / preservation) |
+| the demand-draft workflow ([slug]) | Draft the letter from intake — runs FRE 408 / privilege gate, outputs `.docx`, writes post-send checklist |
+| the demand-received workflow ([path]) | Triage an inbound demand letter — options analysis, portfolio cross-check, hand off to matter/demand-intake |
+| the subpoena-triage workflow ([path]) | Triage a subpoena — classify, scope/burden/privilege, objections framework, compliance plan |
+| the legal-hold workflow ([slug] [--issue/--refresh/--release/--status]) | Issue, refresh, release, or report holds — writes `.docx` + updates log |
+| the chronology workflow ([slug]) | Build or update a chronology from declared doc sources + uploads — tagged by significance per matter theory |
+| the oc-status workflow | Draft weekly OC status-request emails across the portfolio; Gmail drafts if MCP available |
+| the claim-chart workflow | Build or review an element chart — patent claim chart (infringement / invalidity / review) or civil element chart (any cause of action or defense) with gap detection |
 
 ## Skills
 

@@ -16,7 +16,7 @@ Reviews an inbound agreement against the playbook in `claude-for-legal/agents/co
 
 ## Instructions
 
-1. **Load `claude-for-legal/agents/commercial-legal/CLAUDE.md`.** If placeholders present, stop and prompt: "Run `/commercial-legal:cold-start-interview` first — I need to learn your playbook before I can review against it."
+1. **Load `claude-for-legal/agents/commercial-legal/CLAUDE.md`.** If placeholders present, stop and prompt: "Configure this agent in Settings first — I need to learn your playbook before I can review against it."
 
    Also read `claude-for-legal/agents/commercial-legal/CLAUDE.md` → `## Review preferences` → `confirm_routing`. If the field is missing, treat it as `true`.
 
@@ -93,15 +93,15 @@ The cold-start interview should ask about this preference. Default is `true` —
 ## Examples
 
 ```
-/commercial-legal:review vendor-msa.pdf
+Use the review workflow: vendor-msa.pdf
 ```
 
 ```
-/commercial-legal:review https://drive.google.com/file/d/ABC123
+Use the review workflow: https://drive.google.com/file/d/ABC123
 ```
 
 ```
-/commercial-legal:review
+Use the review workflow
 [paste agreement text]
 ```
 

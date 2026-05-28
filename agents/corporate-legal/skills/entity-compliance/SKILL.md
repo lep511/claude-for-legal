@@ -213,7 +213,7 @@ Status summary:
   🔴 Overdue:   [N]
   ❓ Unknown:   [N] (confirm with registered agent)
 
-Run /corporate-legal:entity-compliance --report to see what's due.
+Run the entity-compliance workflow --report to see what's due.
 ```
 
 ---
@@ -223,7 +223,7 @@ Run /corporate-legal:entity-compliance --report to see what's due.
 Surfaces upcoming deadlines and flags overdue items. Default: next 90 days.
 
 ```
-/corporate-legal:entity-compliance --report [--days 30|60|90|180]
+Use the entity-compliance workflow: --report [--days 30|60|90|180]
 ```
 
 Output format:
@@ -282,7 +282,7 @@ Do not record a new `last_filed` date past this gate without an explicit yes. Tr
 ### 3a: Manual update
 
 ```
-/corporate-legal:entity-compliance --update
+Use the entity-compliance workflow: --update
 ```
 
 Attorney tells Claude what was filed:
@@ -297,7 +297,7 @@ Claude updates:
 ### 3b: Registered agent report upload
 
 ```
-/corporate-legal:entity-compliance --update --from-report
+Use the entity-compliance workflow: --update --from-report
 ```
 
 User uploads a CT Corp, National Registered Agents, or similar compliance
@@ -325,7 +325,7 @@ Not in report (in tracker, no update): [list — status unchanged]
 ### 3c: Bulk status sweep
 
 ```
-/corporate-legal:entity-compliance --sweep
+Use the entity-compliance workflow: --sweep
 ```
 
 Walks through each entity with `unknown` or `overdue` status and asks for
@@ -341,7 +341,7 @@ Updates tracker after each confirmation. Produces a completion summary.
 ## Mode 4: Health audit
 
 ```
-/corporate-legal:entity-compliance --audit
+Use the entity-compliance workflow: --audit
 ```
 
 Broader review beyond just filing status. Surfaces:
@@ -409,7 +409,7 @@ RECOMMENDED ACTIONS
 ## Mode 5: Export
 
 ```
-/corporate-legal:entity-compliance --export [--format csv|table]
+Use the entity-compliance workflow: --export [--format csv|table]
 ```
 
 Produces a flat export suitable for sharing with finance, legal ops, or

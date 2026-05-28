@@ -49,11 +49,11 @@ leave and you want the tracker to watch the clocks from day one.
 ## Examples
 
 ```
-/employment-legal:log-leave
+Use the log-leave workflow
 ```
 
 ```
-/employment-legal:log-leave
+Use the log-leave workflow
 Sarah (Sr. Engineer, works in California) just started FMLA today for a
 serious health condition. Intermittent. No designation sent yet.
 ```

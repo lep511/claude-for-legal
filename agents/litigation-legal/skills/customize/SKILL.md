@@ -14,7 +14,7 @@ argument-hint: "[section name, or describe what you want to change]"
 
 ## When this runs
 
-The user typed `/litigation-legal:customize`. They want to change something
+The user typed the customize workflow. They want to change something
 in their litigation profile — a risk calibration, a house style rule, an
 escalation contact, a landscape note — without re-running the whole
 cold-start interview and without hand-editing YAML.
@@ -27,7 +27,7 @@ cold-start interview and without hand-editing YAML.
    level up). If the plugin config does not exist or still contains
    `[PLACEHOLDER]` values, say:
 
-   > You haven't run setup yet. Run `/litigation-legal:cold-start-interview`
+   > You haven't run setup yet. Configure this agent in Settings
    > first — customize is for adjusting a profile you already have.
 
 2. **Show the customizable map.** List what's in the profile, grouped, with a
@@ -83,7 +83,7 @@ cold-start interview and without hand-editing YAML.
 6. **Close.**
 
    > Done. Your next output will reflect the change. Anything else? You can
-   > run `/litigation-legal:customize` anytime.
+   > run the customize workflow anytime.
 
 ## Guardrails
 

@@ -14,7 +14,7 @@ argument-hint: "[section name, or describe what you want to change]"
 
 ## When this runs
 
-The user typed `/legal-clinic:customize`. They (usually the professor, sometimes
+The user typed the customize workflow. They (usually the professor, sometimes
 a student) want to change something in the clinic profile — a jurisdiction, a
 supervision style, a practice-area template, a semester rollover — without
 re-running the whole cold-start interview and without hand-editing YAML.
@@ -26,7 +26,7 @@ re-running the whole cold-start interview and without hand-editing YAML.
    If the plugin config does not exist or still contains `[PLACEHOLDER]`
    values, say:
 
-   > You haven't run setup yet. Run `/legal-clinic:cold-start-interview`
+   > You haven't run setup yet. Configure this agent in Settings
    > first — customize is for adjusting a profile you already have.
 
 2. **Show the customizable map.** List what's in the profile, grouped, with a
@@ -76,7 +76,7 @@ re-running the whole cold-start interview and without hand-editing YAML.
 5. **Close.**
 
    > Done. Your next output will reflect the change. Anything else? You can
-   > run `/legal-clinic:customize` anytime.
+   > run the customize workflow anytime.
 
 ## Guardrails
 

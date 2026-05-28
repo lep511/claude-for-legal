@@ -1,6 +1,6 @@
 # handoffs/ — end-of-semester case handoff memos
 
-Per-semester folder with one handoff memo per active case. Produced by `/legal-clinic:semester-handoff` at end of semester. Read by incoming students during `/ramp` for the cases they inherit.
+Per-semester folder with one handoff memo per active case. Produced by the semester-handoff workflow at end of semester. Read by incoming students during `/ramp` for the cases they inherit.
 
 ## Layout
 
@@ -35,9 +35,9 @@ Case memo: use the case_id (from `deadlines.yaml` or the intake record). Consist
 
 ## Workflow
 
-1. `/legal-clinic:semester-handoff` is run by the professor (or by departing students on their own cases) ~1-2 weeks before semester ends.
+1. the semester-handoff workflow is run by the professor (or by departing students on their own cases) ~1-2 weeks before semester ends.
 2. Outputs per-case memos + summary.
-3. Incoming cohort runs `/legal-clinic:ramp` at start of next semester; `/ramp` surfaces the handoff memos for cases each new student is assigned.
+3. Incoming cohort runs the ramp workflow at start of next semester; `/ramp` surfaces the handoff memos for cases each new student is assigned.
 
 ## Retention
 

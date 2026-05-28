@@ -19,11 +19,11 @@ argument-hint: "[appointment | doc-request | update]"
 Scope: routine only. Substantive advice → `/status client` or a conversation with the professor.
 
 ```
-/legal-clinic:client-letter appointment
+Use the client-letter workflow: appointment
 ```
 
 ```
-/legal-clinic:client-letter doc-request
+Use the client-letter workflow: doc-request
 ```
 
 ---

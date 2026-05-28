@@ -20,17 +20,17 @@ to do and why.
 
 2. If no HRIS is connected and no `claude-for-legal/agents/employment-legal/leave-register.yaml` exists, prompt
    the attorney to upload a leave spreadsheet or use
-   `/employment-legal:log-leave` to add entries.
+   the log-leave workflow to add entries.
 
 3. Alerts only for leaves requiring action. Clean leaves summarized one line each.
 
 ## Examples
 
 ```
-/employment-legal:leave-tracker
+Use the leave-tracker workflow
 ```
 
 Run this weekly — set a Monday-morning reminder to invoke
-`/employment-legal:leave-tracker`. Automated scheduling requires a separate
+the leave-tracker workflow. Automated scheduling requires a separate
 integration (calendar reminder, cron job, etc.); Claude Code agents do not
 self-schedule.

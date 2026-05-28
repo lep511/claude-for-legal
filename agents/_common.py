@@ -208,6 +208,31 @@ def headless_append(session_id: str) -> str:
     )
 
 
+def profile_status(agent_dir: str) -> str:
+    """Check if an agent's CLAUDE.md has unresolved PLACEHOLDERs.
+
+    Returns 'configured', 'partial', or 'unconfigured'.
+    """
+    import re
+    claude_md = os.path.join(agent_dir, "CLAUDE.md")
+    rendered = os.path.join(
+        os.path.dirname(os.path.dirname(agent_dir)),
+        "sandbox", "profiles", "rendered",
+        os.path.basename(agent_dir) + ".md"
+    )
+    target = rendered if os.path.exists(rendered) else claude_md
+    if not os.path.exists(target):
+        return "unconfigured"
+    content = open(target).read()
+    placeholders = re.findall(r"\[PLACEHOLDER[^]]*\]", content)
+    if not placeholders:
+        return "configured"
+    total_lines = content.count("\n")
+    if len(placeholders) < total_lines * 0.01:
+        return "partial"
+    return "unconfigured"
+
+
 def skill_paths(names: list[str]) -> str:
     """Return a formatted block listing skill file paths for system prompts."""
     lines = []

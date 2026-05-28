@@ -13,7 +13,7 @@ argument-hint: "[section name, or describe what you want to change]"
 
 ## When this runs
 
-The user typed `/law-student:customize`. They want to change something in
+The user typed the customize workflow. They want to change something in
 their study profile — a class, a learning style preference, a bar prep
 subject — without re-running the whole cold-start interview and without
 hand-editing YAML.
@@ -25,7 +25,7 @@ hand-editing YAML.
    If the plugin config does not exist or still contains `[PLACEHOLDER]`
    values, say:
 
-   > You haven't run setup yet. Run `/law-student:cold-start-interview`
+   > You haven't run setup yet. Configure this agent in Settings
    > first — customize is for adjusting a profile you already have.
 
 2. **Show the customizable map.** List what's in the profile, grouped, with a
@@ -70,7 +70,7 @@ hand-editing YAML.
 5. **Close.**
 
    > Done. Your next output will reflect the change. Anything else? You can
-   > run `/law-student:customize` anytime.
+   > run the customize workflow anytime.
 
 ## Guardrails
 

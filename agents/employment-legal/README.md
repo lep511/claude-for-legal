@@ -17,7 +17,7 @@ In-house employment law workflows: hiring review, termination review, policy dra
 Asks which states and countries you have employees in, reads your handbook and three recent termination memos, builds a jurisdiction-aware escalation table.
 
 ```
-/employment-legal:cold-start-interview
+the Settings page
 ```
 
 Your configuration is stored at `claude-for-legal/agents/employment-legal/CLAUDE.md` and survives plugin updates.
@@ -32,22 +32,22 @@ Your configuration is stored at `claude-for-legal/agents/employment-legal/CLAUDE
 
 | Skill | Does |
 |---|---|
-| `/employment-legal:cold-start-interview` | Cold-start interview — learns jurisdictional footprint + escalation rules from handbook + term memos |
-| `/employment-legal:hiring-review` | Offer letter + restrictive covenant review, jurisdiction check |
-| `/employment-legal:termination-review` | Termination review with high-risk flag detection |
-| `/employment-legal:policy-drafting [topic]` | Draft a policy with state supplements where needed |
-| `/employment-legal:wage-hour-qa [question]` | Wage/hour or general employment Q&A, jurisdiction-aware |
-| `/employment-legal:worker-classification` | Classify a proposed worker engagement and flag misclassification gaps |
-| `/employment-legal:expansion-kickoff [country]` | Kick off international expansion planning for a new country |
-| `/employment-legal:expansion-update [country]` | Update an in-progress expansion tracker |
-| `/employment-legal:investigation-open` | Open a new internal investigation matter |
-| `/employment-legal:investigation-add` | Add documents, interview notes, or observations to an open investigation |
-| `/employment-legal:investigation-query` | Ask questions against an open investigation log |
-| `/employment-legal:investigation-memo` | Draft or update the privileged investigation memo |
-| `/employment-legal:investigation-summary` | Draft an audience-specific summary from the investigation memo |
-| `/employment-legal:leave-tracker` | Check open leaves for deadline alerts and required decisions |
-| `/employment-legal:log-leave` | Add a new leave to the leave register |
-| `/employment-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Cold-start interview — learns jurisdictional footprint + escalation rules from handbook + term memos |
+| the hiring-review workflow | Offer letter + restrictive covenant review, jurisdiction check |
+| the termination-review workflow | Termination review with high-risk flag detection |
+| the policy-drafting workflow ([topic]) | Draft a policy with state supplements where needed |
+| the wage-hour-qa workflow ([question]) | Wage/hour or general employment Q&A, jurisdiction-aware |
+| the worker-classification workflow | Classify a proposed worker engagement and flag misclassification gaps |
+| the expansion-kickoff workflow ([country]) | Kick off international expansion planning for a new country |
+| the expansion-update workflow ([country]) | Update an in-progress expansion tracker |
+| the investigation-open workflow | Open a new internal investigation matter |
+| the investigation-add workflow | Add documents, interview notes, or observations to an open investigation |
+| the investigation-query workflow | Ask questions against an open investigation log |
+| the investigation-memo workflow | Draft or update the privileged investigation memo |
+| the investigation-summary workflow | Draft an audience-specific summary from the investigation memo |
+| the leave-tracker workflow | Check open leaves for deadline alerts and required decisions |
+| the log-leave workflow | Add a new leave to the leave register |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 | **handbook-updates** | Diff proposed changes against current handbook, flag state supplement impact |
 
 Reference skills `internal-investigation` and `international-expansion` carry the detailed frameworks and templates — the per-mode skills above load them as needed.

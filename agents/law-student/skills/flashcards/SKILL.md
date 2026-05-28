@@ -56,7 +56,7 @@ Flag: `--generate | --drill | --review | --stats | --session <n>` (default: prom
 
 ### `--session <n>` — focused N-card session
 
-For when the student says "let's do 5 cards on Contracts" or runs `/law-student:session Contracts 5 --flashcards`.
+For when the student says "let's do 5 cards on Contracts" or runs the session workflow (Contracts 5 --flashcards).
 
 - Load `claude-for-legal/agents/law-student/study-plan.yaml` if it exists and read `session_history` for this subject.
 - Prioritize: cards previously marked wrong > due cards > new cards.
@@ -132,12 +132,12 @@ Show all cards in a subject. Grouped by bucket. Useful for scanning what's in th
 
 ### `--stats` — progress snapshot
 
-Per subject: total cards, bucket distribution, due today, reviewed this week. Highlight any cards that have bounced down to `new` more than twice — those are the stuck concepts worth drilling verbally via `/law-student:socratic-drill`.
+Per subject: total cards, bucket distribution, due today, reviewed this week. Highlight any cards that have bounced down to `new` more than twice — those are the stuck concepts worth drilling verbally via the socratic-drill workflow.
 
 ## Integration with other skills
 
 - **outline-builder:** after building or extending an outline, offer to generate flashcards from the new material
-- **socratic-drill:** if a card has been wrong 2+ times, route it to `/law-student:socratic-drill` for verbal working-through — flashcards aren't enough for concepts you don't actually understand
+- **socratic-drill:** if a card has been wrong 2+ times, route it to the socratic-drill workflow for verbal working-through — flashcards aren't enough for concepts you don't actually understand
 - **bar-prep-questions:** bar prep subjects with poor flashcard stats weight higher in MBE drilling
 
 ## Storage
@@ -155,4 +155,4 @@ One file per subject. Cards are markdown. Bucket/review metadata is inline per c
 - **Replace Anki.** If you already have a flashcard habit, keep it. This is for when you're in chat and want to drill without switching apps.
 - **Invent cards to hit a count target.** If I can only generate 8 confident cards from your source, you get 8. Padding with `[VERIFY]`-heavy guesses is worse than a smaller deck.
 - **Enforce study discipline.** Missed review days compound; the skill just shows what's due. You decide whether to drill.
-- **Teach you the rule.** Cards are for drilling what you've already studied. If a card is consistently wrong, the problem is upstream — use `/law-student:socratic-drill` or re-read the source.
+- **Teach you the rule.** Cards are for drilling what you've already studied. If a card is consistently wrong, the problem is upstream — use the socratic-drill workflow or re-read the source.

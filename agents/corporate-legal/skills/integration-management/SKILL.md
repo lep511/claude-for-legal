@@ -29,7 +29,7 @@ argument-hint: "[--init | --contracts | --report | --update | --export [--format
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/corporate-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/corporate-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -151,7 +151,7 @@ contracts:
 ## Mode 1: Initialize
 
 ```
-/corporate-legal:integration-management --init [--deal [code]]
+Use the integration-management workflow: --init [--deal [code]]
 ```
 
 ### Step 1: Load deal context
@@ -283,7 +283,7 @@ Desired Consents: [N] (from diligence — no PA deadline)
 
 Contract assignment: not yet imported — run --contracts to populate
 
-Next step: run /corporate-legal:integration-management --contracts to import the
+Next step: run the integration-management workflow --contracts to import the
 contract list, then --report to see your first status summary.
 ```
 
@@ -292,7 +292,7 @@ contract list, then --report to see your first status summary.
 ## Mode 2: Contract Assignment
 
 ```
-/corporate-legal:integration-management --contracts [--deal [code]]
+Use the integration-management workflow: --contracts [--deal [code]]
 ```
 
 This is the dedicated contract assignment initialization. Separate from the
@@ -391,7 +391,7 @@ For each contract, create a tracker entry with:
 ## Mode 3: Status Report
 
 ```
-/corporate-legal:integration-management --report [--deal [code]]
+Use the integration-management workflow: --report [--deal [code]]
 ```
 
 Reads current tracker state. Produces:
@@ -461,7 +461,7 @@ KEY DATES COMING UP
 ## Mode 4: Update
 
 ```
-/corporate-legal:integration-management --update [--deal [code]]
+Use the integration-management workflow: --update [--deal [code]]
 ```
 
 **Manual update:** Attorney tells Claude what changed.
@@ -504,7 +504,7 @@ New flags:
 ## Mode 5: Export
 
 ```
-/corporate-legal:integration-management --export [--format csv|table] [--section all|consents|contracts|workplan]
+Use the integration-management workflow: --export [--format csv|table] [--section all|consents|contracts|workplan]
 ```
 
 Produces a flat CSV or markdown table. Default: all sections, CSV.

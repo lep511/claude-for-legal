@@ -20,7 +20,7 @@ argument-hint: "[regulation name, or paste regulatory text, or attach a document
 6. Save as dated markdown doc for the file.
 
 ```
-/ai-governance-legal:reg-gap-analysis "EU AI Act high-risk provisions"
+Use the reg-gap-analysis workflow: "EU AI Act high-risk provisions"
 ```
 
 ---

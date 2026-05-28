@@ -11,17 +11,17 @@ argument-hint: "[--card for the one-page reference]"
 
 # /ramp
 
-1. Check `claude-for-legal/agents/legal-clinic/CLAUDE.md` is set up. If placeholders: "Ask [professor] to run `/legal-clinic:cold-start-interview` first."
+1. Check `claude-for-legal/agents/legal-clinic/CLAUDE.md` is set up. If placeholders: "Ask [professor] to configure this agent in Settings first."
 2. Use the walkthrough below.
 3. Walk through: clinic context (from handbook) → commands → practice exercises (fake intake, practice draft, research roadmap) → verification habits.
 4. `--card`: generate the one-page reference card.
 
 ```
-/legal-clinic:ramp
+Use the ramp workflow
 ```
 
 ```
-/legal-clinic:ramp --card
+Use the ramp workflow: --card
 ```
 
 ---

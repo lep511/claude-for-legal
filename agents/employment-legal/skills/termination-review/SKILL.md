@@ -21,7 +21,7 @@ argument-hint: "[describe the termination, or attach documentation]"
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/employment-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/employment-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/employment-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -88,7 +88,7 @@ When all three fire, emit:
 > 🔴 **Potential exempt misclassification** — [title] earning $[X] in
 > [state]. The exempt salary threshold in [state] is approximately $[Y]
 > `[model knowledge — verify]`. Before termination, route to
-> `/employment-legal:wage-hour-qa` for a classification check — a misclassified
+> the wage-hour-qa workflow for a classification check — a misclassified
 > employee who's terminated has a ready-made FLSA and state-wage claim with
 > liquidated damages, attorneys' fees, and (in CA) PAGA exposure, which
 > the separation agreement may not be able to release cleanly. A terminated
@@ -97,7 +97,7 @@ When all three fire, emit:
 
 Do not suppress this flag because the title "looks managerial" — the whole
 premise of the misclassification claim is that titles lie. Route to
-`/employment-legal:wage-hour-qa` for the actual duties-and-salary test.
+the wage-hour-qa workflow for the actual duties-and-salary test.
 
 **If a back-pay number is being computed as part of this review (severance
 modeling, settlement posture, exposure estimate), do NOT compute it in this

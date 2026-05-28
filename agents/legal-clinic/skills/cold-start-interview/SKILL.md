@@ -18,10 +18,10 @@ argument-hint: "[--redo] [--check-integrations]"
 4. Key decision: supervision style (formal queue / flags / lighter-touch).
 5. Migration: if a populated CLAUDE.md (no `[PLACEHOLDER]` markers) exists at `claude-for-legal/plugins/cache/claude-for-legal/legal-clinic/*/CLAUDE.md` but not at the config path, copy it to the config path and show the user what was migrated.
 6. Write `claude-for-legal/agents/legal-clinic/CLAUDE.md` including `## Who's using this` and `## Available integrations`. Show supervision choice and practice-area templates for confirmation.
-7. Offer `/legal-clinic:ramp` preview.
+7. Offer the ramp workflow preview.
 
 ```
-/legal-clinic:cold-start-interview
+the Settings page
 ```
 
 **`--check-integrations`:** Re-run only the Part 0 integration-availability check (Clio, document storage). Updates `## Available integrations` in `claude-for-legal/agents/legal-clinic/CLAUDE.md` without touching the role, ethical preconditions, supervision style, or practice-area templates. Use after adding or removing an MCP connector.
@@ -71,7 +71,7 @@ Ask the user to confirm before proceeding: continue with project scope, or pause
 
 Show this preamble first (3-4 short lines, nothing more):
 
-> **`legal-clinic` is for supervising attorneys setting up a law school clinic and onboarding students.** Not your area? `/legal-builder-hub:related-skills-surfacer`.
+> **`legal-clinic` is for supervising attorneys setting up a law school clinic and onboarding students.** Not your area? the related-skills-surfacer workflow.
 >
 > **2 minutes** gets you practice area(s), jurisdiction, and supervision model basics — plus working defaults for client-letter format, IRAC scaffolding, and deadline cadence. **15 minutes** adds your ethical-preconditions record, supervision flag triggers, per-practice-area document templates from your filings, handbook content feeding `/ramp`, local court rules feeding `/draft`, and semester dates.
 >
@@ -92,7 +92,7 @@ Once the supervising attorney has picked, orient them. Cover, in your own voice:
 
 The attorney picked quick or full in the preamble. Branch:
 
-**Quick start path:** ask only the basics (practice area, jurisdiction, supervision style). Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for client-letter format, IRAC scaffolding, and deadline cadence. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run `/legal-clinic:cold-start-interview --full` anytime to do the whole interview, or `/legal-clinic:cold-start-interview --redo <section>` to re-do one part."
+**Quick start path:** ask only the basics (practice area, jurisdiction, supervision style). Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for client-letter format, IRAC scaffolding, and deadline cadence. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run the Settings page anytime to do the whole interview, or the Settings page to re-do one part."
 
 **Full setup path:** the existing interview flow below.
 
@@ -107,7 +107,7 @@ The attorney picked quick or full in the preamble. Branch:
 - **Before writing the practice profile:** review the interview. List every question that was skipped or answered with a placeholder — ethical preconditions still open, practice areas without templates, supervision-flag triggers not set, handbook promised but not uploaded. Say: "Before I write your practice profile, here's what's still open: [list]. Want to fill any of these now, or leave them as placeholders?" Then wait.
 - **Never** write a practice profile with silent gaps. Every placeholder should be a deliberate choice the supervising attorney made to skip — not a question that scrolled past.
 - **Batch size — count subparts.** "Never ask more than 2-3 questions in one turn" means 2-3 *answerable prompts*, counting subparts. One question with 5 subparts is 5 questions. The test: can the user answer without scrolling? If the questions don't fit on one screen, it's too many. Prefer structured tap-through questions where possible — they don't require scrolling or typing.
-- **Pause and resume.** Tell the supervising attorney up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Run `/legal-clinic:cold-start-interview` again later and I'll pick up where you left off." When the attorney pauses, write a partial configuration to `claude-for-legal/agents/legal-clinic/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run /legal-clinic:cold-start-interview to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the attorney: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
+- **Pause and resume.** Tell the supervising attorney up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Configure this agent in Settings again later and I'll pick up where you left off." When the attorney pauses, write a partial configuration to `claude-for-legal/agents/legal-clinic/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run the Settings page to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the attorney: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
 
 **Verify user-stated legal facts as they come up in setup.** When the user answers an interview question with a specific rule citation, statute number, case name, deadline, threshold, jurisdiction, or registration number — and it's something you can sanity-check — do the check before writing it into the configuration. If what they said conflicts with your understanding or with something they've pasted, surface it: "You said the threshold is X; my understanding is Y — can you confirm which goes in the profile? `[premise flagged — verify]`" A wrong fact written into CLAUDE.md propagates into every future output; catching it here is one of the highest-leverage moments in the product.
 
@@ -120,7 +120,7 @@ The attorney picked quick or full in the preamble. Branch:
 > Are you the supervising attorney for this clinic? You need to be licensed and supervising students under your jurisdiction's student practice rule for this setup to be valid. (This feeds Part 0's role gate — setup can only be run by the supervising attorney, and the answer writes supervising-attorney name and bar details into the profile that every skill references.)
 >
 > 1. **Yes, I'm the supervising attorney.** Continue.
-> 2. **No, I'm a student / staff / administrator.** Stop. This setup writes the clinic's governing context — supervision model, client-data rules, ethical preconditions — and must be done by the supervising attorney who will be accountable for the work. Ask them to run `/legal-clinic:cold-start-interview`. Students run `/legal-clinic:ramp` to onboard each semester.
+> 2. **No, I'm a student / staff / administrator.** Stop. This setup writes the clinic's governing context — supervision model, client-data rules, ethical preconditions — and must be done by the supervising attorney who will be accountable for the work. Ask them to configure this agent in Settings. Students run the ramp workflow to onboard each semester.
 
 If the answer is 2, stop the interview and surface the above. Do not proceed.
 
@@ -219,15 +219,15 @@ Capture the choice and, if formal queue or configurable flags: what should trigg
 > - **Assist:** The skill produces work product; students review, edit, and learn by seeing. Fastest, most productive, least pedagogical. Good for high-volume clinics.
 > - **Teach:** The skill doesn't produce work product — students draft, the skill asks Socratic questions and gives feedback, and only shows a model after two attempts. Slowest, most pedagogical. Good for clinics where learning is the primary goal.
 >
-> You can set this per document type later with `/legal-clinic:build-guide`. For now, pick a default.
+> You can set this per document type later with the build-guide workflow. For now, pick a default.
 
 Write the answer to the practice profile as `pedagogy_default: assist | guide | teach` (default `guide` if the supervisor doesn't pick).
 
 **Practice-area guide.** After the pedagogy default is captured, offer:
 
-> Do you want to author a practice-area guide that tailors how the skills work for your clinic — intake questions, per-document pedagogy overrides, review gates? I can help you build one in 5-10 minutes with `/legal-clinic:build-guide`. You can also do it later. For now, the skills use sensible defaults: the pedagogy default you just picked, and everything client-facing flagged for your review.
+> Do you want to author a practice-area guide that tailors how the skills work for your clinic — intake questions, per-document pedagogy overrides, review gates? I can help you build one in 5-10 minutes with the build-guide workflow. You can also do it later. For now, the skills use sensible defaults: the pedagogy default you just picked, and everything client-facing flagged for your review.
 
-Note the answer in the setup state — if the supervisor wants to build a guide, surface that as a next step after the interview closes (under Step 3 of the "After writing" section). Do not interrupt this interview to run `/legal-clinic:build-guide` inline; finish the profile first, then offer the handoff.
+Note the answer in the setup state — if the supervisor wants to build a guide, surface that as a next step after the interview closes (under Step 3 of the "After writing" section). Do not interrupt this interview to run the build-guide workflow inline; finish the profile first, then offer the handoff.
 
 ### Part 4: Seed documents (3-4 min)
 
@@ -279,7 +279,7 @@ Per the CLAUDE.md template. Key sections:
 - **Semester** — when do students turn over (so `/ramp` knows when it'll be needed, and `/semester-handoff` knows when it'll be triggered)
 - **Handbook path** — where the ingested handbook lives, for `/ramp` to read
 
-**LIMITED DATA flag:** if fewer than 10 materials were shared across the interview, add a `> LIMITED DATA` note at the top of CLAUDE.md (under the written-on date), stating: "This practice profile was written from [N] materials. Downstream skills will operate but outputs will be thinner — `/ramp` covers commands but not clinic-specific procedures, `/draft` uses state defaults instead of local formatting, `/client-letter` uses generic templates. Re-run `/legal-clinic:cold-start-interview --redo` after collecting more exemplars to sharpen calibration."
+**LIMITED DATA flag:** if fewer than 10 materials were shared across the interview, add a `> LIMITED DATA` note at the top of CLAUDE.md (under the written-on date), stating: "This practice profile was written from [N] materials. Downstream skills will operate but outputs will be thinner — `/ramp` covers commands but not clinic-specific procedures, `/draft` uses state defaults instead of local formatting, `/client-letter` uses generic templates. Re-run the Settings page to reconfigure after collecting more exemplars to sharpen calibration."
 
 ## Built-in safeguard framing
 
@@ -307,12 +307,12 @@ If yes, show this tailored list (not a generic template — these are the concre
 
 > **Here's what I'm good at in law school clinic practice:**
 >
-> - **Student intake on a new case** — e.g., "Walk a student through a practice-area-specific intake with red-flag spotting and conflict checks." Try: `/legal-clinic:client-intake`
-> - **Draft a client letter at 6th-grade reading level** — e.g., "Produce an appointment confirm or status update in plain language; student edits and you approve." Try: `/legal-clinic:client-letter`
-> - **Build an IRAC memo scaffold** — e.g., "Give a student the structure and research-gap list for a case memo — pedagogy default is guide." Try: `/legal-clinic:memo`
-> - **Track deadlines across the active docket** — e.g., "See what's due in the next 14 / 7 / 3 / 1 days with warnings per your cadence." Try: `/legal-clinic:deadlines`
-> - **Ramp up a new cohort** — e.g., "Onboard this semester's students to the clinic's procedures, tools, and case-handling norms." Try: `/legal-clinic:ramp`
-> - **Semester handoff** — e.g., "Build per-case transition memos for the incoming cohort." Try: `/legal-clinic:semester-handoff`
+> - **Student intake on a new case** — e.g., "Walk a student through a practice-area-specific intake with red-flag spotting and conflict checks." Try: the client-intake workflow
+> - **Draft a client letter at 6th-grade reading level** — e.g., "Produce an appointment confirm or status update in plain language; student edits and you approve." Try: the client-letter workflow
+> - **Build an IRAC memo scaffold** — e.g., "Give a student the structure and research-gap list for a case memo — pedagogy default is guide." Try: the memo workflow
+> - **Track deadlines across the active docket** — e.g., "See what's due in the next 14 / 7 / 3 / 1 days with warnings per your cadence." Try: the deadlines workflow
+> - **Ramp up a new cohort** — e.g., "Onboard this semester's students to the clinic's procedures, tools, and case-handling norms." Try: the ramp workflow
+> - **Semester handoff** — e.g., "Build per-case transition memos for the incoming cohort." Try: the semester-handoff workflow
 >
 > **My suggestion for your first one:** Run `/ramp` yourself first so you see what your students will see at the start of the semester. Or tell me what's on your plate and I'll pick.
 
@@ -339,8 +339,8 @@ This solves the cold-start problem (the supervisor doesn't know what to do first
 > Done. Your clinic's configuration is at `claude-for-legal/agents/legal-clinic/CLAUDE.md` — a plain text file you can read and edit directly. Anything you answered can be changed:
 >
 > - Edit the file directly for a quick change
-> - Run `/legal-clinic:cold-start-interview --redo` for a full re-interview
-> - Run `/legal-clinic:cold-start-interview --check-integrations` to re-check what's connected
+> - Run the Settings page to reconfigure for a full re-interview
+> - Run the Settings page to check integrations to re-check what's connected
 >
 > The things clinics most commonly tweak later: practice areas (when the clinic takes on a new one), supervision style (formal review queue vs. configurable flags vs. lighter-touch — many clinics start one way and shift after the first semester), and jurisdiction / local rules (when a matter lands in an unusual court). Your configuration will improve as students use the plugin — when `/ramp` misses something or `/draft` uses the wrong caption format, the fix is usually here.
 

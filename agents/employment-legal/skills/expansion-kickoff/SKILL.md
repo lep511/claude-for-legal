@@ -21,18 +21,18 @@ country-specific flags, and creates a persistent tracker.
 2. Load the `international-expansion` reference skill and run the full workflow.
 3. If a tracker file already exists for this country (`claude-for-legal/agents/employment-legal/expansion-[slug].yaml`),
    flag it: "An expansion tracker for [country] already exists. Use
-   `/employment-legal:expansion-update [country]` to update it, or confirm
+   the expansion-update workflow ([country]) to update it, or confirm
    you want to start over."
 4. Create `claude-for-legal/agents/employment-legal/expansion-[slug].yaml` on completion.
 
 ## Examples
 
 ```
-/employment-legal:expansion-kickoff Germany
+Use the expansion-kickoff workflow: Germany
 ```
 
 ```
-/employment-legal:expansion-kickoff
+Use the expansion-kickoff workflow
 (skill will ask which country)
 ```
 

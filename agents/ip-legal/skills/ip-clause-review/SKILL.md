@@ -15,7 +15,7 @@ Reviews the IP clauses in an agreement against the practice profile in `claude-f
 
 ## Instructions
 
-1. **Load `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If placeholders present, stop and prompt: "Run `/ip-legal:cold-start-interview` first — I need to learn your practice profile before I can review IP clauses against it."
+1. **Load `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If placeholders present, stop and prompt: "Configure this agent in Settings first — I need to learn your practice profile before I can review IP clauses against it."
 
 2. **Get the agreement:** From file path, Drive link, or pasted text. If none provided, ask.
 
@@ -33,16 +33,16 @@ Reviews the IP clauses in an agreement against the practice profile in `claude-f
 ## Examples
 
 ```
-/ip-legal:ip-clause-review ~/Documents/vendor-sow.pdf
-/ip-legal:ip-clause-review https://docs.google.com/document/d/...
-/ip-legal:ip-clause-review
+Use the ip-clause-review workflow: ~/Documents/vendor-sow.pdf
+Use the ip-clause-review workflow: https://docs.google.com/document/d/...
+Use the ip-clause-review workflow
 ```
 
 ---
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ip-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -54,7 +54,7 @@ Read the IP clauses in an agreement and tell the lawyer what each one does, how 
 
 ## Precondition: load the practice profile
 
-**Before reading the agreement, read `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If it is missing or still contains placeholders, stop and run `/ip-legal:cold-start-interview`. The practice profile tells you:
+**Before reading the agreement, read `claude-for-legal/agents/ip-legal/CLAUDE.md`.** If it is missing or still contains placeholders, stop and configure this agent in Settings. The practice profile tells you:
 
 - The jurisdiction footprint — which affects whether moral rights waivers are enforceable, whether work-for-hire applies, whether implied assignment fills a gap, how broad license grants can be
 - Who approves deviations and at what severity

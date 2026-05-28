@@ -13,7 +13,7 @@ Law students. 1L through bar prep.
 This one's about you, not an org. Your classes, your bar jurisdiction, your learning style — drill-me vs. explain-to-me. Bring materials: past outlines, graded essays, old exams (especially same-professor), MBE sets, syllabi, papers. Ten to twenty items is the target; below that the practice profile is flagged `LIMITED DATA` and downstream skills will be thinner until more is added.
 
 ```
-/law-student:cold-start-interview
+the Settings page
 ```
 
 ## Skills
@@ -22,18 +22,18 @@ Every skill is invoked as `/law-student:<skill-name>`.
 
 | Skill | Does |
 |---|---|
-| `/law-student:cold-start-interview` | About-you interview + materials intake — classes, bar, learning style, materials |
-| `/law-student:socratic-drill [subject]` | Socratic drilling — it asks, you answer, it pushes back. Does not give the answer. |
-| `/law-student:case-brief [case]` | Case brief in your preferred format |
-| `/law-student:outline-builder [subject]` | Build or extend an outline in your format from class materials |
-| `/law-student:bar-prep-questions [subject]` | Bar prep questions, MBE or essay — jurisdiction-aware (UBE / NextGen / state-specific), flags majority/UBE vs. your state's rule |
-| `/law-student:flashcards [subject]` | Generate or drill flashcards; Leitner-style buckets; per-subject markdown; `--session <n>` mode |
-| `/law-student:study-plan` | Build or update a long-term study plan — phases, subjects by weakness, adaptive daily schedule from session history |
-| `/law-student:session <subject> <n>` | Focused N-question session on a subject; updates the plan with results |
-| `/law-student:irac-practice` | Grade your IRAC essay — structure, issues, rules, analysis. Tracks patterns across sessions. Never rewrites. |
-| `/law-student:cold-call-prep [case]` | Prep for cold-call — predict professor questions and drill them |
-| `/law-student:legal-writing [path-or-paste]` | Structural feedback on any draft — never rewrites, ever |
-| `/law-student:exam-forecast [class]` | Analyze past exams from same professor; forecast upcoming |
+| the Settings page | About-you interview + materials intake — classes, bar, learning style, materials |
+| the socratic-drill workflow ([subject]) | Socratic drilling — it asks, you answer, it pushes back. Does not give the answer. |
+| the case-brief workflow ([case]) | Case brief in your preferred format |
+| the outline-builder workflow ([subject]) | Build or extend an outline in your format from class materials |
+| the bar-prep-questions workflow ([subject]) | Bar prep questions, MBE or essay — jurisdiction-aware (UBE / NextGen / state-specific), flags majority/UBE vs. your state's rule |
+| the flashcards workflow ([subject]) | Generate or drill flashcards; Leitner-style buckets; per-subject markdown; `--session <n>` mode |
+| the study-plan workflow | Build or update a long-term study plan — phases, subjects by weakness, adaptive daily schedule from session history |
+| the session workflow (<subject> <n>) | Focused N-question session on a subject; updates the plan with results |
+| the irac-practice workflow | Grade your IRAC essay — structure, issues, rules, analysis. Tracks patterns across sessions. Never rewrites. |
+| the cold-call-prep workflow ([case]) | Prep for cold-call — predict professor questions and drill them |
+| the legal-writing workflow ([path-or-paste]) | Structural feedback on any draft — never rewrites, ever |
+| the exam-forecast workflow ([class]) | Analyze past exams from same professor; forecast upcoming |
 
 ## What "learning mode" means
 

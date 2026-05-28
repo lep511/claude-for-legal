@@ -46,7 +46,7 @@ This skill surfaces open comment periods and records decisions.
 ## Log a decision
 
 ```
-/regulatory-legal:comments --decide CMT-001
+Use the comments workflow: --decide CMT-001
 Decision: [filing / not-filing / waived]
 Rationale: "[brief — e.g., 'Rule doesn't apply to our model' or 'Filing comment on Section 3']"
 ```
@@ -85,6 +85,6 @@ Do not log a "filing" decision or produce a submission-ready draft past this gat
 - Draft the comment letter. That is a separate attorney task.
 - Make the filing decision. It tracks the decision; the attorney makes it.
 - Monitor post-comment activity. Once a decision is filed, this tracker's job
-  is done — follow the rulemaking through `/regulatory-legal:reg-feed-watcher`.
+  is done — follow the rulemaking through the reg-feed-watcher workflow.
 
 > The `comment-decision` `gap_type` semantics, the per-send Slack confirmation rule, and the comment-tracker.yaml schema live in the **gap-surfacer** reference skill — load it before doing substantive work.

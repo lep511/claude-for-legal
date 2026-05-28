@@ -6,7 +6,7 @@ argument-hint: "[--all | --slug=foo | --no-gmail]"
 
 # /oc-status
 
-To run weekly, set a recurring reminder to invoke `/litigation-legal:oc-status`. Automated scheduling requires a scheduled-tasks integration, which is not bundled.
+To run weekly, set a recurring reminder to invoke the oc-status workflow. Automated scheduling requires a scheduled-tasks integration, which is not bundled.
 
 1. Load `claude-for-legal/agents/litigation-legal/matters/_log.yaml`, filter per default rules (or per flags).
 2. Load `claude-for-legal/agents/litigation-legal/CLAUDE.md` → outside counsel directive style, signer defaults, budget posture.
@@ -146,7 +146,7 @@ After processing all matters, write `claude-for-legal/agents/litigation-legal/oc
 
 ## Scheduling
 
-This skill is designed to run weekly. Automated scheduling requires a scheduled-tasks integration that is not bundled with the plugin. To run weekly, set a recurring reminder to invoke `/litigation-legal:oc-status` — e.g., Monday morning on your calendar.
+This skill is designed to run weekly. Automated scheduling requires a scheduled-tasks integration that is not bundled with the plugin. To run weekly, set a recurring reminder to invoke the oc-status workflow — e.g., Monday morning on your calendar.
 
 Ad-hoc: `/oc-status` any time. `/oc-status --slug=foo` for a single matter.
 

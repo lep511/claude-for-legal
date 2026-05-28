@@ -126,7 +126,7 @@ From `claude-for-legal/agents/litigation-legal/CLAUDE.md` landscape — which in
 
 - Issued? If yes: date, scope, custodians (list of names).
 - Next refresh date (default: six months from issuance; adjust per matter).
-- If no and this is active litigation or reasonably anticipated: flag urgently; offer to run `/litigation-legal:legal-hold [slug] --issue` after intake completes.
+- If no and this is active litigation or reasonably anticipated: flag urgently; offer to run the legal-hold workflow ([slug] --issue) after intake completes.
 - *Seed doc opportunity:* "Hold notice, if issued."
 
 ### 9. Key dates

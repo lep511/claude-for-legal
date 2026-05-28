@@ -48,7 +48,7 @@ Before using this plugin with real client matters, confirm with your clinic's su
 3. **How privileged and confidential material will be handled** — what gets pasted into sessions, where outputs are stored, who has access, how long material is retained, how student turnover affects access.
 4. **Whether any of your clinic's practice areas involve heightened confidentiality** (immigration, criminal defense, domestic violence, some family and civil rights matters) that require additional safeguards — and decide whether the plugin is appropriate for those case types at all.
 
-Do not skip this step. The cold-start interview (`/legal-clinic:cold-start-interview`) captures these decisions as Part 0 before any other configuration.
+Do not skip this step. The cold-start interview (the Settings page) captures these decisions as Part 0 before any other configuration.
 
 ## Confidence markers
 

@@ -52,11 +52,11 @@ Ask the user to confirm before proceeding: continue with project scope, or pause
 
 Show this preamble first (3-4 short lines, nothing more):
 
-> **`regulatory-legal` is for people who track regulatory developments, assess policy gaps, and manage compliance obligations.** Not your area? `/legal-builder-hub:related-skills-surfacer`.
+> **`regulatory-legal` is for people who track regulatory developments, assess policy gaps, and manage compliance obligations.** Not your area? the related-skills-surfacer workflow.
 >
 > **2 minutes** gets you your role, practice setting, and primary regulatory regime. **15 minutes** adds your full watchlist, materiality thresholds, feed cadence, policy library index, and comment-period sources.
 >
-> Quick or full? (Upgrade any time with `/regulatory-legal:cold-start-interview --full`.)
+> Quick or full? (Upgrade any time with the Settings page.)
 
 Do not read the user's home-directory `~/CLAUDE.md`, `~/user.md`, or other personal memory to pre-populate the interview. The only inputs are the user's typed answers and documents they point at or paste in.
 
@@ -81,7 +81,7 @@ Once the user has picked, orient them. Cover, in your own voice:
 - **For uploads or path pointers (policy folder, existing watchlist, feed URLs):** "Paste the contents, share a file path, or say 'skip for now.' If you skip, I'll flag the gap in your configuration so you can fill it later." Then actually wait.
 - **Before writing the practice profile:** review the interview. List every question that was skipped or answered with a placeholder. Say: "Before I write your configuration, here's what's still open: [list]. Want to fill any of these now, or leave them as placeholders?" Wait for the answer before writing.
 - **Never** write the practice profile with silent gaps. Every placeholder should be a deliberate user choice to skip, not a question that scrolled past unanswered.
-- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Run `/regulatory-legal:cold-start-interview` again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/regulatory-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run /regulatory-legal:cold-start-interview to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
+- **Pause and resume.** Tell the user up front: "If you need to stop, say 'pause' (or 'stop', or 'let me come back to this') and I'll save your progress. Configure this agent in Settings again later and I'll pick up where you left off." When the user pauses, write a partial configuration to `claude-for-legal/agents/regulatory-legal/CLAUDE.md` with a `<!-- SETUP PAUSED AT: [section name] — run the Settings page to resume -->` comment at the top and `[PENDING]` markers (distinct from `[PLACEHOLDER]`) on unanswered fields. When setup re-runs and finds a paused config, greet the user: "Welcome back. You paused at [section]. Your earlier answers are saved. Pick up where we left off, or start over?" Do not re-ask questions already answered.
 
 **Verify user-stated legal facts as they come up in setup.** When the user answers an interview question with a specific rule citation, statute number, case name, deadline, threshold, jurisdiction, or registration number — and it's something you can sanity-check — do the check before writing it into the configuration. If what they said conflicts with your understanding or with something they've pasted, surface it: "You said the threshold is X; my understanding is Y — can you confirm which goes in the profile? `[premise flagged — verify]`" A wrong fact written into CLAUDE.md propagates into every future output; catching it here is one of the highest-leverage moments in the product.
 
@@ -95,7 +95,7 @@ Once the user has picked, orient them. Cover, in your own voice:
 
 The user picked quick or full in the preamble. Branch:
 
-**Quick start path:** ask only Part 0 (role, practice setting, integrations) and watchlist scope. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for materiality threshold, digest cadence, and policy library structure. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run `/regulatory-legal:cold-start-interview --full` anytime to do the whole interview, or `/regulatory-legal:cold-start-interview --redo <section>` to re-do one part."
+**Quick start path:** ask only Part 0 (role, practice setting, integrations) and watchlist scope. Write the config with `[DEFAULT]` markers on everything else. Close with: "Done. You can start using the commands now. I've used sensible defaults for materiality threshold, digest cadence, and policy library structure. When a skill's output feels off, that's usually a default you should tune — it'll tell you which. Run the Settings page anytime to do the whole interview, or the Settings page to re-do one part."
 
 **Full setup path:** the existing interview flow below.
 
@@ -144,7 +144,7 @@ Then report findings in this form:
 > - ⚪ [Integration] — configured but not verified. Open your MCP settings to confirm.
 > - ✗ [Integration] — not found. [Feature] will fall back to [manual alternative]. [How to connect.]
 
-You don't need all of these. Core features work with free feeds (Federal Register API) and file access alone. Paid feeds add enrichment; manual paste-in always works. If you set something up later, re-run `/regulatory-legal:cold-start-interview --check-integrations`.
+You don't need all of these. Core features work with free feeds (Federal Register API) and file access alone. Paid feeds add enrichment; manual paste-in always works. If you set something up later, re-run the Settings page to check integrations.
 
 #### Write to the config
 
@@ -179,7 +179,7 @@ Record the practice setting in the practice profile under `## Who's using this`.
 
 ### Part 1: The watchlist (2-3 min)
 
-*(This feeds `/regulatory-legal:reg-feed-watcher` and the `reg-change-monitor` agent — the feed only pulls from regulators on this list. Anything not on the list is invisible to the plugin until you paste it in via `/regulatory-legal:policy-diff`.)*
+*(This feeds the reg-feed-watcher workflow and the `reg-change-monitor` agent — the feed only pulls from regulators on this list. Anything not on the list is invisible to the plugin until you paste it in via the policy-diff workflow.)*
 
 **What does [your company] do?** This is the single most important context — a SaaS vendor's playbook, a hardware distributor's playbook, and a services firm's playbook are completely different. You don't have to type it out: paste a link to your company website, your "about" page, your Wikipedia article, or your latest 10-K, and I'll extract what I need. Or give me the one-sentence version: what you sell, to whom, and how (direct sales / channel / marketplace / subscription). This also tells me which regulators are even plausibly in your watchlist.
 
@@ -196,7 +196,7 @@ If not:
 
 ### Part 2: Materiality (the key question) (3-4 min)
 
-*(This feeds `/regulatory-legal:reg-feed-watcher` and the `reg-change-monitor` agent — your materiality threshold is the filter that decides whether a new development shows up immediately, in the weekly digest, or not at all. Wrong calibration here = noisy digests you stop reading.)*
+*(This feeds the reg-feed-watcher workflow and the `reg-change-monitor` agent — your materiality threshold is the filter that decides whether a new development shows up immediately, in the weekly digest, or not at all. Wrong calibration here = noisy digests you stop reading.)*
 
 Walk through examples. For each, would you want to know immediately, in a weekly digest, or not at all?
 
@@ -215,7 +215,7 @@ This builds the materiality threshold. Different companies calibrate very differ
 
 ### Part 3: The policy library (2-3 min)
 
-*(This feeds `/regulatory-legal:policy-diff` and `/regulatory-legal:gaps` — every incoming regulatory change is diffed against this library to find which policies it touches and who owns them.)*
+*(This feeds the policy-diff workflow and the gaps workflow — every incoming regulatory change is diffed against this library to find which policies it touches and who owns them.)*
 
 > Before I ask: do you have an existing policy library index — a spreadsheet, a table of contents, a wiki page — mapping each policy to its owner? Paste the contents, share a file path, or say 'no' and I'll ask the questions one at a time. If you share one, I'll import it rather than making you rebuild it from memory.
 
@@ -255,7 +255,7 @@ If yes: configure as enrichment layer on top of free feeds. If no: free feeds ar
 
 Record in the config that manual entry is enabled.
 
-**Step 4: Comment period tracking** *(This feeds `/regulatory-legal:comments` — the comment-period calendar logs deadlines and surfaces decisions when a comment window opens.)*
+**Step 4: Comment period tracking** *(This feeds the comments workflow — the comment-period calendar logs deadlines and surfaces decisions when a comment window opens.)*
 
 > When I see a proposed rule (NPRM) from your watchlist, I'll automatically log the comment deadline. Do you want me to flag these so you can decide whether to file a comment?
 
@@ -316,12 +316,12 @@ If yes, show this tailored list (not a generic template — these are the concre
 
 > **Here's what I'm good at in regulatory practice:**
 >
-> - **Check regulatory feeds for what's new** — e.g., "Filtered digest of rulemaking, guidance, and enforcement against your watchlist." Try: `/regulatory-legal:reg-feed-watcher`
-> - **Diff a regulatory change against your policy library** — e.g., "See exactly which internal policies a new rule impacts and what needs updating." Try: `/regulatory-legal:policy-diff`
-> - **Open gaps tracker** — e.g., "What's flagged and not yet closed across your portfolio, with owner and deadline." Try: `/regulatory-legal:gaps`
-> - **Track NPRM comment periods** — e.g., "What's open, comment deadlines, and a decision log on whether to file." Try: `/regulatory-legal:comments`
+> - **Check regulatory feeds for what's new** — e.g., "Filtered digest of rulemaking, guidance, and enforcement against your watchlist." Try: the reg-feed-watcher workflow
+> - **Diff a regulatory change against your policy library** — e.g., "See exactly which internal policies a new rule impacts and what needs updating." Try: the policy-diff workflow
+> - **Open gaps tracker** — e.g., "What's flagged and not yet closed across your portfolio, with owner and deadline." Try: the gaps workflow
+> - **Track NPRM comment periods** — e.g., "What's open, comment deadlines, and a decision log on whether to file." Try: the comments workflow
 >
-> **My suggestion for your first one:** Run `/regulatory-legal:reg-feed-watcher` — it tells you immediately whether the feeds are calibrated to your materiality threshold. Or tell me what's on your plate and I'll pick.
+> **My suggestion for your first one:** Run the reg-feed-watcher workflow — it tells you immediately whether the feeds are calibrated to your materiality threshold. Or tell me what's on your plate and I'll pick.
 
 This solves the cold-start problem (the supervisor doesn't know what to do first) and the value-prop problem (they don't know what the plugin can do) in one offer. Make the list specific. Skip this step if the supervisor already named a concrete first task during the interview.
 
@@ -339,8 +339,8 @@ This solves the cold-start problem (the supervisor doesn't know what to do first
   > "Done. Your configuration is at `claude-for-legal/agents/regulatory-legal/CLAUDE.md` — a plain-text file you can read and edit directly. Anything you answered can be changed:
   >
   > - Edit the file directly for a quick change
-  > - Run `/regulatory-legal:cold-start-interview --redo` for a full re-interview
-  > - Run `/regulatory-legal:cold-start-interview --check-integrations` to re-check what's connected
+  > - Run the Settings page to reconfigure for a full re-interview
+  > - Run the Settings page to check integrations to re-check what's connected
   >
   > The settings people tune most often: the watchlist (which regulators you actually care about), the materiality threshold (what's immediate vs. digest vs. FYI), and the check cadence. Your configuration will improve as you use the plugin — when a digest feels off (too noisy, too quiet), the fix is usually here."
 
@@ -353,6 +353,6 @@ After writing the practice profile, close with this note:
 > - When a skill's output feels off, that's usually a position to tune. The output will tell you which one.
 > - The `reg-change-monitor` agent watches the regulatory feeds; when a change matches something in your policy library, it flags it for a gap-check.
 > - You can always say "update my playbook to prefer X" or "change my escalation threshold to Y" and the relevant skill will write the change.
-> - Run `/regulatory-legal:cold-start-interview --redo <section>` to re-interview one part, or edit the config file directly.
+> - Run the Settings page to re-interview one part, or edit the config file directly.
 >
 > Ten minutes of setup gets you a working profile. A month of use gets you one that reads like you wrote it yourself.

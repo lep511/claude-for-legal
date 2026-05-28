@@ -17,20 +17,20 @@ Watches regulatory feeds, diffs new regulations against your policy library, sur
 Asks which regulators you watch, connects your policy document folder, learns what "material" means to you. Builds a watchlist and indexes your policy library.
 
 ```
-/regulatory-legal:cold-start-interview
+the Settings page
 ```
 
 ## Skills
 
 | Skill | Does |
 |---|---|
-| `/regulatory-legal:cold-start-interview` | Cold-start: watchlist + policy index + materiality threshold |
-| `/regulatory-legal:reg-feed-watcher` | Check feeds now, report what's new |
-| `/regulatory-legal:policy-diff [reg]` | Diff a specific reg change against policy library |
-| `/regulatory-legal:gaps` | Open gaps tracker — what's been flagged and not yet closed |
-| `/regulatory-legal:comments` | Review open NPRM comment periods, log decisions, track deadlines |
-| `/regulatory-legal:policy-redraft` | Proposed marked-up policy redraft that closes a gap — a first draft for internal review, not a direct edit to source documents |
-| `/regulatory-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Cold-start: watchlist + policy index + materiality threshold |
+| the reg-feed-watcher workflow | Check feeds now, report what's new |
+| the policy-diff workflow ([reg]) | Diff a specific reg change against policy library |
+| the gaps workflow | Open gaps tracker — what's been flagged and not yet closed |
+| the comments workflow | Review open NPRM comment periods, log decisions, track deadlines |
+| the policy-redraft workflow | Proposed marked-up policy redraft that closes a gap — a first draft for internal review, not a direct edit to source documents |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 | **gap-surfacer** *(reference)* | Shared gap- and comment-tracker framework loaded by `/gaps` and `/comments` |
 
 ## Interactive skills vs. scheduled agents

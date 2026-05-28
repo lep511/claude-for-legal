@@ -30,15 +30,15 @@ Surfaces what's renewing and when you have to cancel by.
 ## Examples
 
 ```
-/commercial-legal:renewal-tracker
+Use the renewal-tracker workflow
 ```
 
 ```
-/commercial-legal:renewal-tracker --days 180
+Use the renewal-tracker workflow: --days 180
 ```
 
 ```
-/commercial-legal:renewal-tracker --missed
+Use the renewal-tracker workflow: --missed
 ```
 
 ---

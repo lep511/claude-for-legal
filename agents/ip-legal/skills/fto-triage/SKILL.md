@@ -22,7 +22,7 @@ not mean the product is clear.
 ## Instructions
 
 1. Read `claude-for-legal/agents/ip-legal/CLAUDE.md`. If it
-   contains `[PLACEHOLDER]`, stop and direct to `/ip-legal:cold-start-interview`.
+   contains `[PLACEHOLDER]`, stop and direct to the Settings page.
 2. Follow the workflow below.
 3. Run intake (product/process, technical detail, jurisdictions, known patents,
    timing).
@@ -47,11 +47,11 @@ flag — patent counsel decides.
 ## Examples
 
 ```
-/ip-legal:fto-triage "an on-device speech recognition model for consumer wearables, US launch first"
+Use the fto-triage workflow: "an on-device speech recognition model for consumer wearables, US launch first"
 ```
 
 ```
-/ip-legal:fto-triage
+Use the fto-triage workflow
 ```
 
 ---
@@ -92,7 +92,7 @@ privileged channels.
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ip-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ip-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 Patent FTO matters are particularly common candidates for **clean-team** or
 **heightened** confidentiality at matter-open. Respect the matter's confidentiality
@@ -122,14 +122,14 @@ If `claude-for-legal/agents/ip-legal/CLAUDE.md` contains `[PLACEHOLDER]` or `[Yo
 > I notice you haven't configured your practice profile yet — that's how I tailor posture, jurisdictions, and approval chain to your practice.
 >
 > **Two choices:**
-> - Run `/ip-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll run this tailored to YOUR practice.
+> - Configure this agent in Settings (2 minutes) to configure your profile, then I'll run this tailored to YOUR practice.
 > - Say **"provisional"** and I'll run this against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run the FTO triage normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no playbook (do the full analysis rather than matching against a position list). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/ip-legal:cold-start-interview` to get output calibrated to YOUR practice — your playbook, your jurisdiction, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Configure this agent in Settings to get output calibrated to YOUR practice — your playbook, your jurisdiction, your risk appetite. 2 minutes."
 
 ---
 
@@ -521,7 +521,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 - **Draft patent claims.** This plugin does not go there; route to prosecution
   counsel.
 - **Assess damages exposure.** Damages modeling is an expert's job.
-- **Handle trade-secret or trademark analysis** — use `/ip-legal:infringement-triage`
+- **Handle trade-secret or trademark analysis** — use the infringement-triage workflow
   with the right mode.
 - **Quote outputs to counterparties or non-privileged audiences.** This is a
   privileged research document.

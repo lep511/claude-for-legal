@@ -104,7 +104,7 @@ Format:
 ```markdown
 # Playbook Update Proposals
 *Generated: [ISO datetime] | [N] proposals | Deviation data through [most recent date_signed in log]*
-*To review: run `/commercial-legal:review-proposals`*
+*To review: run the review-proposals workflow*
 
 ---
 
@@ -114,7 +114,7 @@ Format:
 Notify the attorney via the destination in `claude-for-legal/agents/commercial-legal/CLAUDE.md`:
 
 > Playbook monitor ran — [N] proposed update(s) ready for your review.
-> Run `/commercial-legal:review-proposals` when you have a few minutes.
+> Run the review-proposals workflow when you have a few minutes.
 > Proposals: claude-for-legal/agents/commercial-legal/playbook-proposals.md
 
 Log the run to `claude-for-legal/agents/commercial-legal/playbook-monitor-log.yaml`:
@@ -130,7 +130,7 @@ Log the run to `claude-for-legal/agents/commercial-legal/playbook-monitor-log.ya
 
 ### Step 5 — Review and approval (triggered by /review-proposals command)
 
-When the attorney runs `/commercial-legal:review-proposals`:
+When the attorney runs the review-proposals workflow:
 
 1. Read `claude-for-legal/agents/commercial-legal/playbook-proposals.md`. If file doesn't exist or is empty: *"No pending proposals. Playbook is up to date."* Stop.
 

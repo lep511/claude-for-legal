@@ -14,7 +14,7 @@ user-invocable: false
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/employment-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/employment-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/employment-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -67,7 +67,7 @@ Read `claude-for-legal/agents/employment-legal/CLAUDE.md` → escalation table, 
 
 ## Mode 1: Open a new matter
 
-Triggered by `/employment-legal:investigation-open` or "open an investigation"
+Triggered by the investigation-open workflow or "open an investigation"
 or "start an investigation into".
 
 ### Step 1 — Intake
@@ -369,7 +369,7 @@ After presenting the checklist, write it to
 
 ## Mode 2: Add data
 
-Triggered by `/employment-legal:investigation-add` or "add to the [matter]
+Triggered by the investigation-add workflow or "add to the [matter]
 investigation" or when the attorney pastes documents or interview notes.
 
 ### Step 1 — Identify the matter
@@ -478,7 +478,7 @@ the attorney decides when a source is adequately covered.
 
 ## Mode 3: Query the log
 
-Triggered by `/employment-legal:investigation-query` or any question
+Triggered by the investigation-query workflow or any question
 phrased against the investigation (e.g., "what did [witness] say about",
 "what documents corroborate", "what do we still need", "what's the
 strongest evidence on each side").
@@ -515,7 +515,7 @@ Flag if not yet completed.
 
 ## Mode 4: Draft or update the memo
 
-Triggered by `/employment-legal:investigation-memo` or "draft the memo"
+Triggered by the investigation-memo workflow or "draft the memo"
 or "update the memo".
 
 ### If no memo exists — first draft
@@ -696,7 +696,7 @@ Apply updates. Preserve prior drafting. Mark changed sections with
 
 ## Mode 5: Draft audience summary
 
-Triggered by `/employment-legal:investigation-summary` or "draft a
+Triggered by the investigation-summary workflow or "draft a
 summary for [audience]".
 
 Ask: who is the audience and what decision or action does this summary

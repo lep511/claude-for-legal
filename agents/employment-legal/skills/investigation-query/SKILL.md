@@ -25,17 +25,17 @@ on each issue.
 ## Examples
 
 ```
-/employment-legal:investigation-query [matter name]
+Use the investigation-query workflow: [matter name]
 What did the respondent say about the December team dinner?
 ```
 
 ```
-/employment-legal:investigation-query [matter name]
+Use the investigation-query workflow: [matter name]
 Where do the complainant's and respondent's accounts conflict?
 ```
 
 ```
-/employment-legal:investigation-query [matter name]
+Use the investigation-query workflow: [matter name]
 What do we still need?
 ```
 

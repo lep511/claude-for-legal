@@ -25,12 +25,12 @@ reviewed for coverage verification.
 ## Examples
 
 ```
-/employment-legal:investigation-add [matter name]
+Use the investigation-add workflow: [matter name]
 [paste interview notes]
 ```
 
 ```
-/employment-legal:investigation-add [matter name]
+Use the investigation-add workflow: [matter name]
 [attach email export]
 ```
 

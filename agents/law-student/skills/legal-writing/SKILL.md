@@ -131,7 +131,7 @@ Refuse. Gracefully, not preachy:
 Then offer one of:
 - More specific structural feedback on a targeted section
 - A labeled example of the structural move at issue
-- A socratic drill on the rule or issue they're trying to write about (routes to `/law-student:socratic-drill`)
+- A socratic drill on the rule or issue they're trying to write about (routes to the socratic-drill workflow)
 
 ### Step 5: Track patterns
 
@@ -150,8 +150,8 @@ After 3+ sessions: surface patterns ("you consistently bury the thesis," "analys
 
 ## Integration
 
-- **irac-practice:** for IRAC-specific exam essays, `/law-student:irac-practice` is more targeted
-- **socratic-drill:** if the writing issue is that the student doesn't understand the rule, `/law-student:socratic-drill` on the substantive area first
+- **irac-practice:** for IRAC-specific exam essays, the irac-practice workflow is more targeted
+- **socratic-drill:** if the writing issue is that the student doesn't understand the rule, the socratic-drill workflow on the substantive area first
 - **flashcards:** if citation form keeps being wrong, flashcards on common citation patterns
 
 ## Close with the next-steps decision tree

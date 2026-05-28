@@ -18,11 +18,11 @@ argument-hint: "[document type — e.g., 'eviction-answer', 'asylum-declaration'
 5. Output with prominent AI-assisted label, student review checklist, supervision routing.
 
 ```
-/legal-clinic:draft eviction-answer
+Use the draft workflow: eviction-answer
 ```
 
 ```
-/legal-clinic:draft asylum-declaration
+Use the draft workflow: asylum-declaration
 ```
 
 ---

@@ -158,7 +158,7 @@ interpolate URL strings into prompts or hooks.
 
 **Notify (default):** Show the full diff and trust check. "Update available. Review the diff above. Apply? [y/n]"
 
-**Manual:** Just list what has updates available. User runs `/legal-builder-hub:auto-updater --apply [skill]` when ready.
+**Manual:** Just list what has updates available. User runs the auto-updater workflow (--apply [skill]) when ready.
 
 There is no "auto" mode. Updates to code that runs in your legal environment always require a human to read the diff.
 
@@ -168,7 +168,7 @@ Replace the installed skill files with the new version. Update `claude-for-legal
 
 ## Rollback
 
-If an update breaks something: `/legal-builder-hub:auto-updater --rollback [skill]` restores from backup.
+If an update breaks something: the auto-updater workflow (--rollback [skill]) restores from backup.
 
 ## What this skill does not do
 

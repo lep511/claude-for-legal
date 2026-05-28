@@ -26,11 +26,11 @@ argument-hint: "[describe a proposed new AI practice — or omit / use --sweep f
 3. Output: covered / missing / conflicting + suggested language for each gap + registry entry if needed + timing recommendation.
 
 **Recurring runs:**
-Set up a recurring reminder in your own scheduler to run `/ai-governance-legal:policy-monitor` weekly. Scheduled execution requires a scheduled-tasks integration, which is not bundled with this plugin.
+Set up a recurring reminder in your own scheduler to run the policy-monitor workflow weekly. Scheduled execution requires a scheduled-tasks integration, which is not bundled with this plugin.
 
 ```
-/ai-governance-legal:policy-monitor
-/ai-governance-legal:policy-monitor "We want to use AI to automatically flag expense reports for review"
+Use the policy-monitor workflow
+Use the policy-monitor workflow: "We want to use AI to automatically flag expense reports for review"
 ```
 
 ---
@@ -63,7 +63,7 @@ Read `claude-for-legal/agents/ai-governance-legal/CLAUDE.md`:
 If `## Outputs` contains `[PLACEHOLDER]`:
 > "Outputs aren't configured yet. I can still run a direct-query check — describe
 > what you're planning to do and I'll diff it against your current AI policy. To
-> enable the crawl sweep, run `/ai-governance-legal:cold-start-interview` and provide the outputs
+> enable the crawl sweep, configure this agent in Settings and provide the outputs
 > folder path."
 
 Read the actual AI or acceptable use policy document from the path in `## Outputs`
@@ -329,7 +329,7 @@ creating it and draft the header.
 
 ## Schedule integration
 
-The weekly sweep is designed to run on a recurring cadence. Set up a recurring reminder in your own scheduler to run `/ai-governance-legal:policy-monitor` weekly. Scheduled execution requires a scheduled-tasks integration, which is not bundled with this plugin.
+The weekly sweep is designed to run on a recurring cadence. Set up a recurring reminder in your own scheduler to run the policy-monitor workflow weekly. Scheduled execution requires a scheduled-tasks integration, which is not bundled with this plugin.
 
 After each sweep, the **Last policy sweep** and **gaps_found** fields in `## Outputs` are updated only once the human has acknowledged the sweep results (see "Determine scope" above).
 

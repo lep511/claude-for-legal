@@ -20,18 +20,18 @@ Connects to your launch tracker (Jira/Linear), reads ten of your past launch rev
 Your configuration is stored at `claude-for-legal/agents/product-legal/CLAUDE.md` and survives plugin updates.
 
 ```
-/product-legal:cold-start-interview
+the Settings page
 ```
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/product-legal:cold-start-interview` | Cold-start interview |
-| `/product-legal:launch-review [PRD or ticket]` | Full launch review against your framework |
-| `/product-legal:marketing-claims-review [copy]` | Marketing claims review |
-| `/product-legal:is-this-a-problem [question]` | Fast "is this a problem?" answer |
-| `/product-legal:matter-workspace` | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
+| the Settings page | Cold-start interview |
+| the launch-review workflow ([PRD or ticket]) | Full launch review against your framework |
+| the marketing-claims-review workflow ([copy]) | Marketing claims review |
+| the is-this-a-problem workflow ([question]) | Fast "is this a problem?" answer |
+| the matter-workspace workflow | Manage matter workspaces (multi-client private practice only) — new, list, switch, close, none |
 
 ## Skills
 
@@ -69,19 +69,19 @@ With a tracker connected: cold-start pulls launch history, launch-review pulls t
 ## Quick start
 
 ```
-/product-legal:cold-start-interview
+the Settings page
 ```
 
 Then:
 
 ```
-/product-legal:is-this-a-problem "Can we A/B test the pricing page?"
+Use the is-this-a-problem workflow: "Can we A/B test the pricing page?"
 ```
 
 → Same-minute answer calibrated to your risk table.
 
 ```
-/product-legal:launch-review PROJ-1234
+Use the launch-review workflow: PROJ-1234
 ```
 
 → Full review, category-by-category, with action items.
@@ -98,7 +98,7 @@ Your practice profile at `claude-for-legal/agents/product-legal/CLAUDE.md` isn't
 
 ## Prerequisites
 
-Some features reference external integrations (document management, launch trackers, eDiscovery, case management, regulatory feeds). These are not bundled — if you have an MCP server for one of these in your environment, the relevant features will use it. Without one, the plugin falls back to file upload and manual workflows. Run `/product-legal:cold-start-interview --check-integrations` to see what's available in your environment.
+Some features reference external integrations (document management, launch trackers, eDiscovery, case management, regulatory feeds). These are not bundled — if you have an MCP server for one of these in your environment, the relevant features will use it. Without one, the plugin falls back to file upload and manual workflows. Run the Settings page to check integrations to see what's available in your environment.
 
 ## Configuration
 

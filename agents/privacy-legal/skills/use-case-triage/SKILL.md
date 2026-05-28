@@ -18,7 +18,7 @@ argument-hint: "[describe the data processing activity or feature]"
 5. Offer to continue into PIA generation if assessment is required.
 
 ```
-/privacy-legal:use-case-triage "New feature that uses behavioral data to personalize content recommendations"
+Use the use-case-triage workflow: "New feature that uses behavioral data to personalize content recommendations"
 ```
 
 ---
@@ -27,7 +27,7 @@ argument-hint: "[describe the data processing activity or feature]"
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/privacy-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/privacy-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/privacy-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -68,14 +68,14 @@ If the file is missing or contains `[PLACEHOLDER]`, surface this bounce:
 > I notice you haven't configured your practice profile yet — that's how I tailor the PIA trigger criteria, regulatory footprint, and privacy policy commitments to your practice.
 >
 > **Two choices:**
-> - Run `/privacy-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll triage tailored to YOUR practice.
+> - Configure this agent in Settings (2 minutes) to configure your profile, then I'll triage tailored to YOUR practice.
 > - Say **"provisional"** and I'll triage against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run triage normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction (CCPA + common federal sectoral baselines), no playbook (classify from general privacy-law principles rather than matching to configured commitments). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/privacy-legal:cold-start-interview` to get output calibrated to YOUR practice — your regulatory footprint, your privacy policy commitments, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Configure this agent in Settings to get output calibrated to YOUR practice — your regulatory footprint, your privacy policy commitments, your risk appetite. 2 minutes."
 
 ---
 
@@ -214,7 +214,7 @@ If they say yes, load the `pia-generation` skill and continue in the same
 conversation — pass the activity description and any triggers already identified.
 
 If they say no, the triage result stands. The PIA can be run any time with:
-`/privacy-legal:pia-generation [activity]`
+the pia-generation workflow ([activity])
 
 ---
 
@@ -238,13 +238,13 @@ reconciled with stated commitments or lawful basis, say so.
 influencing decisions about individuals:
 
 > "This activity involves AI decision-making. An AI impact assessment is likely
-> required in addition to a PIA. Use `/ai-governance-legal:aia-generation [activity]`
+> required in addition to a PIA. Use the aia-generation workflow ([activity])
 > to run that in parallel — they're not substitutes."
 
 **Product counsel handoff:** If this is a new product feature or launch:
 
 > "If this is part of a product launch, loop in product counsel.
-> Use `/product-legal:launch-review` — it will detect the privacy component
+> Use the launch-review workflow — it will detect the privacy component
 > and route to this plugin."
 
 Only flag handoffs that are actually relevant. Don't append both as boilerplate.

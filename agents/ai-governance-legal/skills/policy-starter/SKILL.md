@@ -12,7 +12,7 @@ argument-hint: "[optional — scope hint, e.g. 'firm-wide', 'legal team only', '
 
 # /policy-starter
 
-1. Read `claude-for-legal/agents/ai-governance-legal/CLAUDE.md`. If the practice profile is unpopulated, stop and direct to `/ai-governance-legal:cold-start-interview`.
+1. Read `claude-for-legal/agents/ai-governance-legal/CLAUDE.md`. If the practice profile is unpopulated, stop and direct to the Settings page.
 2. Use the framework below.
 3. Run the scope interview — which sections does the policy need to cover, who's the audience, what's the deployment context. Do not skip to drafting.
 4. Web search for the current published model policies and guidance relevant to the deployment context (ABA, state bars, ILTA, CLOC, NIST, peer-firm / peer-company policies, current state AI laws, EU AI Act, sector regulators as applicable).
@@ -21,16 +21,16 @@ argument-hint: "[optional — scope hint, e.g. 'firm-wide', 'legal team only', '
 7. Close with the next-steps decision tree.
 
 ```
-/ai-governance-legal:policy-starter
-/ai-governance-legal:policy-starter "we need an AI policy for our 30-lawyer firm"
-/ai-governance-legal:policy-starter "update our existing policy for the 2026 state AI laws"
+Use the policy-starter workflow
+Use the policy-starter workflow: "we need an AI policy for our 30-lawyer firm"
+Use the policy-starter workflow: "update our existing policy for the 2026 state AI laws"
 ```
 
 ---
 
 ## Matter context
 
-**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run `/ai-governance-legal:matter-workspace switch <slug>` or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
+**Matter context.** Check `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗` (the default for in-house users), skip the rest of this paragraph — skills use practice-level context and the matter machinery is invisible. If enabled and there is no active matter, ask: "Which matter is this for? Run the matter-workspace workflow (switch <slug>) or say `practice-level`." Load the active matter's `matter.md` for matter-specific context and overrides. Write outputs to the matter folder at `claude-for-legal/agents/ai-governance-legal/matters/<matter-slug>/`. Never read another matter's files unless `Cross-matter context` is `on`.
 
 ---
 
@@ -251,9 +251,9 @@ profile. The most common next steps:
    them with the attorney; the skill re-runs with the decisions baked in.
 2. **Stakeholder summary** — produce a one-page version for the board or
    executive committee explaining what the policy does and doesn't do.
-3. **Training materials** — once the policy is adopted, `/ai-governance-legal:aia-generation` can be used to produce per-use-case training notes.
-4. **Vendor sweep** — once the policy is adopted, `/ai-governance-legal:vendor-ai-review` should be run against the vendors the policy references to check conformance.
-5. **Gap check against new regulation** — pair with `/ai-governance-legal:reg-gap-analysis` to test the draft against a specific regulation or guidance before adoption.
+3. **Training materials** — once the policy is adopted, the aia-generation workflow can be used to produce per-use-case training notes.
+4. **Vendor sweep** — once the policy is adopted, the vendor-ai-review workflow should be run against the vendors the policy references to check conformance.
+5. **Gap check against new regulation** — pair with the reg-gap-analysis workflow to test the draft against a specific regulation or guidance before adoption.
 
 ## Output scope reminder
 
