@@ -6,6 +6,7 @@
 __pycache__/
 *.pyc
 
+financial-only-for-reference
 financial-only-for-reference/*
 sandbox/*
 !sandbox/.gitkeep

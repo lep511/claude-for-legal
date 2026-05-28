@@ -54,7 +54,7 @@ from legal_agents import (
 )
 from legal_agents.orchestrator.agent import create_options as create_orchestrator_options
 from legal_agents.common import MAX_HANDOFF_DEPTH
-from sdk_tools.routing import get_last_route, get_pending_handoff
+from sdk_tools.routing import get_last_route, get_pending_handoff, clear_last_route, clear_pending_handoff
 from session_manager import Session
 
 AGENTS = {
@@ -226,6 +226,8 @@ async def main():
             break
 
         session.add_turn("user", user_input)
+        clear_last_route()
+        clear_pending_handoff()
 
         # --- Orchestrator phase ---
         orch_response = ""

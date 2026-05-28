@@ -91,7 +91,7 @@ export function ChatInput({
         type="file"
         ref={fileInputRef}
         className="hidden"
-        accept=".csv,.docx,.xls,.xlsx,.md"
+        accept=".csv,.docx,.xls,.xlsx,.md,.pdf"
         onChange={onFileSelect}
       />
     </form>

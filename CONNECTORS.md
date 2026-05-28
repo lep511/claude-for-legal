@@ -13,7 +13,7 @@ The plugins are at their best when connected to authoritative sources. If you bu
 ## How to submit
 
 1. Publish your MCP server and document its tools, auth flow, and data coverage.
-2. Open a PR adding your server to the relevant plugin's `.mcp.json` with the URL, auth method, and a one-line description of what it gives Claude.
+2. Open a PR adding your server to the relevant plugin's `agents/<plugin>/.mcp.json` with the URL, auth method, and a one-line description of what it gives Claude.
 3. Include a note on which practice areas / plugins it's most useful for.
 4. We'll test against the plugin workflows and merge. Connectors that pass the retrieval-quality and injection-resistance checks go in the default `.mcp.json`; others get documented in the plugin README for users to add themselves.
 
@@ -43,7 +43,31 @@ Connectors shipped in the default `.mcp.json` of each plugin:
 | **Atlassian (Jira)** | product-legal |
 | **Asana** | product-legal |
 
-See the `.mcp.json` in each plugin directory for the authoritative list.
+See the `.mcp.json` in each plugin directory (`agents/<plugin>/.mcp.json`) for the authoritative list.
+
+## Python backend integration
+
+The Python agents in `legal_agents/` do not directly use these MCP servers yet.
+To wire a connector into the backend:
+
+1. Add the server config to `mcp_servers/__init__.py` in the `get_mcp_config(slug)` function.
+2. The agent's `create_agent_options()` call in `legal_agents/common.py` automatically picks up anything returned by `get_mcp_config()` and adds it to the agent's `mcp_servers` dict.
+3. The tool names are auto-allowed as `mcp__<server_name>__*` in the agent's `allowed_tools`.
+
+Example:
+
+```python
+# mcp_servers/__init__.py
+def get_mcp_config(slug: str) -> dict[str, Any]:
+    configs = {}
+    if slug == "commercial-legal":
+        configs["ironclad"] = {
+            "type": "http",
+            "url": "https://mcp.na1.ironcladapp.com/mcp",
+            "headers": {"Authorization": f"Bearer {os.getenv('IRONCLAD_TOKEN', '')}"},
+        }
+    return configs
+```
 
 ## Wanted connectors
 

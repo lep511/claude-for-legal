@@ -34,7 +34,7 @@ from api_handlers import (
 from session_manager import Session, OUT_DIR
 
 
-CORS_ORIGINS = os.getenv("API_CORS_ORIGINS", "http://localhost:3000").split(",")
+CORS_ORIGINS = os.getenv("API_CORS_ORIGINS", "http://localhost:35428").split(",")
 HEARTBEAT_INTERVAL = 15
 
 
@@ -105,8 +105,7 @@ async def create_session(body: CreateSessionRequest | None = None):
 
 @app.get("/api/sessions")
 async def list_sessions():
-    all_sessions = Session.list_sessions()
-    return [s for s in all_sessions if s.get("name")]
+    return Session.list_sessions()
 
 
 @app.get("/api/sessions/{session_id}")
@@ -157,6 +156,20 @@ async def delete_session(session_id: str):
         raise HTTPException(status_code=404, detail="Session not found")
     Session.delete(session_id)
     return {"status": "deleted", "session_id": session_id}
+
+
+class RenameRequest(BaseModel):
+    name: str
+
+
+@app.patch("/api/sessions/{session_id}")
+async def rename_session(session_id: str, body: RenameRequest):
+    try:
+        session = Session.load(session_id)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Session not found")
+    session.rename(body.name)
+    return {"session_id": session.id, "name": session.name}
 
 
 @app.post("/api/sessions/{session_id}/upload")

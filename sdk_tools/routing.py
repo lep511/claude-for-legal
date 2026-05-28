@@ -20,7 +20,7 @@ _pending_handoff: dict[str, Any] = {}
 async def route_to_agent(args: dict[str, Any]) -> dict[str, Any]:
     global _last_route
     _last_route = {
-        "slug": args["slug"],
+        "agent_slug": args["slug"],
         "task": args["task"],
         "title": args.get("title", ""),
     }
@@ -39,9 +39,9 @@ async def route_to_agent(args: dict[str, Any]) -> dict[str, Any]:
 async def request_handoff(args: dict[str, Any]) -> dict[str, Any]:
     global _pending_handoff
     _pending_handoff = {
-        "target_slug": args["target_slug"],
+        "target_agent": args["target_slug"],
         "task": args["task"],
-        "context": args.get("context", ""),
+        "reason": args.get("context", ""),
     }
     return {
         "content": [

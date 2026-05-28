@@ -286,11 +286,10 @@ export default function AIChat() {
   };
 
   const handleNewSession = async () => {
-    const newId = await createSession();
     setMessages([]);
     setSessionFiles([]);
     setSessionBusy(false);
-    prevSessionRef.current = newId;
+    await createSession();
   };
 
   const handleResumeSession = (id: string) => {
@@ -320,11 +319,21 @@ export default function AIChat() {
     }
   };
 
+  const handleRenameSession = async (id: string, name: string) => {
+    await fetch(`/api/agents/sessions/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+    updateSessionName(id, name);
+    await fetchSessions();
+  };
+
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const allowedExtensions = ["csv", "docx", "xls", "xlsx", "md"];
+    const allowedExtensions = ["csv", "docx", "xls", "xlsx", "md", "pdf"];
     const ext = file.name.split(".").pop()?.toLowerCase() || "";
     if (!allowedExtensions.includes(ext)) {
       toast({
@@ -579,6 +588,7 @@ export default function AIChat() {
                 onNewSession={handleNewSession}
                 onResumeSession={handleResumeSession}
                 onDeleteSession={handleDeleteSession}
+                onRenameSession={handleRenameSession}
                 onFetchSessions={fetchSessions}
               />
             </div>

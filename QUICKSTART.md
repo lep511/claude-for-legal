@@ -66,6 +66,60 @@ Each plugin learns your playbook through a setup interview, writes it to a pract
 
 12 practice-area plugins, 5 managed-agent cookbooks, 16+ connectors. The full reference is in [README.md](README.md).
 
+## Running the frontend locally
+
+The platform also ships a multi-agent chat interface (Next.js) that streams
+responses from the Python backend. To run it on your local machine:
+
+### Prerequisites
+
+- Node.js 22+ and npm 10+
+- Python 3.13+ with [`uv`](https://docs.astral.sh/uv/)
+- An `ANTHROPIC_API_KEY` environment variable (used by the Python backend)
+
+### 1. Start the Python backend
+
+```bash
+# From the repo root
+echo "ANTHROPIC_API_KEY=sk-ant-..." > .env   # create once; loaded automatically
+uv run uvicorn api_server:app --host 0.0.0.0 --port 8000 --reload
+```
+
+The backend serves on `http://localhost:8000`. Verify it's up:
+```bash
+curl http://localhost:8000/api/sessions
+```
+
+### 2. Start the frontend
+
+```bash
+cd frontend
+npm install        # first time only
+npm run dev        # starts on http://localhost:3000
+```
+
+Open `http://localhost:3000/legal` in your browser.
+
+### Configuration
+
+| Variable | Where | Default | Purpose |
+|---|---|---|---|
+| `ANTHROPIC_API_KEY` | `.env` at repo root | *(required)* | Authenticates the backend with the Claude API |
+| `PYTHON_BACKEND_URL` | Frontend env (optional) | `http://localhost:8000` | Override if the backend runs on a different host/port |
+
+To point the frontend at a non-default backend, create `frontend/.env.local`:
+```bash
+PYTHON_BACKEND_URL=http://your-host:9000
+```
+
+### Production build
+
+```bash
+cd frontend
+npm run build      # outputs to .next/
+npm run start      # serves the production build on port 3000
+```
+
 ## Stuck?
 
 - **"Command not found"** after install → you forgot step 4. Restart Claude Code.

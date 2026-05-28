@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Plus, History, Trash2, AlertTriangle } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { Plus, History, Trash2, Pencil, AlertTriangle, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -80,6 +80,7 @@ interface SessionControlsProps {
   onNewSession: () => void;
   onResumeSession: (id: string) => void;
   onDeleteSession: (id: string) => void;
+  onRenameSession: (id: string, name: string) => void;
   onFetchSessions: () => void;
 }
 
@@ -92,11 +93,30 @@ export function SessionControls({
   onNewSession,
   onResumeSession,
   onDeleteSession,
+  onRenameSession,
   onFetchSessions,
 }: SessionControlsProps) {
   const [open, setOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [renameTarget, setRenameTarget] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+  const renameInputRef = useRef<HTMLInputElement>(null);
   const currentName = sessionName || `Session-${sessionId?.slice(0, 6) || ""}`;
+
+  useEffect(() => {
+    if (renameTarget && renameInputRef.current) {
+      renameInputRef.current.focus();
+      renameInputRef.current.select();
+    }
+  }, [renameTarget]);
+
+  const handleRenameSubmit = (id: string) => {
+    const trimmed = renameValue.trim();
+    if (trimmed) {
+      onRenameSession(id, trimmed);
+    }
+    setRenameTarget(null);
+  };
 
   return (
     <div className="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -126,7 +146,10 @@ export function SessionControls({
         onOpenChange={(o) => {
           if (disabled) return;
           setOpen(o);
-          if (o) onFetchSessions();
+          if (o) {
+            onFetchSessions();
+            setRenameTarget(null);
+          }
         }}
       >
         <DropdownMenuTrigger asChild>
@@ -140,48 +163,106 @@ export function SessionControls({
             <span className="hidden sm:inline">History</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-72">
+        <DropdownMenuContent align="end" className="w-80">
           {sessions.length === 0 ? (
             <DropdownMenuItem disabled>No sessions yet</DropdownMenuItem>
           ) : (
             sessions.slice(0, 10).map((s) => {
               const isActive = s.session_id === sessionId;
               const name = displayName(s);
+              const isRenaming = renameTarget === s.session_id;
+
               return (
                 <DropdownMenuItem
                   key={s.session_id}
                   className={`group ${isActive ? "cursor-default" : ""}`}
                   onClick={() => {
-                    if (isActive) return;
+                    if (isActive || isRenaming) return;
                     onResumeSession(s.session_id);
                     setOpen(false);
+                  }}
+                  onSelect={(e) => {
+                    if (isRenaming) e.preventDefault();
                   }}
                 >
                   <div className="flex items-center justify-between w-full gap-2">
                     <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                      <span className="text-sm truncate" title={s.name || `Session ${s.session_id}`}>
-                        {name}
-                        {isActive && (
-                          <Badge variant="secondary" className="ml-2 text-[10px] py-0 px-1.5">
-                            Active
-                          </Badge>
-                        )}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(s.created_at).toLocaleDateString()}
-                        {s.agents_used.length > 0 && ` · ${s.agents_used.join(", ")}`}
-                      </span>
+                      {isRenaming ? (
+                        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                          <input
+                            ref={renameInputRef}
+                            type="text"
+                            value={renameValue}
+                            onChange={(e) => setRenameValue(e.target.value)}
+                            onKeyDown={(e) => {
+                              e.stopPropagation();
+                              if (e.key === "Enter") handleRenameSubmit(s.session_id);
+                              if (e.key === "Escape") setRenameTarget(null);
+                            }}
+                            className="text-sm bg-transparent border-b border-primary outline-none w-full py-0.5"
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRenameSubmit(s.session_id);
+                            }}
+                            className="p-1 rounded hover:bg-primary/10 text-primary shrink-0"
+                          >
+                            <Check className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setRenameTarget(null);
+                            }}
+                            className="p-1 rounded hover:bg-muted shrink-0"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <span className="text-sm truncate" title={s.name || `Session ${s.session_id}`}>
+                            {name}
+                            {isActive && (
+                              <Badge variant="secondary" className="ml-2 text-[10px] py-0 px-1.5">
+                                Active
+                              </Badge>
+                            )}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(s.created_at).toLocaleDateString()}
+                            {s.agents_used.length > 0 && ` · ${s.agents_used.join(", ")}`}
+                          </span>
+                        </>
+                      )}
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setOpen(false);
-                        setDeleteTarget({ id: s.session_id, name: displayName(s) });
-                      }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-600/10 hover:text-red-600 dark:hover:bg-red-400/10 dark:hover:text-red-400 shrink-0"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    {!isRenaming && (
+                      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRenameTarget(s.session_id);
+                            setRenameValue(s.name || "");
+                          }}
+                          className="p-1 rounded hover:bg-muted"
+                          title="Rename"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpen(false);
+                            setDeleteTarget({ id: s.session_id, name: displayName(s) });
+                          }}
+                          className="p-1 rounded hover:bg-red-600/10 hover:text-red-600 dark:hover:bg-red-400/10 dark:hover:text-red-400"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </DropdownMenuItem>
               );

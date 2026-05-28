@@ -1,17 +1,14 @@
-"""MCP server configurations per agent slug.
+"""MCP server configuration for the Agent SDK.
 
-Returns additional MCP servers an agent should have access to beyond
-the base set (calculator + routing).
+Each agent can declare which MCP servers it needs. Servers are configured via
+environment variables and returned as dict configs for ClaudeAgentOptions.mcp_servers.
+
+Supported transports:
+  - http: remote Streamable HTTP endpoint (e.g., hosted Ironclad, Slack, CourtListener)
+  - sse: remote SSE endpoint (e.g., Asana, Atlassian)
+  - stdio: local process (e.g., a Python/Node MCP server binary)
 """
 
-from typing import Any
+from .registry import get_mcp_config, MCP_SERVERS
 
-
-def get_mcp_config(slug: str) -> dict[str, Any]:
-    """Return MCP server configs for a given agent slug.
-
-    Legal agents currently rely on the base tools (Bash, Read, Write, etc.)
-    plus calculator and routing. Per-agent MCP servers can be added here
-    as integrations are configured (e.g., CLM connectors, docket APIs).
-    """
-    return {}
+__all__ = ["get_mcp_config", "MCP_SERVERS"]

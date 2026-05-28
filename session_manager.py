@@ -55,6 +55,11 @@ class Session:
             self.name = clean[:40]
             self.save()
 
+    def rename(self, name: str):
+        clean = name.strip().replace("\n", " ")[:60]
+        self.name = clean
+        self.save()
+
     def save(self):
         data = {
             "session_id": self.id,

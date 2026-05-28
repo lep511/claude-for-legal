@@ -26,7 +26,7 @@ from legal_agents import (
     regulatory_legal,
 )
 from legal_agents.orchestrator.agent import create_options as create_orchestrator_options
-from sdk_tools.routing import get_last_route, get_pending_handoff
+from sdk_tools.routing import get_last_route, get_pending_handoff, clear_last_route, clear_pending_handoff
 from legal_agents.common import MAX_HANDOFF_DEPTH
 from session_manager import Session
 
@@ -280,6 +280,9 @@ async def run_agent_turn(session_state: SessionState, message: str, queue: async
     pushing SSE events to the asyncio queue.
     """
     try:
+        clear_last_route()
+        clear_pending_handoff()
+
         session = session_state.session
         session.add_turn("user", message)
 
@@ -390,6 +393,7 @@ async def run_agent_turn(session_state: SessionState, message: str, queue: async
 
             # Check for handoff
             handoff = get_pending_handoff()
+            clear_pending_handoff()
             if not handoff:
                 break
 

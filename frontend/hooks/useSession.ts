@@ -23,6 +23,9 @@ export function useSession(initialSessionId: string) {
         opts.body = JSON.stringify({ name });
       }
       const res = await fetch("/api/agents/sessions", opts);
+      if (!res.ok) {
+        throw new Error(`Failed to create session (${res.status})`);
+      }
       const data = await res.json();
       sessionStorage.setItem(`session-${data.session_id}`, "1");
       sessionStorage.setItem(`session-fresh-${data.session_id}`, "1");
