@@ -28,7 +28,6 @@ AGENT_CATALOG = [
     {"slug": "law-student", "description": "Socratic drilling, case briefs, outlines, bar prep, IRAC practice, study planning", "triggers": "study, bar exam, case brief, outline, Socratic, IRAC, law school, exam prep, con law, torts, contracts class"},
     {"slug": "legal-clinic", "description": "Clinic intake, student supervision, deadline tracking, case handoff, ABA compliance", "triggers": "clinic, intake, pro bono, student, supervision, legal aid, client"},
     {"slug": "legal-builder-hub", "description": "Finds, evaluates, and installs community legal skills with security review", "triggers": "skill, plugin, install, community, marketplace, builder, extension"},
-    {"slug": "chart-generator", "description": "Analyzes data and produces interactive chart visualizations for the frontend", "triggers": "chart, graph, visualize, visualization, plot, bar chart, line chart, pie chart, grafico, gráfico, graficar"},
 ]
 
 

@@ -21,10 +21,10 @@ agents/                           # 12 first-party plugins (commercial-legal, pr
     hooks/hooks.json              # hook config (most plugins ship an empty stub)
     .gitignore
 legal_agents/                     # Python agent SDK package (backend)
-  __init__.py                     # exports all 12 agent modules + chart_generator
+  __init__.py                     # exports all 12 agent modules
   common.py                       # factory functions, reader runner, skill indexer
   orchestrator/agent.py           # routes user requests to specialized agents
-  <agent_name>/agent.py           # one module per legal agent (12 + chart_generator)
+  <agent_name>/agent.py           # one module per legal agent (12 total)
 sdk_tools/                        # MCP tool servers (routing, calculator)
 mcp_servers/                      # per-agent MCP server configs (extensible)
 main.py                           # CLI entry point for the multi-agent platform
@@ -147,14 +147,14 @@ rules that `scripts/lint-tool-scope.py` enforces:
 
 ## Python Backend (`legal_agents/`)
 
-The Python backend uses `claude-agent-sdk` to run 12 legal agents + 1
-chart-generator behind a FastAPI server. Key architecture:
+The Python backend uses `claude-agent-sdk` to run 12 legal agents behind a
+FastAPI server. Key architecture:
 
 - **Orchestrator** (`legal_agents/orchestrator/agent.py`) — classifies user
   intent and routes to the right agent via `route_to_agent` tool.
 - **Pattern A agents** (simple) — single agent with shell access, no untrusted
   document processing: `product_legal`, `ai_governance_legal`, `law_student`,
-  `legal_clinic`, `legal_builder_hub`, `chart_generator`.
+  `legal_clinic`, `legal_builder_hub`.
 - **Pattern B agents** (with reader) — adds an isolated reader subprocess that
   processes untrusted documents with schema validation and no shell access:
   `commercial_legal`, `litigation_legal`, `corporate_legal`, `employment_legal`,

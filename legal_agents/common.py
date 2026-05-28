@@ -203,7 +203,7 @@ def headless_append(session_id: str) -> str:
         "the full context the target agent needs (file paths, parameters, what you produced). "
         "Available targets: commercial-legal, privacy-legal, product-legal, corporate-legal, "
         "employment-legal, regulatory-legal, ai-governance-legal, litigation-legal, ip-legal, "
-        "law-student, legal-clinic, legal-builder-hub, chart-generator. "
+        "law-student, legal-clinic, legal-builder-hub. "
         "Only hand off when the next step is clearly outside your domain."
     )
 

@@ -20,7 +20,7 @@ from claude_agent_sdk import (
 from claude_agent_sdk.types import TextBlock, ToolUseBlock
 
 from legal_agents import (
-    ai_governance_legal, chart_generator, commercial_legal, corporate_legal,
+    ai_governance_legal, commercial_legal, corporate_legal,
     employment_legal, ip_legal, law_student, legal_builder_hub,
     legal_clinic, litigation_legal, privacy_legal, product_legal,
     regulatory_legal,
@@ -79,10 +79,6 @@ AGENTS = {
     "legal-builder-hub": {
         "module": legal_builder_hub,
         "description": "Finds, evaluates, installs community legal skills",
-    },
-    "chart-generator": {
-        "module": chart_generator,
-        "description": "Analyzes data and produces interactive chart visualizations",
     },
 }
 

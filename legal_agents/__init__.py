@@ -6,7 +6,6 @@ for use with query() or ClaudeSDKClient.
 
 from . import (
     ai_governance_legal,
-    chart_generator,
     commercial_legal,
     corporate_legal,
     employment_legal,
@@ -22,7 +21,6 @@ from . import (
 
 __all__ = [
     "ai_governance_legal",
-    "chart_generator",
     "commercial_legal",
     "corporate_legal",
     "employment_legal",
