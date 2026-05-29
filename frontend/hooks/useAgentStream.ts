@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import type { AgentMessage, FileOutput, SSEEvent } from "@/types/agent";
+import type { AgentMessage, FileOutput, FormRequest, SSEEvent } from "@/types/agent";
 import type { ChartData } from "@/types/chart";
 
 interface StreamState {
@@ -33,6 +33,7 @@ export function useAgentStream() {
     outputFiles: FileOutput[],
     setAgent: (slug: string) => void,
     setChartData: (data: ChartData) => void,
+    setFormRequest: (data: FormRequest) => void,
     onSessionName?: (name: string) => void,
   ) {
     switch (event.event) {
@@ -78,6 +79,10 @@ export function useAgentStream() {
         setChartData(event.data as unknown as ChartData);
         break;
 
+      case "form_request":
+        setFormRequest(event.data as unknown as FormRequest);
+        break;
+
       case "error": {
         const errorMessage = event.data.message || "The agent encountered an internal error while processing your request.";
         const errContent = `\n\n**Error:** ${errorMessage}`;
@@ -114,6 +119,7 @@ export function useAgentStream() {
       const outputFiles: FileOutput[] = [];
       let currentAgent: string | null = null;
       let chartData: ChartData | null = null;
+      let formRequest: FormRequest | null = null;
 
       setState({
         isStreaming: true,
@@ -207,6 +213,9 @@ export function useAgentStream() {
                     (data) => {
                       chartData = data;
                     },
+                    (data) => {
+                      formRequest = data;
+                    },
                     options?.onSessionName,
                   );
                 } catch {
@@ -227,6 +236,7 @@ export function useAgentStream() {
           toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
           outputFiles: outputFiles.length > 0 ? outputFiles : undefined,
           chartData: chartData || undefined,
+          formRequest: formRequest || undefined,
         });
       } catch (err: any) {
         if (err.name === "AbortError") {
@@ -238,6 +248,7 @@ export function useAgentStream() {
             toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
             outputFiles: outputFiles.length > 0 ? outputFiles : undefined,
             chartData: chartData || undefined,
+            formRequest: formRequest || undefined,
           });
         } else {
           let errMsg: string;
@@ -261,6 +272,7 @@ export function useAgentStream() {
             toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
             outputFiles: outputFiles.length > 0 ? outputFiles : undefined,
             chartData: chartData || undefined,
+            formRequest: formRequest || undefined,
           });
           setState((s) => ({
             ...s,

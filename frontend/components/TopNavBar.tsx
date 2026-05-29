@@ -1,24 +1,15 @@
 "use client";
 import React, { useSyncExternalStore } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Moon, Sun, Settings } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const subscribe = () => () => {};
 const getSnapshot = () => true;
 const getServerSnapshot = () => false;
 
-interface TopNavBarProps {
-  features?: {
-    showDomainSelector?: boolean;
-    showViewModeSelector?: boolean;
-    showPromptCaching?: boolean;
-  };
-}
-
-const TopNavBar: React.FC<TopNavBarProps> = ({ features = {} }) => {
+const TopNavBar: React.FC = () => {
   const { theme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
@@ -38,12 +29,6 @@ const TopNavBar: React.FC<TopNavBarProps> = ({ features = {} }) => {
         />
       </div>
       <div className="flex items-center gap-2">
-        <Link href="/legal/settings">
-          <Button variant="outline" size="icon">
-            <Settings className="h-[1.2rem] w-[1.2rem]" />
-            <span className="sr-only">Agent settings</span>
-          </Button>
-        </Link>
         <Button
           variant="outline"
           size="icon"

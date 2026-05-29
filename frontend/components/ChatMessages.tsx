@@ -8,15 +8,18 @@ import remarkGfm from "remark-gfm";
 import FilePreview from "@/components/FilePreview";
 import { AgentBadge } from "@/components/AgentBadge";
 import { FileOutputList } from "@/components/FileOutputList";
+import { ChatForm } from "@/components/ChatForm";
 import { cleanAgentContent } from "@/utils/cleanAgentContent";
 import type { Message } from "@/types/agent";
 
 function MessageComponent({
   message,
   sessionId,
+  onFormSubmit,
 }: {
   message: Message;
   sessionId: string | null;
+  onFormSubmit: (messageId: string, values: Record<string, string>) => void;
 }) {
   return (
     <div className="flex items-start gap-2">
@@ -68,6 +71,13 @@ function MessageComponent({
                   <span className="h-[7px] w-[7px] rounded-full bg-foreground/50 animate-dot-typing-3" />
                 </span>
               )}
+              {message.formRequest && (
+                <ChatForm
+                  formRequest={message.formRequest}
+                  submitted={!!message.formSubmitted}
+                  onSubmit={(values) => onFormSubmit(message.id, values)}
+                />
+              )}
             </div>
           )}
         </div>
@@ -88,12 +98,14 @@ interface ChatMessageListProps {
   messages: Message[];
   sessionId: string | null;
   messagesEndRef: React.RefObject<HTMLDivElement | null>;
+  onFormSubmit: (messageId: string, values: Record<string, string>) => void;
 }
 
 export function ChatMessageList({
   messages,
   sessionId,
   messagesEndRef,
+  onFormSubmit,
 }: ChatMessageListProps) {
   if (messages.length === 0) {
     return (
@@ -141,7 +153,11 @@ export function ChatMessageList({
               : ""
           }`}
         >
-          <MessageComponent message={message} sessionId={sessionId} />
+          <MessageComponent
+            message={message}
+            sessionId={sessionId}
+            onFormSubmit={onFormSubmit}
+          />
         </div>
       ))}
       <div ref={messagesEndRef} className="h-4" />

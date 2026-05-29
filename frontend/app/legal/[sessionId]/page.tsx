@@ -250,8 +250,12 @@ export default function AIChat() {
       .catch(() => {});
   }, [sessionId, isInvalidSessionFormat, loadSessionData, router, fetchSessionFiles, updateSessionName]);
 
+  const wasStreamingRef = useRef(false);
   useEffect(() => {
-    if (!isStreaming && sessionId && sessionVerified) {
+    if (isStreaming) {
+      wasStreamingRef.current = true;
+    } else if (wasStreamingRef.current && sessionId && sessionVerified) {
+      wasStreamingRef.current = false;
       startTransition(() => {
         setSessionBusy(false);
       });
@@ -456,6 +460,72 @@ export default function AIChat() {
     }
   };
 
+  const handleFormSubmit = useCallback(
+    async (messageId: string, values: Record<string, string>) => {
+      if (isStreaming || effectiveBusy) return;
+
+      setMessages((prev) =>
+        prev.map((m) => (m.id === messageId ? { ...m, formSubmitted: true } : m)),
+      );
+
+      const summary = Object.entries(values)
+        .filter(([, v]) => v.trim())
+        .map(([k, v]) => `${k}: ${v}`)
+        .join("\n");
+
+      const sid = await ensureSession();
+      if (!sessionVerified) setSessionVerified(true);
+
+      const userMessage: Message = {
+        id: crypto.randomUUID(),
+        role: "user",
+        content: summary,
+      };
+
+      const streamingMessage: Message = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: "",
+        isStreaming: true,
+      };
+
+      setMessages((prev) => [...prev, userMessage, streamingMessage]);
+
+      sendMessage(
+        sid,
+        summary,
+        (text) => {
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = {
+              ...updated[updated.length - 1],
+              content: text,
+              isStreaming: true,
+            };
+            return updated;
+          });
+        },
+        (finalMessage) => {
+          const tables = extractMarkdownTables(finalMessage.content);
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = {
+              ...finalMessage,
+              isStreaming: false,
+              tableData: tables.length > 0 ? tables : undefined,
+            };
+            return updated;
+          });
+        },
+        {
+          autoExecute,
+          onSessionName: (name) => updateSessionName(sid, name),
+        },
+      );
+    },
+    [isStreaming, effectiveBusy, ensureSession, sessionVerified, sendMessage, autoExecute, updateSessionName],
+  );
+
   const visualizations = useMemo<Visualization[]>(() => {
     const items: Visualization[] = [];
     messages.forEach((msg, idx) => {
@@ -553,13 +623,7 @@ export default function AIChat() {
 
   return (
     <div className="flex flex-col h-screen">
-      <TopNavBar
-        features={{
-          showDomainSelector: false,
-          showViewModeSelector: false,
-          showPromptCaching: false,
-        }}
-      />
+      <TopNavBar />
 
       <div className="flex-1 flex flex-col lg:flex-row bg-background p-2 sm:p-4 pt-0 gap-2 sm:gap-4 h-[calc(100vh-4rem)] overflow-hidden">
         {/* Chat Panel */}
@@ -610,6 +674,7 @@ export default function AIChat() {
               messages={messages}
               sessionId={sessionId}
               messagesEndRef={messagesEndRef}
+              onFormSubmit={handleFormSubmit}
             />
           </CardContent>
 

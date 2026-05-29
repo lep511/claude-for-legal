@@ -21,6 +21,26 @@ export interface AgentMessage {
   isStreaming?: boolean;
   chartData?: ChartData;
   outputFiles?: FileOutput[];
+  formRequest?: FormRequest;
+  formSubmitted?: boolean;
+}
+
+// In-chat form requested by an agent via the request_user_input tool
+export type FormFieldType = "text" | "textarea" | "select" | "date" | "number";
+
+export interface FormField {
+  id: string;
+  label: string;
+  type: FormFieldType;
+  placeholder?: string;
+  options?: string[];
+  required?: boolean;
+}
+
+export interface FormRequest {
+  title: string;
+  description?: string;
+  fields: FormField[];
 }
 
 export interface FileUpload {
@@ -41,6 +61,8 @@ export interface Message {
   file?: FileUpload;
   chartData?: ChartData;
   tableData?: ExtractedTable[];
+  formRequest?: FormRequest;
+  formSubmitted?: boolean;
 }
 
 export interface SessionInfo {
@@ -70,6 +92,7 @@ export type SSEEventType =
   | "handoff"
   | "file_output"
   | "chart_data"
+  | "form_request"
   | "heartbeat"
   | "complete"
   | "error"
