@@ -30,9 +30,6 @@ export async function POST(request: NextRequest) {
   }
 
   if (action === "set" && sessionId && /^[a-f0-9]{12}$/.test(sessionId)) {
-    if (cookieStore.get(CONSENT_COOKIE)?.value !== "accepted") {
-      return NextResponse.json({ ok: false, reason: "no-consent" });
-    }
     cookieStore.set(COOKIE_NAME, sessionId, {
       path: "/",
       maxAge: MAX_AGE,

@@ -10,6 +10,7 @@ interface StreamState {
   toolsUsed: string[];
   outputFiles: FileOutput[];
   error: string | null;
+  sessionBusy: boolean;
 }
 
 export function useAgentStream() {
@@ -19,6 +20,7 @@ export function useAgentStream() {
     toolsUsed: [],
     outputFiles: [],
     error: null,
+    sessionBusy: false,
   });
 
   const abortRef = useRef<AbortController | null>(null);
@@ -119,6 +121,7 @@ export function useAgentStream() {
         toolsUsed: [],
         outputFiles: [],
         error: null,
+        sessionBusy: false,
       });
 
       try {
@@ -135,7 +138,18 @@ export function useAgentStream() {
 
         if (!res.ok) {
           const errText = await res.text();
-          const displayError = errText || `The server responded with an error (status ${res.status})`;
+          if (res.status === 409) {
+            setState((s) => ({ ...s, isStreaming: false, error: null, sessionBusy: true }));
+            onComplete({
+              id: crypto.randomUUID(),
+              role: "assistant",
+              content: "**Session busy** — This session is still processing a previous message. Please wait a moment and try again.",
+            });
+            return;
+          }
+          const displayError = res.status === 502
+            ? "Cannot reach the backend server. Please verify it is running."
+            : errText || `The server responded with an error (status ${res.status})`;
           setState((s) => ({ ...s, isStreaming: false, error: displayError }));
           onComplete({
             id: crypto.randomUUID(),
@@ -158,6 +172,8 @@ export function useAgentStream() {
 
         const decoder = new TextDecoder();
         let buffer = "";
+        let eventType = "";
+        let dataLines: string[] = [];
 
         while (true) {
           const { done, value } = await reader.read();
@@ -167,20 +183,17 @@ export function useAgentStream() {
           const lines = buffer.split("\n");
           buffer = lines.pop() || "";
 
-          let eventType = "";
-          let eventData = "";
-
           for (const line of lines) {
             if (line.startsWith("event: ")) {
               eventType = line.slice(7);
             } else if (line.startsWith("data: ")) {
-              eventData = line.slice(6);
-
-              if (eventType && eventData) {
+              dataLines.push(line.slice(6));
+            } else if (line === "") {
+              if (eventType && dataLines.length > 0) {
                 try {
                   const parsed: SSEEvent = {
                     event: eventType as SSEEvent["event"],
-                    data: JSON.parse(eventData),
+                    data: JSON.parse(dataLines.join("\n")),
                   };
                   processEvent(
                     parsed,
@@ -199,12 +212,9 @@ export function useAgentStream() {
                 } catch {
                   // Skip malformed events
                 }
-                eventType = "";
-                eventData = "";
               }
-            } else if (line === "") {
               eventType = "";
-              eventData = "";
+              dataLines = [];
             }
           }
         }

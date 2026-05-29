@@ -23,8 +23,13 @@ export async function POST(req: NextRequest) {
   }
 
   if (!backendResponse.ok) {
-    const error = await backendResponse.text();
-    return new Response(error || `The server responded with an error (status ${backendResponse.status})`, {
+    const raw = await backendResponse.text();
+    let errorMessage = raw || `The server responded with an error (status ${backendResponse.status})`;
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed.detail) errorMessage = parsed.detail;
+    } catch {}
+    return new Response(errorMessage, {
       status: backendResponse.status,
     });
   }

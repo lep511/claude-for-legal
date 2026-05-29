@@ -8,6 +8,7 @@ import asyncio
 import json
 import mimetypes
 import os
+import re
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -73,6 +74,14 @@ class CreateSessionRequest(BaseModel):
     name: str | None = None
 
 
+SESSION_ID_PATTERN = re.compile(r"^[a-f0-9]{12}$")
+
+
+def _validate_session_id(session_id: str) -> None:
+    if not SESSION_ID_PATTERN.match(session_id):
+        raise HTTPException(status_code=400, detail="Invalid session ID format")
+
+
 class ChatRequest(BaseModel):
     session_id: str
     message: str
@@ -115,6 +124,7 @@ async def list_sessions():
 
 @app.get("/api/sessions/{session_id}")
 async def get_session(session_id: str):
+    _validate_session_id(session_id)
     try:
         session = Session.load(session_id)
     except FileNotFoundError:
@@ -145,6 +155,7 @@ async def get_session(session_id: str):
 
 @app.get("/api/sessions/{session_id}/status")
 async def session_status(session_id: str):
+    _validate_session_id(session_id)
     async with registry._lock:
         state = registry._sessions.get(session_id)
     if not state:
@@ -155,6 +166,7 @@ async def session_status(session_id: str):
 
 @app.delete("/api/sessions/{session_id}")
 async def delete_session(session_id: str):
+    _validate_session_id(session_id)
     try:
         Session.load(session_id)
     except FileNotFoundError:
@@ -169,6 +181,7 @@ class RenameRequest(BaseModel):
 
 @app.patch("/api/sessions/{session_id}")
 async def rename_session(session_id: str, body: RenameRequest):
+    _validate_session_id(session_id)
     try:
         session = Session.load(session_id)
     except FileNotFoundError:
@@ -179,6 +192,7 @@ async def rename_session(session_id: str, body: RenameRequest):
 
 @app.post("/api/sessions/{session_id}/upload")
 async def upload_file(session_id: str, file: UploadFile = File(...)):
+    _validate_session_id(session_id)
     try:
         state = await registry.load_existing(session_id)
     except FileNotFoundError:
@@ -196,6 +210,7 @@ async def upload_file(session_id: str, file: UploadFile = File(...)):
 
 @app.get("/api/sessions/{session_id}/files")
 async def list_output_files(session_id: str):
+    _validate_session_id(session_id)
     out_dir = os.path.join(OUT_DIR, session_id)
     if not os.path.isdir(out_dir):
         return []
@@ -215,6 +230,7 @@ async def list_output_files(session_id: str):
 
 @app.get("/api/sessions/{session_id}/files/{filename}")
 async def download_file(session_id: str, filename: str):
+    _validate_session_id(session_id)
     out_dir = os.path.join(OUT_DIR, session_id)
     fpath = os.path.join(out_dir, filename)
     if not os.path.isfile(fpath):
@@ -226,6 +242,7 @@ async def download_file(session_id: str, filename: str):
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
     session_id = request.session_id
+    _validate_session_id(session_id)
 
     try:
         state = await registry.load_existing(session_id)
@@ -238,7 +255,13 @@ async def chat(request: ChatRequest):
     async def event_stream():
         queue: asyncio.Queue = asyncio.Queue()
 
-        async with state.lock:
+        try:
+            await asyncio.wait_for(state.lock.acquire(), timeout=0.5)
+        except asyncio.TimeoutError:
+            yield _sse_format("error", {"message": "Session is busy processing another message", "type": "BusyError"})
+            return
+
+        try:
             agent_task = asyncio.create_task(
                 run_agent_turn(state, request.message, queue, request.accept_edit)
             )
@@ -264,6 +287,8 @@ async def chat(request: ChatRequest):
 
                 yield _sse_format(item["event"], item["data"])
                 last_heartbeat = time.time()
+        finally:
+            state.lock.release()
 
     return StreamingResponse(event_stream(), media_type="text/event-stream", headers={
         "Cache-Control": "no-cache",
@@ -347,7 +372,14 @@ async def run_skill(slug: str, skill_name: str, request: SkillRequest):
 
     async def event_stream():
         queue: asyncio.Queue = asyncio.Queue()
-        async with state.lock:
+
+        try:
+            await asyncio.wait_for(state.lock.acquire(), timeout=0.5)
+        except asyncio.TimeoutError:
+            yield _sse_format("error", {"message": "Session is busy", "type": "BusyError"})
+            return
+
+        try:
             agent_task = asyncio.create_task(
                 run_agent_turn(state, prompt, queue, True)
             )
@@ -369,6 +401,8 @@ async def run_skill(slug: str, skill_name: str, request: SkillRequest):
                     break
                 yield _sse_format(item["event"], item["data"])
                 last_heartbeat = time.time()
+        finally:
+            state.lock.release()
 
     return StreamingResponse(event_stream(), media_type="text/event-stream", headers={
         "Cache-Control": "no-cache",

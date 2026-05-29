@@ -21,7 +21,6 @@ export interface AgentMessage {
   isStreaming?: boolean;
   chartData?: ChartData;
   outputFiles?: FileOutput[];
-  isClarification?: boolean;
 }
 
 export interface FileUpload {
@@ -55,9 +54,11 @@ export interface SessionInfo {
 export interface SessionDetail {
   session_id: string;
   created_at: string;
+  name: string | null;
   agents_used: string[];
   turns: any[];
   output_dir: string;
+  charts?: ChartData[];
 }
 
 // SSE event types from the Python backend
@@ -67,7 +68,6 @@ export type SSEEventType =
   | "tool_end"
   | "route"
   | "handoff"
-  | "clarification"
   | "file_output"
   | "chart_data"
   | "heartbeat"

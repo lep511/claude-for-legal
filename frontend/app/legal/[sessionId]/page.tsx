@@ -100,11 +100,13 @@ export default function AIChat() {
 
   const {
     isStreaming,
+    sessionBusy: streamBusy,
     sendMessage,
     abort,
   } = useAgentStream();
 
   const [sessionBusy, setSessionBusy] = useState(false);
+  const effectiveBusy = sessionBusy || streamBusy;
 
   const fetchSessionFiles = useCallback(async () => {
     if (!sessionId) return;
@@ -379,7 +381,7 @@ export default function AIChat() {
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!input.trim() && !currentUpload) return;
-    if (isStreaming || sessionBusy) return;
+    if (isStreaming || effectiveBusy) return;
 
     const sid = await ensureSession();
     if (!sessionVerified) setSessionVerified(true);
@@ -583,7 +585,7 @@ export default function AIChat() {
                 sessionId={sessionId}
                 sessionName={sessionName}
                 sessions={sessions}
-                disabled={isStreaming || sessionBusy}
+                disabled={isStreaming || effectiveBusy}
                 chatEmpty={messages.length === 0}
                 onNewSession={handleNewSession}
                 onResumeSession={handleResumeSession}
@@ -622,7 +624,7 @@ export default function AIChat() {
               onRemoveUpload={() => setCurrentUpload(null)}
               currentUpload={currentUpload}
               isStreaming={isStreaming}
-              sessionBusy={sessionBusy}
+              sessionBusy={effectiveBusy}
               isUploading={isUploading}
               fileInputRef={fileInputRef}
             />
