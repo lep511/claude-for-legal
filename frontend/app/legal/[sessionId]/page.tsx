@@ -387,7 +387,17 @@ export default function AIChat() {
     if (!input.trim() && !currentUpload) return;
     if (isStreaming || effectiveBusy) return;
 
-    const sid = await ensureSession();
+    let sid: string;
+    try {
+      sid = await ensureSession();
+    } catch {
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo conectar con el servidor. Verifique que el backend esté activo.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!sessionVerified) setSessionVerified(true);
 
     let messageText = input;
@@ -464,16 +474,26 @@ export default function AIChat() {
     async (messageId: string, values: Record<string, string>) => {
       if (isStreaming || effectiveBusy) return;
 
-      setMessages((prev) =>
-        prev.map((m) => (m.id === messageId ? { ...m, formSubmitted: true } : m)),
-      );
-
       const summary = Object.entries(values)
         .filter(([, v]) => v.trim())
         .map(([k, v]) => `${k}: ${v}`)
         .join("\n");
 
-      const sid = await ensureSession();
+      let sid: string;
+      try {
+        sid = await ensureSession();
+      } catch {
+        toast({
+          title: "Error de conexión",
+          description: "No se pudo conectar con el servidor. Verifique que el backend esté activo.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setMessages((prev) =>
+        prev.map((m) => (m.id === messageId ? { ...m, formSubmitted: true } : m)),
+      );
       if (!sessionVerified) setSessionVerified(true);
 
       const userMessage: Message = {

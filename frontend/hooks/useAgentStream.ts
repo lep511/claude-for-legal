@@ -114,6 +114,8 @@ export function useAgentStream() {
     ) => {
       abortRef.current = new AbortController();
       contentRef.current = "";
+      let timedOut = false;
+      let contentTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
       const toolsUsed: string[] = [];
       const outputFiles: FileOutput[] = [];
@@ -130,6 +132,11 @@ export function useAgentStream() {
         sessionBusy: false,
       });
 
+      const connectTimeout = setTimeout(() => {
+        timedOut = true;
+        abortRef.current?.abort();
+      }, 30_000);
+
       try {
         const res = await fetch("/api/agents/chat", {
           method: "POST",
@@ -141,6 +148,7 @@ export function useAgentStream() {
           }),
           signal: abortRef.current.signal,
         });
+        clearTimeout(connectTimeout);
 
         if (!res.ok) {
           const errText = await res.text();
@@ -181,6 +189,22 @@ export function useAgentStream() {
         let eventType = "";
         let dataLines: string[] = [];
 
+        const CONTENT_TIMEOUT = 120_000;
+        const MEANINGFUL_EVENTS = new Set([
+          "text", "route", "handoff", "tool_start", "tool_end",
+          "file_output", "chart_data", "form_request", "complete", "error",
+        ]);
+
+        const resetContentTimeout = () => {
+          if (contentTimeoutId) clearTimeout(contentTimeoutId);
+          contentTimeoutId = setTimeout(() => {
+            timedOut = true;
+            abortRef.current?.abort();
+          }, CONTENT_TIMEOUT);
+        };
+
+        resetContentTimeout();
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -218,6 +242,9 @@ export function useAgentStream() {
                     },
                     options?.onSessionName,
                   );
+                  if (MEANINGFUL_EVENTS.has(parsed.event)) {
+                    resetContentTimeout();
+                  }
                 } catch {
                   // Skip malformed events
                 }
@@ -227,6 +254,8 @@ export function useAgentStream() {
             }
           }
         }
+
+        if (contentTimeoutId) clearTimeout(contentTimeoutId);
 
         onComplete({
           id: crypto.randomUUID(),
@@ -239,17 +268,35 @@ export function useAgentStream() {
           formRequest: formRequest || undefined,
         });
       } catch (err: any) {
+        clearTimeout(connectTimeout);
         if (err.name === "AbortError") {
-          onComplete({
-            id: crypto.randomUUID(),
-            role: "assistant",
-            content: contentRef.current || "*Stopped*",
-            agentSlug: currentAgent || undefined,
-            toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
-            outputFiles: outputFiles.length > 0 ? outputFiles : undefined,
-            chartData: chartData || undefined,
-            formRequest: formRequest || undefined,
-          });
+          if (timedOut) {
+            const timeoutMsg = contentRef.current
+              ? `${contentRef.current}\n\n**Error:** El agente dejó de responder. Intente de nuevo.`
+              : "**Error:** No se recibió respuesta del servidor. Verifique que el backend esté activo.";
+            onComplete({
+              id: crypto.randomUUID(),
+              role: "assistant",
+              content: timeoutMsg,
+              agentSlug: currentAgent || undefined,
+              toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
+              outputFiles: outputFiles.length > 0 ? outputFiles : undefined,
+              chartData: chartData || undefined,
+              formRequest: formRequest || undefined,
+            });
+            setState((s) => ({ ...s, error: "Connection timed out" }));
+          } else {
+            onComplete({
+              id: crypto.randomUUID(),
+              role: "assistant",
+              content: contentRef.current || "*Stopped*",
+              agentSlug: currentAgent || undefined,
+              toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
+              outputFiles: outputFiles.length > 0 ? outputFiles : undefined,
+              chartData: chartData || undefined,
+              formRequest: formRequest || undefined,
+            });
+          }
         } else {
           let errMsg: string;
           if (err.name === "TypeError" && /fetch|network/i.test(err.message)) {
@@ -280,6 +327,7 @@ export function useAgentStream() {
           }));
         }
       } finally {
+        if (contentTimeoutId) clearTimeout(contentTimeoutId);
         setState((s) => ({ ...s, isStreaming: false }));
       }
     },
