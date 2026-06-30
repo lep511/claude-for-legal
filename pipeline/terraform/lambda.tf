@@ -29,7 +29,7 @@ resource "aws_lambda_function" "backend" {
 
 resource "aws_lambda_function_url" "backend" {
   function_name      = aws_lambda_function.backend.function_name
-  authorization_type = "NONE"
+  authorization_type = "AWS_IAM"
 
   invoke_mode = "RESPONSE_STREAM"
 
@@ -39,6 +39,15 @@ resource "aws_lambda_function_url" "backend" {
     allow_headers = ["*"]
     max_age       = 86400
   }
+}
+
+resource "aws_lambda_permission" "backend_cloudfront" {
+  statement_id  = "AllowCloudFrontServicePrincipal"
+  action        = "lambda:InvokeFunctionUrl"
+  function_name = aws_lambda_function.backend.function_name
+  principal     = "cloudfront.amazonaws.com"
+  source_arn    = aws_cloudfront_distribution.app.arn
+  function_url_auth_type = "AWS_IAM"
 }
 
 resource "aws_lambda_function" "frontend" {
@@ -64,7 +73,7 @@ resource "aws_lambda_function" "frontend" {
 
 resource "aws_lambda_function_url" "frontend" {
   function_name      = aws_lambda_function.frontend.function_name
-  authorization_type = "NONE"
+  authorization_type = "AWS_IAM"
 
   cors {
     allow_origins = ["*"]
@@ -72,4 +81,13 @@ resource "aws_lambda_function_url" "frontend" {
     allow_headers = ["*"]
     max_age       = 86400
   }
+}
+
+resource "aws_lambda_permission" "frontend_cloudfront" {
+  statement_id  = "AllowCloudFrontServicePrincipal"
+  action        = "lambda:InvokeFunctionUrl"
+  function_name = aws_lambda_function.frontend.function_name
+  principal     = "cloudfront.amazonaws.com"
+  source_arn    = aws_cloudfront_distribution.app.arn
+  function_url_auth_type = "AWS_IAM"
 }

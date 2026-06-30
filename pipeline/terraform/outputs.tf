@@ -1,11 +1,16 @@
 output "backend_url" {
-  description = "Backend Lambda Function URL"
+  description = "Backend Lambda Function URL (internal, via CloudFront)"
   value       = aws_lambda_function_url.backend.function_url
 }
 
 output "frontend_url" {
-  description = "Frontend Lambda Function URL"
+  description = "Frontend Lambda Function URL (internal, via CloudFront)"
   value       = aws_lambda_function_url.frontend.function_url
+}
+
+output "app_url" {
+  description = "Public application URL (CloudFront)"
+  value       = "https://${aws_cloudfront_distribution.app.domain_name}"
 }
 
 output "backend_ecr_repository_url" {

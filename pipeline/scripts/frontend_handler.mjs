@@ -3,7 +3,7 @@
  * This wraps the Next.js server for Lambda execution.
  */
 
-import { createServer } from "http";
+import http, { createServer } from "http";
 import { parse } from "url";
 
 let app;
@@ -39,7 +39,7 @@ export async function handler(event, context) {
         headers: event.headers || {},
       };
 
-      const req = require("http").request(options, (res) => {
+      const req = http.request(options, (res) => {
         let body = "";
         res.on("data", (chunk) => (body += chunk));
         res.on("end", () => {
