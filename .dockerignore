@@ -1,0 +1,8 @@
+node_modules
+.git
+.venv
+__pycache__
+sandbox
+pipeline/terraform/.terraform
+pipeline/terraform/terraform.tfstate.d
+pipeline/terraform/*.tfstate
