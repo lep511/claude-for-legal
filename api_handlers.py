@@ -86,6 +86,30 @@ SESSION_TTL_MINUTES = int(os.getenv("SESSION_TTL_MINUTES", "30"))
 
 SENTINEL = object()
 
+_AUTH_ERROR_PATTERNS = [
+    "not logged in",
+    "please run /login",
+    "/login isn't available",
+    "authentication required",
+    "invalid api key",
+    "could not resolve credentials",
+]
+
+_AUTH_ERROR_MESSAGE = (
+    "Authentication not configured. The backend cannot connect to the Claude API.\n\n"
+    "To fix this, edit the .env file in the project root:\n\n"
+    "• **Anthropic API:** set `ANTHROPIC_API_KEY=sk-ant-...`\n"
+    "• **AWS Bedrock:** set `CLAUDE_CODE_USE_BEDROCK=1`, `AWS_PROFILE=<your-profile>`, and `AWS_REGION=<region>`\n\n"
+    "Then restart the backend server."
+)
+
+
+def _is_auth_error(text: str) -> bool:
+    """Detect authentication-related error messages from the SDK subprocess."""
+    lower = text.lower()
+    return any(pattern in lower for pattern in _AUTH_ERROR_PATTERNS)
+
+
 
 def _process_assistant_message(msg: AssistantMessage, queue: asyncio.Queue, source: str, state: dict):
     """Process an AssistantMessage and push SSE events to the queue."""
@@ -318,10 +342,17 @@ async def run_agent_turn(session_state: SessionState, message: str, queue: async
                 elif isinstance(msg, ResultMessage):
                     pass
         except Exception as e:
-            await queue.put({"event": "error", "data": {"message": str(e), "type": type(e).__name__}})
+            err_str = str(e)
+            if _is_auth_error(err_str):
+                await queue.put({"event": "error", "data": {"message": _AUTH_ERROR_MESSAGE, "type": "AuthenticationError"}})
+            else:
+                await queue.put({"event": "error", "data": {"message": err_str, "type": type(e).__name__}})
             return
 
         if orch_state["last_response"]:
+            if _is_auth_error(orch_state["last_response"]):
+                await queue.put({"event": "error", "data": {"message": _AUTH_ERROR_MESSAGE, "type": "AuthenticationError"}})
+                return
             session.add_turn("orchestrator", orch_state["last_response"])
 
         # --- Check routing decision ---
@@ -379,10 +410,17 @@ async def run_agent_turn(session_state: SessionState, message: str, queue: async
                     elif isinstance(msg, ResultMessage):
                         pass
             except Exception as e:
-                await queue.put({"event": "error", "data": {"message": str(e), "type": type(e).__name__}})
+                err_str = str(e)
+                if _is_auth_error(err_str):
+                    await queue.put({"event": "error", "data": {"message": _AUTH_ERROR_MESSAGE, "type": "AuthenticationError"}})
+                else:
+                    await queue.put({"event": "error", "data": {"message": err_str, "type": type(e).__name__}})
                 return
 
             if agent_state["last_response"]:
+                if _is_auth_error(agent_state["last_response"]):
+                    await queue.put({"event": "error", "data": {"message": _AUTH_ERROR_MESSAGE, "type": "AuthenticationError"}})
+                    return
                 session.add_turn("agent", agent_state["last_response"], agent=slug)
 
             _emit_output_files(session, queue)

@@ -5,6 +5,7 @@ Usage:
 """
 
 import asyncio
+import io
 import json
 import mimetypes
 import os
@@ -24,7 +25,7 @@ if _agent_venv.exists():
     os.environ["PATH"] = str(_agent_venv) + os.pathsep + os.environ.get("PATH", "")
     os.environ["VIRTUAL_ENV"] = str(_agent_venv.parent)
 
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
@@ -228,13 +229,269 @@ async def list_output_files(session_id: str):
     return files
 
 
+def _md_to_docx(md_content: str, source_filename: str) -> io.BytesIO:
+    """Convert markdown content to a .docx file in memory."""
+    from docx import Document
+    from docx.shared import Pt, Inches
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+    doc = Document()
+    style = doc.styles["Normal"]
+    style.font.name = "Calibri"
+    style.font.size = Pt(11)
+
+    lines = md_content.split("\n")
+    i = 0
+    # Skip YAML frontmatter
+    if lines and lines[0].strip() == "---":
+        i = 1
+        while i < len(lines) and lines[i].strip() != "---":
+            i += 1
+        i += 1
+
+    in_table = False
+    table_rows: list[list[str]] = []
+
+    def _flush_table():
+        nonlocal in_table, table_rows
+        if not table_rows:
+            in_table = False
+            return
+        cols = len(table_rows[0])
+        tbl = doc.add_table(rows=0, cols=cols)
+        tbl.style = "Table Grid"
+        for row_idx, row_data in enumerate(table_rows):
+            row = tbl.add_row()
+            for col_idx, cell_text in enumerate(row_data):
+                row.cells[col_idx].text = cell_text.strip()
+            if row_idx == 0:
+                for cell in row.cells:
+                    for p in cell.paragraphs:
+                        for run in p.runs:
+                            run.bold = True
+        table_rows = []
+        in_table = False
+
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+
+        # Table detection
+        if "|" in stripped and stripped.startswith("|"):
+            cells = [c.strip() for c in stripped.split("|")[1:-1]]
+            if cells and all(re.match(r"^[-:]+$", c) for c in cells):
+                i += 1
+                continue
+            if not in_table:
+                in_table = True
+                table_rows = []
+            table_rows.append(cells)
+            i += 1
+            continue
+        elif in_table:
+            _flush_table()
+
+        if not stripped:
+            i += 1
+            continue
+
+        if stripped.startswith("# "):
+            doc.add_heading(stripped[2:], level=1)
+        elif stripped.startswith("## "):
+            doc.add_heading(stripped[3:], level=2)
+        elif stripped.startswith("### "):
+            doc.add_heading(stripped[4:], level=3)
+        elif stripped.startswith("#### "):
+            doc.add_heading(stripped[5:], level=4)
+        elif stripped.startswith("- ") or stripped.startswith("* "):
+            p = doc.add_paragraph(style="List Bullet")
+            _add_formatted_text(p, stripped[2:])
+        elif re.match(r"^\d+\.\s", stripped):
+            text = re.sub(r"^\d+\.\s*", "", stripped)
+            p = doc.add_paragraph(style="List Number")
+            _add_formatted_text(p, text)
+        elif stripped.startswith("> "):
+            p = doc.add_paragraph()
+            p.paragraph_format.left_indent = Inches(0.5)
+            _add_formatted_text(p, stripped[2:], default_italic=True)
+        elif stripped.startswith("---") or stripped.startswith("***"):
+            doc.add_paragraph("_" * 50)
+        else:
+            p = doc.add_paragraph()
+            _add_formatted_text(p, stripped)
+
+        i += 1
+
+    if in_table:
+        _flush_table()
+
+    buf = io.BytesIO()
+    doc.save(buf)
+    buf.seek(0)
+    return buf
+
+
+def _add_formatted_text(paragraph, text: str, default_italic: bool = False):
+    """Parse inline markdown formatting (bold, italic, bold+italic) and add runs."""
+    parts = re.split(r"(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|___.*?___|__.*?__|_.*?_)", text)
+    for part in parts:
+        if not part:
+            continue
+        if part.startswith("***") and part.endswith("***"):
+            run = paragraph.add_run(part[3:-3])
+            run.bold = True
+            run.italic = True
+        elif part.startswith("**") and part.endswith("**"):
+            run = paragraph.add_run(part[2:-2])
+            run.bold = True
+            if default_italic:
+                run.italic = True
+        elif part.startswith("___") and part.endswith("___"):
+            run = paragraph.add_run(part[3:-3])
+            run.bold = True
+            run.italic = True
+        elif part.startswith("__") and part.endswith("__"):
+            run = paragraph.add_run(part[2:-2])
+            run.bold = True
+            if default_italic:
+                run.italic = True
+        elif part.startswith("*") and part.endswith("*") and len(part) > 2:
+            run = paragraph.add_run(part[1:-1])
+            run.italic = True
+        elif part.startswith("_") and part.endswith("_") and len(part) > 2:
+            run = paragraph.add_run(part[1:-1])
+            run.italic = True
+        else:
+            run = paragraph.add_run(part)
+            if default_italic:
+                run.italic = True
+
+
+def _strip_md_inline(text: str) -> str:
+    """Remove markdown inline formatting markers from text."""
+    text = re.sub(r"\*\*\*(.*?)\*\*\*", r"\1", text)
+    text = re.sub(r"___(.*?)___", r"\1", text)
+    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+    text = re.sub(r"__(.*?)__", r"\1", text)
+    text = re.sub(r"\*(.*?)\*", r"\1", text)
+    text = re.sub(r"_(.*?)_", r"\1", text)
+    text = re.sub(r"`(.*?)`", r"\1", text)
+    return text
+
+
+def _md_to_xlsx(md_content: str, source_filename: str) -> io.BytesIO:
+    """Extract tables from markdown and convert to .xlsx."""
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+
+    wb = Workbook()
+    wb.remove(wb.active)
+
+    lines = md_content.split("\n")
+    tables: list[tuple[str, list[list[str]]]] = []
+    current_heading = source_filename.rsplit(".", 1)[0]
+    current_table: list[list[str]] = []
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            heading = re.sub(r"^#+\s*", "", stripped)
+            if heading:
+                current_heading = heading
+        elif "|" in stripped and stripped.startswith("|"):
+            cells = [_strip_md_inline(c.strip()) for c in stripped.split("|")[1:-1]]
+            if cells and all(re.match(r"^[-:]+$", c) for c in cells):
+                continue
+            current_table.append(cells)
+        else:
+            if current_table:
+                tables.append((current_heading, current_table))
+                current_table = []
+
+    if current_table:
+        tables.append((current_heading, current_table))
+
+    if not tables:
+        # No tables found — put all content as text in a single sheet
+        ws = wb.create_sheet("Content")
+        for row_idx, line in enumerate(lines, 1):
+            ws.cell(row=row_idx, column=1, value=line)
+        buf = io.BytesIO()
+        wb.save(buf)
+        buf.seek(0)
+        return buf
+
+    header_font = Font(bold=True, size=11)
+    header_fill = PatternFill(start_color="D9E1F2", end_color="D9E1F2", fill_type="solid")
+    thin_border = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thin"),
+        bottom=Side(style="thin"),
+    )
+
+    for idx, (title, rows) in enumerate(tables):
+        sheet_name = re.sub(r"[\\/*?\[\]:]", "", title)[:31] or f"Table {idx + 1}"
+        if sheet_name in wb.sheetnames:
+            sheet_name = f"{sheet_name[:27]}_{idx}"
+        ws = wb.create_sheet(sheet_name)
+
+        for row_idx, row_data in enumerate(rows, 1):
+            for col_idx, cell_value in enumerate(row_data, 1):
+                cell = ws.cell(row=row_idx, column=col_idx, value=cell_value)
+                cell.border = thin_border
+                cell.alignment = Alignment(wrap_text=True, vertical="top")
+                if row_idx == 1:
+                    cell.font = header_font
+                    cell.fill = header_fill
+
+        from openpyxl.utils import get_column_letter
+        for col_idx in range(1, (len(rows[0]) if rows else 0) + 1):
+            max_len = max(
+                (len(str(ws.cell(row=r, column=col_idx).value or "")) for r in range(1, len(rows) + 1)),
+                default=10,
+            )
+            ws.column_dimensions[get_column_letter(col_idx)].width = min(max_len + 4, 50)
+
+    buf = io.BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return buf
+
+
 @app.get("/api/sessions/{session_id}/files/{filename}")
-async def download_file(session_id: str, filename: str):
+async def download_file(
+    session_id: str,
+    filename: str,
+    format: str = Query(default=None, alias="format"),
+):
     _validate_session_id(session_id)
     out_dir = os.path.join(OUT_DIR, session_id)
     fpath = os.path.join(out_dir, filename)
     if not os.path.isfile(fpath):
         raise HTTPException(status_code=404, detail="File not found")
+
+    if format and filename.endswith(".md"):
+        with open(fpath, "r", encoding="utf-8") as f:
+            md_content = f.read()
+
+        if format == "docx":
+            buf = _md_to_docx(md_content, filename)
+            dl_name = filename.rsplit(".", 1)[0] + ".docx"
+            return StreamingResponse(
+                buf,
+                media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                headers={"Content-Disposition": f'attachment; filename="{dl_name}"'},
+            )
+        elif format == "xlsx":
+            buf = _md_to_xlsx(md_content, filename)
+            dl_name = filename.rsplit(".", 1)[0] + ".xlsx"
+            return StreamingResponse(
+                buf,
+                media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                headers={"Content-Disposition": f'attachment; filename="{dl_name}"'},
+            )
+
     media_type = mimetypes.guess_type(fpath)[0] or "application/octet-stream"
     return FileResponse(fpath, filename=filename, media_type=media_type)
 

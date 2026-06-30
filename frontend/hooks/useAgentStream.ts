@@ -85,8 +85,11 @@ export function useAgentStream() {
 
       case "error": {
         const errorMessage = event.data.message || "The agent encountered an internal error while processing your request.";
-        const errContent = `\n\n**Error:** ${errorMessage}`;
-        contentRef.current += errContent;
+        const isAuthError = event.data.type === "AuthenticationError";
+        const errContent = isAuthError
+          ? `\n\n${errorMessage}`
+          : `\n\n**Error:** ${errorMessage}`;
+        contentRef.current = isAuthError ? errorMessage : contentRef.current + errContent;
         onTextUpdate(contentRef.current);
         setState((s) => ({ ...s, error: errorMessage }));
         break;

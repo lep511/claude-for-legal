@@ -448,6 +448,16 @@ export default function AIChat() {
           };
           return updated;
         });
+        if (finalMessage.outputFiles && finalMessage.outputFiles.length > 0) {
+          setSessionFiles((prev) => {
+            const existing = new Set(prev.map((f) => f.filename));
+            const newFiles = finalMessage.outputFiles!
+              .filter((f) => !f.filename.endsWith(".chart.json") && !existing.has(f.filename))
+              .map((f) => ({ filename: f.filename, size: 0, path: f.path || "" }));
+            return newFiles.length > 0 ? [...prev, ...newFiles] : prev;
+          });
+          fetchSessionFiles();
+        }
       },
       {
         autoExecute,
@@ -536,6 +546,16 @@ export default function AIChat() {
             };
             return updated;
           });
+          if (finalMessage.outputFiles && finalMessage.outputFiles.length > 0) {
+            setSessionFiles((prev) => {
+              const existing = new Set(prev.map((f) => f.filename));
+              const newFiles = finalMessage.outputFiles!
+                .filter((f) => !f.filename.endsWith(".chart.json") && !existing.has(f.filename))
+                .map((f) => ({ filename: f.filename, size: 0, path: f.path || "" }));
+              return newFiles.length > 0 ? [...prev, ...newFiles] : prev;
+            });
+            fetchSessionFiles();
+          }
         },
         {
           autoExecute,
@@ -543,7 +563,7 @@ export default function AIChat() {
         },
       );
     },
-    [isStreaming, effectiveBusy, ensureSession, sessionVerified, sendMessage, autoExecute, updateSessionName],
+    [isStreaming, effectiveBusy, ensureSession, sessionVerified, sendMessage, autoExecute, updateSessionName, fetchSessionFiles],
   );
 
   const visualizations = useMemo<Visualization[]>(() => {

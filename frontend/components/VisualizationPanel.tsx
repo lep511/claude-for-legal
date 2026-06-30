@@ -60,7 +60,7 @@ function MarkdownFileViewer({
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/agents/sessions/${sessionId}/files/${filename}`)
+    fetch(`/api/agents/sessions/${sessionId}/files/download?name=${encodeURIComponent(filename)}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch");
         return res.text();
@@ -172,12 +172,34 @@ export function VisualizationPanel({
                       {formatFileSize(file.size)}
                     </span>
                   </div>
-                  <a
-                    href={`/api/agents/sessions/${sessionId}/files/${file.filename}`}
-                    download={file.filename}
-                  >
-                    <FileDown className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
-                  </a>
+                  <div className="flex items-center gap-1">
+                    <a
+                      href={`/api/agents/sessions/${sessionId}/files/download?name=${encodeURIComponent(file.filename)}&format=docx`}
+                      download={file.filename.replace(/\.md$/, ".docx")}
+                      title="Descargar como Word"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                    >
+                      <FileDown className="h-3.5 w-3.5" />
+                      Word
+                    </a>
+                    <a
+                      href={`/api/agents/sessions/${sessionId}/files/download?name=${encodeURIComponent(file.filename)}&format=xlsx`}
+                      download={file.filename.replace(/\.md$/, ".xlsx")}
+                      title="Descargar como Excel"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950 hover:bg-green-100 dark:hover:bg-green-900 transition-colors"
+                    >
+                      <FileSpreadsheet className="h-3.5 w-3.5" />
+                      Excel
+                    </a>
+                    <a
+                      href={`/api/agents/sessions/${sessionId}/files/download?name=${encodeURIComponent(file.filename)}`}
+                      download={file.filename}
+                      title="Descargar Markdown"
+                      className="inline-flex items-center p-1 rounded text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <FileDown className="h-4 w-4" />
+                    </a>
+                  </div>
                 </div>
                 <MarkdownFileViewer sessionId={sessionId} filename={file.filename} />
               </div>
@@ -193,7 +215,7 @@ export function VisualizationPanel({
             {otherFiles.map((file) => (
               <a
                 key={file.filename}
-                href={`/api/agents/sessions/${sessionId}/files/${file.filename}`}
+                href={`/api/agents/sessions/${sessionId}/files/download?name=${encodeURIComponent(file.filename)}`}
                 download={file.filename}
                 className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors group"
               >

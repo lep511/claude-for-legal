@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 const PYTHON_BACKEND_URL =
-  process.env.PYTHON_BACKEND_URL || "http://localhost:8000";
+  process.env.PYTHON_BACKEND_URL || "http://127.0.0.1:8000";
 
 export const maxDuration = 300;
 

@@ -9,15 +9,49 @@ Multi-agent legal platform with twelve specialized legal agents, a Python backen
 
 ## Getting Started
 
-```bash
-# Backend (Python 3.13+)
-uv run uvicorn api_server:app --host 0.0.0.0 --port 8000 --reload
+### Prerequisites
 
-# Frontend (in a separate terminal)
+- Python 3.13+
+- Node.js (for the frontend)
+- [uv](https://docs.astral.sh/uv/) package manager
+- Authentication: either an `ANTHROPIC_API_KEY` or AWS Bedrock access
+
+### 1. Configure authentication
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your credentials:
+
+**Option A — Anthropic API directly:**
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+**Option B — AWS Bedrock (IAM role / instance profile):**
+```env
+CLAUDE_CODE_USE_BEDROCK=1
+AWS_PROFILE=developer
+AWS_REGION=us-west-2
+```
+
+> [!NOTE]
+> If you see "Not logged in · Please run /login" in the chat, it means the backend cannot authenticate with the Claude API. Verify your `.env` is configured correctly and restart the backend.
+
+### 2. Start the backend
+
+```bash
+uv run uvicorn api_server:app --host 0.0.0.0 --port 8000 --reload
+```
+
+### 3. Start the frontend
+
+```bash
 cd frontend && npm install && npm run dev
 ```
 
-Open http://localhost:3000/legal — the orchestrator routes your requests to the right legal agent.
+Open http://localhost:35428/legal — the orchestrator routes your requests to the right legal agent.
 
 ### First-time setup
 
