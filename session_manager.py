@@ -10,7 +10,8 @@ import uuid
 from datetime import datetime, timezone
 
 
-SANDBOX_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sandbox")
+_default_sandbox = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sandbox")
+SANDBOX_DIR = os.environ.get("SANDBOX_DIR", "/tmp/sandbox" if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") else _default_sandbox)
 SESSIONS_DIR = os.path.join(SANDBOX_DIR, "sessions")
 OUT_DIR = os.path.join(SANDBOX_DIR, "out")
 
