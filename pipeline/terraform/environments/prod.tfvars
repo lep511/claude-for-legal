@@ -10,3 +10,7 @@ max_handoff_depth   = 3
 session_ttl_minutes = 30
 thinking_enabled    = false
 thinking_budget     = 10000
+
+cors_allowed_origins = [
+  "https://claude-for-legal.vercel.app"
+]

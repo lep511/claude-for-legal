@@ -42,6 +42,7 @@ from skill_runner import list_skills, build_skill_prompt
 
 
 CORS_ORIGINS = os.getenv("API_CORS_ORIGINS", "http://localhost:35428").split(",")
+CORS_ORIGIN_REGEX = os.getenv("API_CORS_ORIGIN_REGEX", r"https://.*\.vercel\.app")
 HEARTBEAT_INTERVAL = 15
 
 
@@ -57,6 +58,7 @@ app = FastAPI(title="Legal Agents API", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
+    allow_origin_regex=CORS_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

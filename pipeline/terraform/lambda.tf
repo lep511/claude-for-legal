@@ -19,31 +19,11 @@ resource "aws_lambda_function" "backend" {
       API_HOST                = "0.0.0.0"
       API_PORT                = "8080"
       ENVIRONMENT             = var.environment
+      API_CORS_ORIGINS        = join(",", var.cors_allowed_origins)
     }
   }
 
   tags = {
     Name = "${var.stack_name}-backend"
-  }
-}
-
-resource "aws_lambda_function" "frontend" {
-  function_name = "${var.stack_name}-frontend"
-  role          = aws_iam_role.lambda_execution.arn
-  package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.frontend.repository_url}:latest"
-  memory_size   = var.lambda_memory_size
-  timeout       = 30
-
-  environment {
-    variables = {
-      PYTHON_BACKEND_URL = "http://localhost:8080"
-      NODE_ENV           = "production"
-      PORT               = "8080"
-    }
-  }
-
-  tags = {
-    Name = "${var.stack_name}-frontend"
   }
 }

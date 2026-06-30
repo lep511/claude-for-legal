@@ -3,14 +3,14 @@ output "app_url" {
   value       = aws_apigatewayv2_stage.default.invoke_url
 }
 
+output "backend_api_url" {
+  description = "Backend API URL - set as PYTHON_BACKEND_URL in Vercel"
+  value       = aws_apigatewayv2_stage.default.invoke_url
+}
+
 output "backend_ecr_repository_url" {
   description = "Backend ECR repository URL"
   value       = aws_ecr_repository.backend.repository_url
-}
-
-output "frontend_ecr_repository_url" {
-  description = "Frontend ECR repository URL"
-  value       = aws_ecr_repository.frontend.repository_url
 }
 
 output "github_actions_role_arn" {

@@ -4,9 +4,41 @@ on:
   push:
     branches:
       - '**'
+    paths:
+      - 'api_server.py'
+      - 'api_handlers.py'
+      - 'session_manager.py'
+      - 'profile_manager.py'
+      - 'skill_runner.py'
+      - 'main.py'
+      - 'agents/**'
+      - 'sdk_tools/**'
+      - 'mcp_servers/**'
+      - 'templates/**'
+      - 'references/**'
+      - 'pipeline/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/deploy-dev.yml'
   pull_request:
     branches:
       - '**'
+    paths:
+      - 'api_server.py'
+      - 'api_handlers.py'
+      - 'session_manager.py'
+      - 'profile_manager.py'
+      - 'skill_runner.py'
+      - 'main.py'
+      - 'agents/**'
+      - 'sdk_tools/**'
+      - 'mcp_servers/**'
+      - 'templates/**'
+      - 'references/**'
+      - 'pipeline/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/deploy-dev.yml'
 
 permissions:
   id-token: write
@@ -19,7 +51,7 @@ env:
 
 jobs:
   build-and-deploy:
-    name: Build & Deploy to Dev
+    name: Build & Deploy Backend to Dev
     runs-on: ubuntu-latest
     environment: dev
 
@@ -46,15 +78,6 @@ jobs:
           docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:$IMAGE_TAG
           docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:latest
 
-      - name: Build and push frontend image
-        env:
-          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -f pipeline/docker/frontend.Dockerfile -t $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:$IMAGE_TAG -t $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:latest .
-          docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:$IMAGE_TAG
-          docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:latest
-
       - name: Deploy backend Lambda
         env:
           ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
@@ -65,31 +88,15 @@ jobs:
             --image-uri $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:$IMAGE_TAG \
             --region ${{ env.AWS_REGION }} || true
 
-      - name: Deploy frontend Lambda
-        env:
-          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          aws lambda update-function-code \
-            --function-name ${{ env.STACK_NAME }}-frontend \
-            --image-uri $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:$IMAGE_TAG \
-            --region ${{ env.AWS_REGION }} || true
-
       - name: Wait for backend Lambda update
         run: |
           aws lambda wait function-updated-v2 \
             --function-name ${{ env.STACK_NAME }}-backend \
             --region ${{ env.AWS_REGION }} 2>/dev/null || true
 
-      - name: Wait for frontend Lambda update
-        run: |
-          aws lambda wait function-updated-v2 \
-            --function-name ${{ env.STACK_NAME }}-frontend \
-            --region ${{ env.AWS_REGION }} 2>/dev/null || true
-
       - name: Deployment summary
         run: |
-          echo "## Dev Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "## Dev Backend Deployment Complete" >> $GITHUB_STEP_SUMMARY
           echo "- **Stack:** ${{ env.STACK_NAME }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Region:** ${{ env.AWS_REGION }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

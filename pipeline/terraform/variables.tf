@@ -65,3 +65,9 @@ variable "thinking_budget" {
   type        = number
   default     = 10000
 }
+
+variable "cors_allowed_origins" {
+  description = "Allowed CORS origins for the backend API (Vercel frontend domains)"
+  type        = list(string)
+  default     = ["http://localhost:3000", "http://localhost:35428"]
+}

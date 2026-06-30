@@ -1,19 +1,46 @@
 # CI/CD Pipeline
 
-Two-stage deployment pipeline for the Legal Agents platform using GitHub Actions with OIDC authentication.
+Split deployment pipeline for the Legal Agents platform:
+
+- **Frontend** (Next.js) → Vercel via Git Integration
+- **Backend** (FastAPI) → AWS Lambda via GitHub Actions + OIDC
 
 ## Architecture
 
 ```
-GitHub Actions (OIDC) → AWS ECR → AWS Lambda (Function URLs)
+┌─────────────────────────────────────────────────────────────┐
+│                    GitHub Repository                          │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+               ▼                              ▼
+┌──────────────────────────┐    ┌─────────────────────────────┐
+│  Vercel Git Integration  │    │  GitHub Actions (OIDC)      │
+│  (auto-deploy on push)   │    │  (backend changes only)     │
+└────────────┬─────────────┘    └──────────────┬──────────────┘
+             │                                 │
+             ▼                                 ▼
+┌──────────────────────────┐    ┌─────────────────────────────┐
+│  Vercel Edge Network     │    │  AWS ECR → Lambda           │
+│  Next.js 16 frontend     │    │  FastAPI + Claude Agent SDK │
+└────────────┬─────────────┘    └──────────────┬──────────────┘
+             │                                 │
+             │  PYTHON_BACKEND_URL (fetch)     │
+             └────────────────────────────────►│
+                                               │
+                                    ┌──────────▼──────────┐
+                                    │  API Gateway HTTP   │
+                                    │  /api/{proxy+}      │
+                                    └──────────┬──────────┘
+                                               │
+                                    ┌──────────▼──────────┐
+                                    │  Amazon Bedrock     │
+                                    │  (Claude models)    │
+                                    └─────────────────────┘
 ```
 
-- **Dev stage** (`legal-agents-dev`): Deploys on all pushes and PRs
-- **Prod stage** (`legal-agents-prod`): Deploys only on pushes to `main`, requires manual approval
+## Backend Setup (AWS)
 
-## Setup
-
-### 1. Initialize Terraform (local state)
+### 1. Initialize Terraform
 
 ```bash
 # Dev environment
@@ -27,29 +54,54 @@ cd pipeline/terraform && terraform apply tfplan-prod
 
 ### 2. Configure GitHub Repository Secrets
 
-After Terraform creates the OIDC roles, add these secrets to your GitHub repo:
-
 | Secret | Description |
 |--------|-------------|
-| `AWS_ROLE_ARN_DEV` | IAM role ARN for dev deployments (from Terraform output) |
-| `AWS_ROLE_ARN_PROD` | IAM role ARN for prod deployments (from Terraform output) |
+| `AWS_ROLE_ARN_DEV` | IAM role ARN for dev deployments (from `terraform output github_actions_role_arn`) |
+| `AWS_ROLE_ARN_PROD` | IAM role ARN for prod deployments |
 
 ### 3. Configure GitHub Environments
 
-1. Create a `prod` environment in GitHub repo settings
-2. Add **required reviewers** for manual approval before prod deploys
-3. Create a `dev` environment (no protection rules needed)
+1. Create a `prod` environment with **required reviewers** for manual approval
+2. Create a `dev` environment (no protection rules)
+
+## Frontend Setup (Vercel)
+
+### 1. Link Repository
+
+1. Import project in Vercel dashboard
+2. Set **Root Directory** to `frontend/`
+3. Framework preset: Next.js (auto-detected)
+
+### 2. Environment Variables
+
+| Variable | Value | Description |
+|----------|-------|-------------|
+| `PYTHON_BACKEND_URL` | `terraform output backend_api_url` | API Gateway invoke URL |
+
+Set this in Vercel project settings → Environment Variables (for Production, Preview, and Development).
+
+### 3. Deployment
+
+Vercel auto-deploys on every push. Preview URLs are generated for PRs.
 
 ## Workflows
 
-| Workflow | Trigger | Environment |
-|----------|---------|-------------|
-| `deploy-dev.yml` | All pushes and PRs | dev |
-| `deploy-prod.yml` | Push to `main` only | prod (manual approval) |
+| Workflow | Trigger | What it deploys |
+|----------|---------|-----------------|
+| `deploy-dev.yml` | Push/PR with backend file changes | Backend Lambda (dev) |
+| `deploy-prod.yml` | Push to `main` with backend file changes | Backend Lambda (prod, manual approval) |
+| Vercel Git Integration | Any push | Frontend (auto) |
+
+## CORS
+
+The backend accepts requests from Vercel frontend domains:
+
+- **Explicit origins**: Configured via `cors_allowed_origins` in Terraform tfvars, passed as `API_CORS_ORIGINS` to Lambda
+- **Regex fallback**: FastAPI middleware matches `https://*.vercel.app` for preview deployments
 
 ## Terraform State
 
-Uses local state stored in `pipeline/terraform/`. The state files (`*.tfstate`) are gitignored.
+Uses local state stored in `pipeline/terraform/`. State files (`*.tfstate`) are gitignored.
 
 ## Directory Structure
 
@@ -57,20 +109,19 @@ Uses local state stored in `pipeline/terraform/`. The state files (`*.tfstate`) 
 pipeline/
 ├── terraform/
 │   ├── main.tf              # Provider config
-│   ├── variables.tf         # Input variables
-│   ├── lambda.tf            # Lambda functions + URLs
-│   ├── ecr.tf               # ECR repositories
+│   ├── variables.tf         # Input variables (incl. cors_allowed_origins)
+│   ├── lambda.tf            # Backend Lambda function
+│   ├── apigateway.tf        # API Gateway with CORS
+│   ├── ecr.tf               # Backend ECR repository
 │   ├── iam.tf               # IAM roles (Lambda + OIDC)
-│   ├── outputs.tf           # Stack outputs
+│   ├── outputs.tf           # Stack outputs (incl. backend_api_url)
 │   └── environments/
 │       ├── dev.tfvars       # Dev configuration
 │       └── prod.tfvars      # Prod configuration
 ├── docker/
-│   ├── backend.Dockerfile   # FastAPI backend image
-│   └── frontend.Dockerfile  # Next.js frontend image
+│   └── backend.Dockerfile   # FastAPI backend image
 ├── scripts/
 │   ├── setup.sh             # Infrastructure setup script
-│   ├── lambda_handler.py    # Backend Lambda entry point
-│   └── frontend_handler.mjs # Frontend Lambda entry point
+│   └── lambda_handler.py    # Backend Lambda entry point (Mangum)
 └── README.md
 ```
