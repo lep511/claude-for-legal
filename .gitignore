@@ -6,6 +6,14 @@
 __pycache__/
 *.pyc
 
+# Terraform
+pipeline/terraform/*.tfstate
+pipeline/terraform/*.tfstate.backup
+pipeline/terraform/.terraform/
+pipeline/terraform/.terraform.lock.hcl
+pipeline/terraform/tfplan-*
+pipeline/terraform/terraform.tfstate.d/
+
 financial-only-for-reference
 financial-only-for-reference/*
 sandbox/*

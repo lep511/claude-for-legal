@@ -1,0 +1,95 @@
+name: Deploy Dev
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-west-2
+  STACK_NAME: legal-agents-dev
+  ENVIRONMENT: dev
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to Dev
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push backend image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f pipeline/docker/backend.Dockerfile -t $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:$IMAGE_TAG -t $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:latest .
+          docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:$IMAGE_TAG
+          docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:latest
+
+      - name: Build and push frontend image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f pipeline/docker/frontend.Dockerfile -t $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:$IMAGE_TAG -t $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:latest .
+          docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:$IMAGE_TAG
+          docker push $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:latest
+
+      - name: Deploy backend Lambda
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ env.STACK_NAME }}-backend \
+            --image-uri $ECR_REGISTRY/${{ env.STACK_NAME }}-backend:$IMAGE_TAG \
+            --region ${{ env.AWS_REGION }} || true
+
+      - name: Deploy frontend Lambda
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ env.STACK_NAME }}-frontend \
+            --image-uri $ECR_REGISTRY/${{ env.STACK_NAME }}-frontend:$IMAGE_TAG \
+            --region ${{ env.AWS_REGION }} || true
+
+      - name: Wait for backend Lambda update
+        run: |
+          aws lambda wait function-updated-v2 \
+            --function-name ${{ env.STACK_NAME }}-backend \
+            --region ${{ env.AWS_REGION }} 2>/dev/null || true
+
+      - name: Wait for frontend Lambda update
+        run: |
+          aws lambda wait function-updated-v2 \
+            --function-name ${{ env.STACK_NAME }}-frontend \
+            --region ${{ env.AWS_REGION }} 2>/dev/null || true
+
+      - name: Deployment summary
+        run: |
+          echo "## Dev Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- **Stack:** ${{ env.STACK_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Region:** ${{ env.AWS_REGION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
