@@ -2,7 +2,9 @@ FROM public.ecr.aws/lambda/python:3.13
 
 COPY pyproject.toml uv.lock ${LAMBDA_TASK_ROOT}/
 
-RUN pip install uv && uv pip install --system --no-cache -r ${LAMBDA_TASK_ROOT}/pyproject.toml
+RUN pip install uv && \
+    uv export --no-hashes --no-dev -o ${LAMBDA_TASK_ROOT}/requirements.txt && \
+    uv pip install --system --no-cache -r ${LAMBDA_TASK_ROOT}/requirements.txt
 
 COPY api_server.py api_handlers.py session_manager.py profile_manager.py skill_runner.py main.py ${LAMBDA_TASK_ROOT}/
 COPY agents/ ${LAMBDA_TASK_ROOT}/agents/
